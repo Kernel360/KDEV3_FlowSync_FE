@@ -32,11 +32,9 @@ export default function AdminOrganizationsCreatePage() {
         type: inputValues.type,
         brNumber: inputValues.brNumber,
         name: inputValues.name,
-        brCertificateUrl: inputValues.brCertificateUrl,
         streetAddress: inputValues.streetAddress,
         detailAddress: inputValues.detailAddress,
         phoneNumber: inputValues.phoneNumber,
-        typeEnum: inputValues.type, // #TODO typeEnum 불필요한 변수
       };
       // 파일 입력 처리 (예: inputValues.file에서 가져오기)
       const file = null; // 파일이 있을 경우에만 처리
@@ -102,6 +100,7 @@ export default function AdminOrganizationsCreatePage() {
         error={inputErrors.name}
         onChange={(e) => handleInputChange("name", e.target.value)}
       />
+
       <InputForm
         id="brNumber"
         type="text"
@@ -111,15 +110,7 @@ export default function AdminOrganizationsCreatePage() {
         error={inputErrors.brNumber}
         onChange={(e) => handleInputChange("brNumber", e.target.value)}
       />
-      <InputForm
-        id="brCertificateUrl"
-        type="text"
-        label="회사 URL"
-        placeholder="ex) https://www.example.com"
-        value={inputValues.brCertificateUrl}
-        error={inputErrors.brCertificateUrl}
-        onChange={(e) => handleInputChange("brCertificateUrl", e.target.value)}
-      />
+
       <InputForm
         id="streetAddress"
         type="text"

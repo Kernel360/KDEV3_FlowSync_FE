@@ -96,11 +96,10 @@ export interface CreateOrganizationInput {
   type: string;
   brNumber: string;
   name: string;
-  brCertificateUrl: string;
   streetAddress: string;
   detailAddress: string;
   phoneNumber: string;
-  typeEnum: string;
+  // typeEnum: string;
 }
 
 // 반환값의 타입 정의
