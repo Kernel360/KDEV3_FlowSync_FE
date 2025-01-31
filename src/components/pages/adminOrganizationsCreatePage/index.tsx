@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+
 import { useRouter } from "next/navigation";
 import { Box, Flex, HStack } from "@chakra-ui/react";
 import { Radio, RadioGroup } from "@/src/components/ui/radio";
@@ -10,8 +10,9 @@ import { defaultValuesOfOrganizaion } from "@/src/constants/defaultValues";
 import { validationRulesOfCreatingOrganization } from "@/src/constants/validationRules";
 import { createOrganization } from "@/src/api/organizations";
 
+import AddressForm from "@/src/components/common/AddressForm";
+
 export default function AdminOrganizationsCreatePage() {
-  // const [phoneNumber, setPhoneNumber] = useState("");
   const route = useRouter();
   const { inputValues, inputErrors, handleInputChange, checkAllInputs } =
     useForm(defaultValuesOfOrganizaion, validationRulesOfCreatingOrganization);
@@ -53,18 +54,16 @@ export default function AdminOrganizationsCreatePage() {
   }
 
   const handlePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const input = e.target.value.replace(/[^0-9]/g, "");
+    const input = e.target.value.replace(/[^0-9]/g, ""); // 숫자만 허용
     let formattedInput = input;
-
+  
     if (input.length > 3 && input.length <= 7) {
       formattedInput = `${input.slice(0, 3)}-${input.slice(3)}`;
     } else if (input.length > 7) {
-      formattedInput = `${input.slice(0, 3)}-${input.slice(3, 7)}-${input.slice(
-        7,
-        11,
-      )}`;
+      formattedInput = `${input.slice(0, 3)}-${input.slice(3, 7)}-${input.slice(7, 11)}`;
     }
-    handleInputChange("phoneNumber", formattedInput);
+  
+    handleInputChange("phoneNumber", formattedInput); // ✅ `inputValues.phoneNumber`를 직접 업데이트
   };
 
   return (
@@ -136,14 +135,15 @@ export default function AdminOrganizationsCreatePage() {
         error={inputErrors.brCertificateUrl}
         onChange={(e) => handleInputChange("brCertificateUrl", e.target.value)}
       />
-      <InputForm
+      <AddressForm
         id="streetAddress"
-        type="text"
         label="사업장 도로명 주소"
         placeholder="ex) 서울시 강남구"
         value={inputValues.streetAddress}
+        onChange={(selectedAddress) =>
+          handleInputChange("streetAddress", selectedAddress)
+        }
         error={inputErrors.streetAddress}
-        onChange={(e) => handleInputChange("streetAddress", e.target.value)}
       />
       <InputForm
         id="detailAddress"
