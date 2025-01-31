@@ -89,7 +89,6 @@ export default function AdminOrganizationsCreatePage() {
           </RadioGroup>
         </Flex>
       </Box>
-
       {/* 업체 생성 페이지 - 업체 정보 입력*/}
       <InputForm
         id="name"
@@ -100,17 +99,30 @@ export default function AdminOrganizationsCreatePage() {
         error={inputErrors.name}
         onChange={(e) => handleInputChange("name", e.target.value)}
       />
-
-      <InputForm
-        id="brNumber"
-        type="text"
-        label="사업자 등록번호"
-        placeholder="ex) 123-45-67890"
-        value={inputValues.brNumber}
-        error={inputErrors.brNumber}
-        onChange={(e) => handleInputChange("brNumber", e.target.value)}
-      />
-
+      <Flex gap={4} align="center">
+        <Box flex="1">
+          <InputForm
+            id="brNumber"
+            type="text"
+            label="사업자 등록번호"
+            placeholder="ex) 123-45-67890"
+            value={inputValues.brNumber}
+            error={inputErrors.brNumber}
+            onChange={(e) => handleInputChange("brNumber", e.target.value)}
+          />
+        </Box>
+        <Box flex="1">
+          <InputForm
+            id="businessLicense"
+            type="file"
+            label="사업자 등록증 첨부"
+            placeholder=""
+            onChange={(e) =>
+              handleInputChange("businessLicense", e.target.value)
+            }
+          />
+        </Box>
+      </Flex>
       <InputForm
         id="streetAddress"
         type="text"
