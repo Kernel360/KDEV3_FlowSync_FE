@@ -9,18 +9,28 @@ import InputFormLayout from "@/src/components/layouts/InputFormLayout";
 import { defaultValuesOfOrganizaion } from "@/src/constants/defaultValues";
 import { validationRulesOfCreatingOrganization } from "@/src/constants/validationRules";
 import { createOrganization } from "@/src/api/organizations";
+import { useState } from "react";
 
 export default function AdminOrganizationsCreatePage() {
   const route = useRouter();
   const { inputValues, inputErrors, handleInputChange, checkAllInputs } =
     useForm(defaultValuesOfOrganizaion, validationRulesOfCreatingOrganization);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   function validateInputs() {
     if (!checkAllInputs()) {
+      console.log("입력값 확인요청");
       alert("입력값을 확인하세요.");
       return false;
     }
     return true;
+  }
+
+  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+    }
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -36,10 +46,8 @@ export default function AdminOrganizationsCreatePage() {
         detailAddress: inputValues.detailAddress,
         phoneNumber: inputValues.phoneNumber,
       };
-      // 파일 입력 처리 (예: inputValues.file에서 가져오기)
-      const file = null; // 파일이 있을 경우에만 처리
 
-      const response = await createOrganization(organizationData, file);
+      const response = await createOrganization(organizationData, selectedFile);
       console.log("업체 등록 성공 - response: ", response);
       alert("업체가 성공적으로 등록되었습니다.");
       route.push("/admin/organizations");
@@ -74,13 +82,8 @@ export default function AdminOrganizationsCreatePage() {
             *
           </span>
           <RadioGroup
-            // Type이 string인지 확인
-            value={
-              typeof inputValues.Type === "string"
-                ? inputValues.Type
-                : undefined
-            }
-            onValueChange={(e) => handleInputChange("Type", e.value)}
+            value={inputValues.type}
+            onValueChange={(e) => handleInputChange("type", e.value)}
           >
             <HStack gap={6}>
               <Radio value="CUSTOMER">고객사</Radio>
@@ -117,9 +120,7 @@ export default function AdminOrganizationsCreatePage() {
             type="file"
             label="사업자 등록증 첨부"
             placeholder=""
-            onChange={(e) =>
-              handleInputChange("businessLicense", e.target.value)
-            }
+            onChange={(e) => handleFileChange(e)}
           />
         </Box>
       </Flex>

@@ -99,7 +99,6 @@ export interface CreateOrganizationInput {
   streetAddress: string;
   detailAddress: string;
   phoneNumber: string;
-  // typeEnum: string;
 }
 
 // 반환값의 타입 정의
