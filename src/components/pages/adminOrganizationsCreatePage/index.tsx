@@ -118,24 +118,28 @@ export default function AdminOrganizationsCreatePage() {
         onChange={(e) => handleInputChange("name", e.target.value)}
       />
 
-      <InputForm
-        id="brNumber"
-        type="text"
-        label="사업자 등록번호"
-        placeholder="ex) 123-45-67890"
-        value={inputValues.brNumber}
-        error={inputErrors.brNumber}
-        onChange={(e) => handleInputChange("brNumber", e.target.value)}
-      />
-      <InputForm
-        id="brCertificateUrl"
-        type="text"
-        label="회사 URL"
-        placeholder="ex) https://www.example.com"
-        value={inputValues.brCertificateUrl}
-        error={inputErrors.brCertificateUrl}
-        onChange={(e) => handleInputChange("brCertificateUrl", e.target.value)}
-      />
+      <Flex gap={4} align="center">
+        <Box flex="1">
+          <InputForm
+            id="brNumber"
+            type="text"
+            label="사업자 등록번호"
+            placeholder="ex) 123-45-67890"
+            value={inputValues.brNumber}
+            error={inputErrors.brNumber}
+            onChange={(e) => handleInputChange("brNumber", e.target.value)}
+          />
+        </Box>
+        <Box flex="1">
+          <InputForm
+            id="businessLicense"
+            type="file"
+            label="사업자 등록증 첨부"
+            placeholder=""
+            onChange={(e) => handleFileChange(e)}
+          />
+        </Box>
+      </Flex>
       <AddressForm
         id="streetAddress"
         label="사업장 도로명 주소"

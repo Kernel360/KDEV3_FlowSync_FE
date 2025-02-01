@@ -1,66 +1,86 @@
-// // 외부 라이브러리
-// import { useState, useRef, useEffect } from "react";
-// import {
-//   Box,
-//   Button,
-//   Text,
-//   Textarea,
-//   Flex,
-//   IconButton,
-// } from "@chakra-ui/react";
+// 외부 라이브러리
+import { useState, useRef, useEffect } from "react";
+import {
+  Box,
+  Button,
+  Text,
+  Textarea,
+  Flex,
+  IconButton,
+} from "@chakra-ui/react";
 
-// // 절대 경로 파일
-// import { ArticleComment } from "@/src/types";
-// import { LuSearch } from "react-icons/lu";
-
-// interface CommentProps {
-//   comment: ArticleComment;
-// }
+// 절대 경로 파일
+import { ArticleComment } from "@/src/types";
 
 
-// export default function CommentItem({ comment }: CommentProps) {
-//   const dropdownRef = useRef<HTMLDivElement>(null);
-//   const [openOptionId, setOpenOptionId] = useState<number | null>(null);
+interface CommentProps {
+  comment: ArticleComment;
+  replies?: ArticleComment[];
+}
 
-//   useEffect(() => {
-//     const handleClickOutside = (event: MouseEvent) => {
-//       // 드롭다운 외부를 클릭하면 닫기
-//       if (
-//         dropdownRef.current &&
-//         !dropdownRef.current.contains(event.target as Node)
-//       ) {
-//         setOpenOptionId(null);
-//       }
-//     };
+export default function CommentItem({ comment, replies = [] }: CommentProps) {
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [openOptionId, setOpenOptionId] = useState<number | null>(null);
 
-//     document.addEventListener("mousedown", handleClickOutside);
-//     return () => {
-//       document.removeEventListener("mousedown", handleClickOutside);
-//     };
-//   }, []);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // 드롭다운 외부를 클릭하면 닫기
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpenOptionId(null);
+      }
+    };
 
-//   const toggleOption = (id: number) => {
-//     setOpenOptionId((prev) => (prev === id ? null : id));
-//   };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
-//   const handleEdit = (id: number) => {
-//     // 수정 로직 추가
-//   };
+  const toggleOption = (id: number) => {
+    setOpenOptionId((prev) => (prev === id ? null : id));
+  };
 
-//   const handleDelete = (id: number) => {
-//     // 삭제 로직 추가
-//   };
+  const handleEdit = (id: number) => {
+    // 수정 로직 추가
+  };
 
-//   return (
-//     <Box>
-//       {comment.deletedYn === "Y" && (Array.isArray(comment.replies) || comment.replies.length === 0) ? null : (
+  const handleDelete = (id: number) => {
+    // 삭제 로직 추가
+  };
 
-//       {comment.deletedYn === "Y" ? (
 
-//           <Text color="gray.500" fontStyle="italic">삭제된 댓글입니다</Text>
+  return (
+    <Box mt={2} pl={comment.parentId ? 4 : 0} borderLeftWidth={comment.parentId ? 1 : 0} borderColor={"gray.200"}>
+      {/* 댓글 본문 */}
+      <Flex justifyContent="space-between" alignItems="center">
+        <Text>{comment.content}</Text>
+        <Box ref={dropdownRef}>
+          <IconButton
+            size="xs"
+            aria-label="댓글 옵션"
+            // icon={<LuMoreVertical />}
+            onClick={() => toggleOption(comment.id)}
+          />
+          {openOptionId === comment.id && (
+            <Box position="absolute" bg="white" boxShadow="md" p={2} zIndex={10}>
+              <Button size="xs" onClick={() => handleEdit(comment.id)}>수정</Button>
+              <Button size="xs" onClick={() => handleDelete(comment.id)}>삭제</Button>
+            </Box>
+          )}
+        </Box>
+      </Flex>
 
-//       ) : ()}
-//       )}
-//     </Box>
-//   );
-// }
+      {/* 대댓글 */}
+      {replies.length > 0 && (
+        <Box mt={2}>
+          {replies.map((reply) => (
+            <CommentItem key={reply.id} comment={reply} replies={[]} />
+          ))}
+        </Box>
+      )}
+    </Box>
+  );
+}
