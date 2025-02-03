@@ -76,7 +76,7 @@ export default function QuestionReadPage() {
 
       {/* 댓글 섹션 */}
       <VStack align="stretch" gap={8} mt={10}>
-        <ArticleComments comments={commentList} />
+        <ArticleComments comments={commentList} setCommentIsWritten={setCommentIsWritten} />
         <CommentBox setCommentIsWritten={setCommentIsWritten} />
       </VStack>
     </Box>

@@ -4,6 +4,7 @@ import { Box, Text, Image, VStack } from "@chakra-ui/react";
 // 절대 경로 파일
 import { Article, ArticleLink, ArticleFile, ContentBlock } from "@/src/types";
 import { formatDateWithTime } from "@/src/utils/formatDateUtil";
+import { formattedDate } from "@/src/utils/formatDateUtil";
 
 interface ArticleContentProps {
   article: Article | null;
@@ -118,7 +119,7 @@ export default function ArticleContent({ article }: ArticleContentProps) {
       {/* 작성자, 작성 일시 */}
       <Box mb={4}>
         <Text>작성자: {article.author}</Text>
-        <Text>{formatDateWithTime(article.regAt)}</Text>
+        <Text>{formattedDate(article.regAt)}</Text>
       </Box>
 
       {/* 본문 내용 */}

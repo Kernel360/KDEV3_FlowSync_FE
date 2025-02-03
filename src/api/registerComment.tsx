@@ -16,5 +16,23 @@ export async function registerComment(
       },
     },
   );
-  return response.data
+  return response.data;
+}
+
+export async function registerCommentReply(
+  projectId: number,
+  questionId: number,
+  parentId: number,
+  requestData: any,
+) {
+  const response = await axiosInstance.post(
+    `${BASE_URL}/projects/${projectId}/questions/${questionId}/comments/${parentId}/recomments`,
+    requestData,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response.data;
 }

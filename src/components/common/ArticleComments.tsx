@@ -7,9 +7,10 @@ import { ArticleComment } from "@/src/types";
 
 interface ArticleCommentsProps {
     comments: ArticleComment[];
+    setCommentIsWritten: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function ArticleComments({ comments }: ArticleCommentsProps) {
+export default function ArticleComments({ comments, setCommentIsWritten }: ArticleCommentsProps) {
 
   return (
     <Box>
@@ -23,7 +24,7 @@ export default function ArticleComments({ comments }: ArticleCommentsProps) {
         댓글
       </Text>
       {comments.length > 0 ? (
-        <Comments comments={comments} />
+        <Comments comments={comments} setCommentIsWritten={setCommentIsWritten} />
       ) : (
         <Text color={"gray.500"} fontSize={"sm"}>댓글이 없습니다.</Text>
       )}

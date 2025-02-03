@@ -9,10 +9,14 @@ import { ArticleComment } from "@/src/types";
 
 interface ArticleCommentsProps {
   comments: ArticleComment[];
+  setCommentIsWritten: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // 댓글 계층구조로 정리 함수
-const groupCommentsByParent = (comments: ArticleComment[]) => {
+const groupCommentsByParent = ({
+  comments,
+  setCommentIsWritten,
+}: ArticleCommentsProps) => {
   const commentMap = new Map<number, ArticleComment[]>();
 
   // 원 댓글 필터링
@@ -39,19 +43,31 @@ const groupCommentsByParent = (comments: ArticleComment[]) => {
   return { parentComments, commentMap };
 };
 
-
-export default function Comments({ comments }: ArticleCommentsProps) {
-  const { parentComments, commentMap } = groupCommentsByParent(comments);
+export default function Comments({
+  comments,
+  setCommentIsWritten,
+}: ArticleCommentsProps) {
+  const { parentComments, commentMap } = groupCommentsByParent({
+    comments,
+    setCommentIsWritten,
+  });
 
   return (
     <Box>
       {parentComments.map((comment) => (
         <Box key={comment.id}>
-          <CommentItem comment={comment} />
+          <CommentItem
+            comment={comment}
+            setCommentIsWritten={setCommentIsWritten}
+          />
           {commentMap.has(comment.id) && (
             <Box>
               {commentMap.get(comment.id)!.map((reply) => (
-                <CommentItem key={reply.id} comment={reply} />
+                <CommentItem
+                  key={reply.id}
+                  comment={reply}
+                  setCommentIsWritten={setCommentIsWritten}
+                />
               ))}
             </Box>
           )}
