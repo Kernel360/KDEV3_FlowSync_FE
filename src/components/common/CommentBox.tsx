@@ -33,7 +33,7 @@ export default function CommentBox({
       let responseData: CommentApiResponse | undefined;
 
       if (pathname.includes("/questions")) {
-        const responseData = await registerComment(
+        responseData = await registerComment(
           Number(projectId),
           requestData,
           Number(questionId),
