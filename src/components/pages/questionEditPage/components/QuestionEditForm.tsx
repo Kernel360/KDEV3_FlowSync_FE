@@ -13,7 +13,7 @@ import { uploadFileApi } from "@/src/api/RegisterArticle";
 
 // 수정 api 만들고 가져와야함
 
-import { Article } from "@/src/types";
+// import { QuestionArticle } from "@/src/types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
