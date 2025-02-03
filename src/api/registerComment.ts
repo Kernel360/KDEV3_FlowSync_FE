@@ -1,38 +1,35 @@
 import axiosInstance from "@/src/api/axiosInstance";
-
+import { CommentApiResponse } from "@/src/types";
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export async function registerComment(
   projectId: number,
-  questionId: number,
   requestData: any,
+  questionId?: number,
+  taskId?: number,
+  parentId?: number,
 ) {
-  const response = await axiosInstance.post(
-    `${BASE_URL}/projects/${projectId}/questions/${questionId}/comments`,
-    requestData,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },
-  );
-  return response.data;
-}
+  const pathname = typeof window !== "undefined" ? window.location.pathname : "";
 
-export async function registerCommentReply(
-  projectId: number,
-  questionId: number,
-  parentId: number,
-  requestData: any,
-) {
-  const response = await axiosInstance.post(
-    `${BASE_URL}/projects/${projectId}/questions/${questionId}/comments/${parentId}/recomments`,
-    requestData,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
+  let apiURL: string = "";
+
+  if (pathname.includes("/questions")) {
+    apiURL = `${BASE_URL}/projects/${projectId}/questions/${questionId}/comments`;
+  } else if (pathname.includes("/tasks")) {
+    apiURL = `${BASE_URL}/projects/${projectId}/approvals/${taskId}/comments`;
+  }
+
+  if (parentId) {
+    apiURL += `/${parentId}/recomments`;
+  }
+
+  if (!apiURL) {
+    throw new Error("API URL is not defined");
+  }
+  const response = await axiosInstance.post(apiURL, requestData, {
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+  });
   return response.data;
 }

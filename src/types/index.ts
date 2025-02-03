@@ -229,6 +229,13 @@ export interface TaskApiResponse {
   data: TaskArticle;
 }
 
+export interface CommentApiResponse {
+  code: number;
+  result: string;
+  message: string;
+  data: ArticleComment;
+}
+
 // 게시글의 콘텐츠 블럭
 export interface ContentBlock {
   type: string;

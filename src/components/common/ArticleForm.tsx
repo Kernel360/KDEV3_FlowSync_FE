@@ -49,19 +49,6 @@ export default function ArticleForm() {
 
   const pathname = usePathname(); // 현재 경로 가져옴
 
-  const uploadFile = async (file: File): Promise<string> => {
-    try {
-      // 서버로 파일 업로드 요청
-      const data = await uploadFileApi(file);
-
-      // 서버에서 반환된 파일 URL 반환
-      return data.url; // 서버 응답에서 URL을 반환하는 키를 확인해야 합니다
-    } catch (error) {
-      console.error("파일 업로드 실패:", error);
-      throw new Error("파일 업로드 중 문제가 발생했습니다.");
-    }
-  };
-
   useEffect(() => {
     if (!editorRef.current) {
       editorRef.current = new EditorJS({
