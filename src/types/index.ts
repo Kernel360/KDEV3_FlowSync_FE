@@ -233,7 +233,6 @@ export interface Article {
   number: number;
   title: string;
   content: ContentBlock[];
-  // content: ContentBlock[]; // ContentBlock 인터페이스 사용
   regAt: string;
   editAt: string;
   approverAt: string;
@@ -261,10 +260,6 @@ export interface ArticleFile {
   size: number;
 }
 
-export interface ArticleCommentsProps {
-  comments: ArticleComment[];
-}
-
 // 댓글
 export interface ArticleComment {
   id: number;
@@ -272,19 +267,8 @@ export interface ArticleComment {
   content: string;
   regAt: string;
   editAt: string;
-  deletedYn: string;
-  replies: ArticleReply[];
-}
-
-// 댓글의 답글
-export interface ArticleReply {
-  id: number;
-  author: string;
-  content: string;
-  regAt: string;
-  editAt: string;
   parentId: number;
-  deletedYn: string;
+  isParent: boolean;
 }
 
 // 회원/업체 생성 페이지 입력 폼 인터페이스
