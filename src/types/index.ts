@@ -12,8 +12,8 @@ export interface CommonResponseWithMetaType<T> extends CommonResponseType<T> {
 }
 
 export interface ReissueResponse {
-  access: string,
-  refresh: string
+  access: string;
+  refresh: string;
 }
 
 // 서버에서 반환되는 페이징 메타데이터 타입
@@ -327,9 +327,9 @@ export interface NoticeListResponse {
 }
 
 export interface ProjectProgressStepProps {
-  id: string,
-  title:string,
-  count: number
+  id: string;
+  title: string;
+  count: number;
 }
 
 export interface UserInfoResponse {

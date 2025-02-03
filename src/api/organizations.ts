@@ -65,28 +65,33 @@ export async function createOrganization(
 export async function updateOrganization(
   organizationId: string,
   updateData: Partial<OrganizationProps>,
+  file?: any,
 ) {
+  const formData = new FormData();
+
+  // JSON 데이터를 FormData에 추가
+  const json = JSON.stringify(updateData);
+  const blob = new Blob([json], { type: "application/json" });
+  formData.append("content", json);
+  formData.append("data", blob);
+
+  // 파일이 존재할 경우에만 FormData에 추가
+  if (file) {
+    formData.append("file", file);
+  }
+  // API 요청 (multipart/form-data로 전송)
   const response = await axiosInstance.put(
     `/admins/organizations/${organizationId}`,
-    updateData,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    },
   );
 
+  console.log("업체 수정 API 호출 종료 - response: ", response);
   return response.data;
-}
-
-// 📌 회원 삭제 (탈퇴 사유 포함 X)
-export async function deleteOrigination(
-  organizationId: string,
-): Promise<DeleteOriginationResponse> {
-  try {
-    const response = await axiosInstance.post(
-      `/admins/originazions/${organizationId}/remove`,
-    );
-
-    return response.data; // ✅ 응답 데이터 반환
-  } catch (error) {
-    throw error; // 🚨 에러 발생 시 throw
-  }
 }
 
 // 📌 회원 삭제 (탈퇴 사유 포함 ver.)
@@ -96,9 +101,11 @@ export async function deleteOriginationWithReason(
 ): Promise<DeleteOriginationWithReasonResponse> {
   try {
     const response = await axiosInstance.post(
-      `/admins/originazions/delete/${organizationId}`,
+      `/admins/organizations/${organizationId}/remove`,
       { reason }, // 🔹 요청 바디에 탈퇴 사유 추가
     );
+    console.log("업체 삭제 사유 - reason: ", reason);
+    console.log("업체 삭제 사유 - response: ", response);
     return response.data; // ✅ 응답 데이터 반환
   } catch (error) {
     throw error; // 🚨 에러 발생 시 throw

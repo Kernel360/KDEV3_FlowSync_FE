@@ -41,6 +41,24 @@ export default function InputForm({
     }
   }
 
+  function getDisplayFileName(fileValue: string | File) {
+    if (typeof fileValue === "string" && fileValue.includes("|")) {
+      const [fileName] = fileValue.split("|");
+      return fileName.replace(/^[0-9_]+/, ""); // 숫자 및 언더스코어 제거
+    }
+    if (fileValue instanceof File) {
+      return fileValue.name;
+    }
+    return "파일을 선택하세요";
+  }
+
+  function getFileUrl(fileValue: string | File) {
+    if (typeof fileValue === "string" && fileValue.includes("|")) {
+      return fileValue.split("|")[1]; // URL만 반환
+    }
+    return null;
+  }
+
   function handleAddressChange(event: React.ChangeEvent<HTMLInputElement>) {
     if (onChange) {
       // 기존 event 객체를 복사하면서 target.value 값을 유지하여 새로운 이벤트 객체를 생성
@@ -66,7 +84,7 @@ export default function InputForm({
 
   return (
     <div className={styles.inputFieldContainer}>
-      <label htmlFor={id} className={styles.label}>
+      <label className={styles.label}>
         {label}
         {!disabled && <span className={styles.required}>*</span>}
       </label>
@@ -97,7 +115,6 @@ export default function InputForm({
       ) : // 일반 입력 필드 vs 파일 업로드 필드
       type === "file" ? (
         <div className={styles.fileUploadContainer}>
-          {/* ✅ 파일 첨부 버튼 */}
           <input
             type="file"
             id={id}
@@ -107,11 +124,16 @@ export default function InputForm({
           <label htmlFor={id} className={styles.fileUploadButton}>
             파일 첨부
           </label>
-          {selectedFile && (
-            <span className={styles.selectedFileName}>
-              ✔ {selectedFile.name}
-            </span>
-          )}
+          {selectedFile || value ? (
+            <a
+              href={getFileUrl(value) || "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.selectedFileName}
+            >
+              ✔ {selectedFile?.name || getDisplayFileName(value)}
+            </a>
+          ) : null}
         </div>
       ) : (
         <input
@@ -127,7 +149,7 @@ export default function InputForm({
         />
       )}
       {/* 에러 메시지 표시 (에러 메시지가 없는 경우에도 레이아웃 유지 위해 높이를 고정) */}
-      <span className={styles.errorText}>{error || " "}</span>{" "}
+      <span className={styles.errorText}>{error || " "}</span>
     </div>
   );
 }
