@@ -28,21 +28,24 @@ export default function CommentBox({
   const pathname = usePathname();
 
   const handleSave = async () => {
+    // console.log("questionId:", questionId);
     // console.log(projectId, questionId)
     // console.log(projectId, taskId)
     // console.log(typeof questionId)
     try {
       const requestData = { content: commentText };
       let responseData: CommentApiResponse | undefined;
-
+      // console.log(Number(questionId)) // 1번
+      
       if (pathname.includes("/questions")) {
         responseData = await registerComment(
           Number(projectId),
           requestData,
-          questionId ? Number(questionId) : undefined,
+          Number(questionId),
           undefined,
           parentId ? Number(parentId) : undefined,
         );
+        console.log(typeof questionId) // 2번
       } else if (pathname.includes("/tasks")) {
         responseData = await registerComment(
           Number(projectId),

@@ -11,7 +11,7 @@ export async function registerComment(
 ) {
   const pathname = typeof window !== "undefined" ? window.location.pathname : "";
   let apiURL: string = "";
-
+  console.log("questionId:", questionId);
   if (pathname.includes("/questions")) {
     apiURL = `/projects/${projectId}/questions/${questionId}/comments`;
   } else if (pathname.includes("/tasks")) {
