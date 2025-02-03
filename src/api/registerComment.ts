@@ -1,5 +1,5 @@
 import axiosInstance from "@/src/api/axiosInstance";
-import { CommentApiResponse } from "@/src/types";
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export async function registerComment(
