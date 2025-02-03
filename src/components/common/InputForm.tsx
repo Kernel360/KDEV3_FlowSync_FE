@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AddressAPI from "@/src/components/common/AddressAPI";
 import { InputFormData } from "@/src/types";
 import styles from "@/src/components/common/InputForm.module.css";
@@ -14,18 +14,12 @@ export default function InputForm({
   value = "",
   error = "",
   onChange,
-  // onChange = () => {}, // onChange가 undefined 일 경우에도 기본값이 빈 함수이기 때문에 에러 발생하지 않음
   disabled = false, // 기본값 false 추가
+  isChanged, // 부모 컴포넌트에서 전달받음
 }: InputFormData) {
   const [originalValue, setOriginalValue] = useState(value); // 초기값 저장
-  const [isChanged, setIsChanged] = useState(false); // 변경 여부 상태 관리
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
-
-  useEffect(() => {
-    // 수정 시 기존 데이터에서 변경된 사항이 있는 경우
-    setIsChanged(value !== originalValue);
-  }, [value, originalValue]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (onChange) {

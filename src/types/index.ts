@@ -306,6 +306,7 @@ export interface InputFormData {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
+  isChanged?: boolean;
 }
 
 // 공지사항

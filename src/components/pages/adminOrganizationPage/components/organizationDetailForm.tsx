@@ -7,7 +7,6 @@ import { Radio, RadioGroup } from "@/src/components/ui/radio";
 import InputForm from "@/src/components/common/InputForm";
 import InputFormLayout from "@/src/components/layouts/InputFormLayout";
 import { OrganizationProps } from "@/src/types";
-import { validationRulesOfUpdatingMember } from "@/src/constants/validationRules"; // 유효성 검사 규칙 import
 import {
   deleteOriginationWithReason,
   fetchOrganizationDetails,
@@ -29,13 +28,14 @@ export default function OrganizationDetailForm({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string | null }>({}); // 유효성 검사 에러 상태
   const [isFetching, setIsFetching] = useState<boolean>(false); // ✅ 새로 렌더링 여부
+  // ✅ 각 필드별 변경 상태를 관리하는 객체
+  const [isChanged, setIsChanged] = useState<{ [key: string]: boolean }>({});
+  const isUpdateDisabled = Object.keys(isChanged).length === 0;
   const fileData =
     typeof formData.brCertificateUrl === "string" &&
     formData.brCertificateUrl.includes("|")
       ? formData.brCertificateUrl.split("|")
       : [null, null];
-  const fileName = fileData[0] ?? "파일을 선택하세요";
-  const fileUrl = fileData[1];
 
   useEffect(() => {
     return () => {
@@ -45,6 +45,7 @@ export default function OrganizationDetailForm({
         formData.brCertificateUrl.includes("|")
       ) {
         const [, fileUrl] = formData.brCertificateUrl.split("|");
+        // 파일 교체 후에도 이전 파일이 유지될 가능성 방지
         URL.revokeObjectURL(fileUrl);
       }
     };
@@ -52,10 +53,13 @@ export default function OrganizationDetailForm({
 
   // 📌 업체 데이터 다시 불러오기 (업데이트 후)
   async function refetchOrganizationData() {
+    if (Object.keys(isChanged).length === 0) return; // 🔥 변경된 값 없으면 요청 안 함
+
     setIsFetching(true);
     try {
       const updatedData = await fetchOrganizationDetails(organizationId);
       setFormData(updatedData); // ✅ 새로 불러온 데이터로 상태 업데이트
+      setIsChanged({}); // ✅ 모든 필드 변경 상태 초기화
     } catch (error) {
       console.error("업체 데이터 갱신 실패:", error);
     } finally {
@@ -64,65 +68,45 @@ export default function OrganizationDetailForm({
   }
 
   function handleInputUpdate(inputName: string, value: string) {
+    // 숫자만 남기기
+    const onlyNumbers = value.replace(/[^0-9]/g, "");
+    let formattedValue = onlyNumbers;
+
+    // 입력값별 하이픈 추가 규칙 적용
+    const formatWithHyphen = (value: string, pattern: number[]) => {
+      let formatted = "";
+      let index = 0;
+
+      for (const length of pattern) {
+        if (index >= value.length) break; // 🔥 안전한 길이 체크 추가
+        if (index + length <= value.length) {
+          formatted +=
+            (index === 0 ? "" : "-") +
+            value.slice(index, Math.min(value.length, index + length));
+          index += length;
+        } else {
+          formatted += (index === 0 ? "" : "-") + value.slice(index);
+          break;
+        }
+      }
+      return formatted;
+    };
+
     if (inputName === "phoneNumber") {
-      // 📌 전화번호 입력 처리 (자동 하이픈 추가)
-      console.log("연락처를 update 중입니다.");
-      const onlyNumbers = value.toString().replace(/[^0-9]/g, "");
-      let formattedValue = onlyNumbers;
-
-      if (onlyNumbers.length > 3 && onlyNumbers.length <= 7) {
-        formattedValue = `${onlyNumbers.slice(0, 3)}-${onlyNumbers.slice(3)}`;
-      } else if (onlyNumbers.length > 7) {
-        formattedValue = `${onlyNumbers.slice(0, 3)}-${onlyNumbers.slice(3, 7)}-${onlyNumbers.slice(7, 11)}`;
-      }
-      setFormData((prev) => ({
-        ...prev,
-        [inputName]: formattedValue,
-      }));
+      formattedValue = formatWithHyphen(onlyNumbers, [3, 4, 4]); // 010-1234-5678
     } else if (inputName === "brNumber") {
-      console.log("사업자 등록번호를 update 중입니다.");
-      // 📌 사업자 등록번호 입력 처리 (자동 하이픈 추가) => "123-45-67890" 형식
-      const onlyNumbers = value.toString().replace(/[^0-9]/g, "");
-      let formattedValue = onlyNumbers;
-
-      if (onlyNumbers.length > 3 && onlyNumbers.length <= 5) {
-        formattedValue = `${onlyNumbers.slice(0, 3)}-${onlyNumbers.slice(3)}`;
-      } else if (onlyNumbers.length > 5) {
-        formattedValue = `${onlyNumbers.slice(0, 3)}-${onlyNumbers.slice(3, 5)}-${onlyNumbers.slice(5, 10)}`;
-      }
-      setFormData((prev) => ({
-        ...prev,
-        [inputName]: formattedValue,
-      }));
-    } else {
-      console.log("업체 정보 일반 입력 update 중입니다.");
-      // 📌 일반 입력 처리
-      setFormData((prev) => ({
-        ...prev,
-        [inputName]: value.toString,
-      }));
+      formattedValue = formatWithHyphen(onlyNumbers, [3, 2, 5]); // 123-45-67890
     }
-  }
 
-  // 📌 입력값 변경 처리 및 유효성 검사 실행
-  function handleChange(field: string, value: string) {
-    // 유효성 검사 규칙이 있는 필드만 검사
-    if (field in validationRulesOfUpdatingMember && typeof value === "string") {
-      const isValid =
-        validationRulesOfUpdatingMember[
-          field as keyof typeof validationRulesOfUpdatingMember
-        ].isValid(value);
-
-      setErrors((prev) => ({
-        ...prev,
-        [field]: isValid
-          ? null
-          : validationRulesOfUpdatingMember[
-              field as keyof typeof validationRulesOfUpdatingMember
-            ].errorMessage,
-      }));
-    }
-    console.log("입력값 변경 - field: ", field, " , value: ", value);
+    setFormData((prev) => {
+      const key = inputName as keyof OrganizationProps; // 🔥 명시적으로 keyof OrganizationProps로 변환
+      if (prev[key] === formattedValue) return prev;
+      return { ...prev, [key]: formattedValue };
+    });
+    setIsChanged((prev) => {
+      if (prev[inputName]) return prev; // 🔥 이미 변경된 상태면 업데이트 안 함
+      return { ...prev, [inputName]: true };
+    });
   }
 
   // 📌 전체 입력값 유효성 검사 (수정 버튼 활성화 여부 체크)
@@ -157,13 +141,10 @@ export default function OrganizationDetailForm({
         organizationData,
         selectedFile, // 파일 전달,
       );
+      // 수정된 데이터만 렌더링
+      refetchOrganizationData();
+      setIsChanged({}); // 모든 필드 변경 상태 및 스타일 초기화
       alert("업체 정보가 수정되었습니다.");
-      // #TODO 업데이트 방법1) 수정 후 최신 데이터만 렌더링 (-> 변경된 필드 초록색으로 변한 게 그대로 유지되는 문제)
-      // await refetchOrganizationData();
-      // #TODO 업데이트 방법2) 페이지 전체 새로고침 (-> 속도 느리고, 화면 깜빡여서 fetch만 하는 방향으로 수정되어야 함)
-      window.location.reload();
-      // #TODO 업데이트 방법3) 페이지 전체 새로고침 없이 데이터만 새로고침 (-> 변경된 필드 초록색 스타일 그대로 유지되는 문제)
-      // route.refresh();
     } catch (error) {
       alert("수정 실패: 다시 시도해주세요.");
     } finally {
@@ -182,7 +163,6 @@ export default function OrganizationDetailForm({
       alert("업체가 삭제 조치 되었습니다.");
       route.push("/admin/organizations"); // 삭제 후 목록 페이지(회원 관리)로 이동
     } catch (error) {
-      console.error("업체 삭제 중 오류 발생:", error);
       alert("업체 삭제에 실패했습니다.");
     }
   }
@@ -193,6 +173,7 @@ export default function OrganizationDetailForm({
         title="▹ 업체 상세 조회"
         onSubmit={handleUpdate}
         isLoading={isSubmitting}
+        isDisabled={isUpdateDisabled} // 버튼 비활성화 조건 추가
         onDelete={handleDelete}
         deleteEntityType="업체" // 삭제 대상 선택 ("회원" | "업체" | "프로젝트")
       >
@@ -246,6 +227,7 @@ export default function OrganizationDetailForm({
               value={formData.brNumber}
               error={errors.brNumber ?? undefined} // 에러 null 값을 undefined로 변환 (이하 동일)
               onChange={(e) => handleInputUpdate("brNumber", e.target.value)}
+              isChanged={!!isChanged["brNumber"]}
             />
           </Box>
           <Box flex="1" className={styles.inputFieldContainer}>
@@ -267,6 +249,11 @@ export default function OrganizationDetailForm({
                       setFormData((prev) => ({
                         ...prev,
                         brCertificateUrl: `${file.name}|${URL.createObjectURL(file)}`,
+                      }));
+                      // 파일이 변경된 경우 isChanged에 반영
+                      setIsChanged((prev) => ({
+                        ...prev,
+                        brCertificateUrl: true, // 파일 변경 감지 추가
                       }));
                     }
                   }}
@@ -329,6 +316,7 @@ export default function OrganizationDetailForm({
           value={formData.streetAddress}
           onChange={(e) => handleInputUpdate("streetAddress", e.target.value)}
           error={errors.streetAddress ?? undefined} // 에러 null 값을 undefined로 변환 (이하 동일)
+          isChanged={!!isChanged["streetAddress"]}
         />
         <InputForm
           id="detailAddress"
@@ -337,6 +325,7 @@ export default function OrganizationDetailForm({
           value={formData.detailAddress}
           onChange={(e) => handleInputUpdate("detailAddress", e.target.value)}
           error={errors.detailAddress ?? undefined} // 에러 null 값을 undefined로 변환 (이하 동일)
+          isChanged={!!isChanged["detailAddress"]}
         />
         <InputForm
           id="phoneNumber"
@@ -345,6 +334,7 @@ export default function OrganizationDetailForm({
           value={formData.phoneNumber}
           onChange={(e) => handleInputUpdate("phoneNumber", e.target.value)}
           error={errors.phoneNumber ?? undefined} // 에러 null 값을 undefined로 변환 (이하 동일)
+          isChanged={!!isChanged["phoneNumber"]}
         />
       </InputFormLayout>
     </>

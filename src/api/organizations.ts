@@ -5,7 +5,6 @@ import {
   CreateOrganizationInput,
   CreateOrganizationResponse,
   OrganizationProps,
-  DeleteOriginationResponse,
   DeleteOriginationWithReasonResponse,
 } from "@/src/types";
 
@@ -90,7 +89,6 @@ export async function updateOrganization(
     },
   );
 
-  console.log("업체 수정 API 호출 종료 - response: ", response);
   return response.data;
 }
 
@@ -104,8 +102,6 @@ export async function deleteOriginationWithReason(
       `/admins/organizations/${organizationId}/remove`,
       { reason }, // 🔹 요청 바디에 탈퇴 사유 추가
     );
-    console.log("업체 삭제 사유 - reason: ", reason);
-    console.log("업체 삭제 사유 - response: ", response);
     return response.data; // ✅ 응답 데이터 반환
   } catch (error) {
     throw error; // 🚨 에러 발생 시 throw
