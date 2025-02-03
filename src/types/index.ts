@@ -215,12 +215,20 @@ export interface ProjectQuestionListResponse {
   meta: PaginationProps; // 페이지네이션 메타 정보
 }
 
-export interface ApiResponse {
+export interface QuestionApiResponse {
   code: number;
   result: string;
   message: string;
-  data: Article;
+  data: QuestionArticle;
 }
+
+export interface TaskApiResponse {
+  code: number;
+  result: string;
+  message: string;
+  data: TaskArticle;
+}
+
 // 게시글의 콘텐츠 블럭
 export interface ContentBlock {
   type: string;
@@ -228,7 +236,24 @@ export interface ContentBlock {
 }
 
 // 게시글
-export interface Article {
+export interface QuestionArticle {
+  id: number;
+  number: number;
+  title: string;
+  content: ContentBlock[];
+  regAt: string;
+  editAt: string;
+  approverAt: string;
+  category: string;
+  status: string;
+  deletedYn: string;
+  author: string;
+  fileList: ArticleFile[];
+  linkList: ArticleLink[];
+  commentList: ArticleComment[];
+}
+
+export interface TaskArticle {
   id: number;
   number: number;
   title: string;
