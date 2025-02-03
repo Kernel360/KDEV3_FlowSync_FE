@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { CommentApiResponse } from "@/src/types";
 
+
 interface CommentBoxProps {
   parentId?: number;
   setIsReplying?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,6 +17,7 @@ export default function CommentBox({
   setIsReplying,
   setCommentIsWritten,
 }: CommentBoxProps) {
+
   const { projectId, questionId, taskId } = useParams() as {
     projectId: string;
     questionId?: string;
@@ -28,6 +30,7 @@ export default function CommentBox({
   const handleSave = async () => {
     // console.log(projectId, questionId)
     // console.log(projectId, taskId)
+    // console.log(typeof questionId)
     try {
       const requestData = { content: commentText };
       let responseData: CommentApiResponse | undefined;
@@ -36,7 +39,7 @@ export default function CommentBox({
         responseData = await registerComment(
           Number(projectId),
           requestData,
-          Number(questionId),
+          questionId ? Number(questionId) : undefined,
           undefined,
           parentId ? Number(parentId) : undefined,
         );

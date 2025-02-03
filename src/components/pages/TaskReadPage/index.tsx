@@ -46,6 +46,7 @@ export default function TaskReadPage() {
     loadTask();
   }, [projectId, taskId, commentIsWritten]);
 
+
   if (error) {
     return <Box>에러 발생: {error}</Box>;
   }
@@ -76,6 +77,7 @@ export default function TaskReadPage() {
         <SignToApprove />
       </Flex>
 
+
       {/* 댓글 섹션 */}
       <VStack align="stretch" gap={8} mt={10}>
         <ArticleComments
@@ -87,3 +89,4 @@ export default function TaskReadPage() {
     </Box>
   );
 }
+

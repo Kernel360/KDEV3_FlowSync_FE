@@ -12,8 +12,8 @@ export interface CommonResponseWithMetaType<T> extends CommonResponseType<T> {
 }
 
 export interface ReissueResponse {
-  access: string,
-  refresh: string
+  access: string;
+  refresh: string;
 }
 
 // 서버에서 반환되는 페이징 메타데이터 타입
@@ -292,6 +292,7 @@ export interface ArticleFile {
   size: number;
 }
 
+
 // 댓글
 export interface ArticleComment {
   id: number;
@@ -302,6 +303,7 @@ export interface ArticleComment {
   parentId: number;
   isParent: boolean;
 }
+
 
 // 회원/업체 생성 페이지 입력 폼 인터페이스
 export interface InputFormData {
@@ -322,6 +324,7 @@ export interface InputFormData {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
+  isChanged?: boolean;
 }
 
 // 공지사항
@@ -338,14 +341,14 @@ export interface NoticeProps {
 }
 
 export interface NoticeListResponse {
-  content: NoticeProps[];
+  notices: NoticeProps[];
   meta: PaginationProps; // 페이지네이션 메타 정보
 }
 
 export interface ProjectProgressStepProps {
-  id: string,
-  title:string,
-  count: number
+  id: string;
+  title: string;
+  count: number;
 }
 
 export interface UserInfoResponse {
@@ -361,4 +364,19 @@ export interface UserInfoResponse {
   regAt: string;
   introduction: string;
   remark: string;
+}
+
+export interface BaseArticleRequestData {
+  title: string;
+  content: { type: string; data: string | { src: string } }[];
+  linkList: { name: string; url: string }[];
+  fileInfoList: { originalName: string; saveName: string; url: string; size: number }[];
+}
+
+export interface QuestionRequestData extends BaseArticleRequestData {
+  progressStepId?: number;
+}
+
+export interface TaskRequestData extends BaseArticleRequestData {
+  progressStepId?: number;
 }

@@ -2,15 +2,22 @@
 import { Box, Text, Image, VStack } from "@chakra-ui/react";
 
 // 절대 경로 파일
-import { QuestionArticle, TaskArticle, ArticleLink, ArticleFile, ContentBlock } from "@/src/types";
+import {
+  QuestionArticle,
+  TaskArticle,
+  ArticleLink,
+  ArticleFile,
+  ContentBlock,
+} from "@/src/types";
 import { formatDateWithTime } from "@/src/utils/formatDateUtil";
 
 interface ArticleContentProps<T extends QuestionArticle | TaskArticle> {
   article: T | null;
 }
 
-export default function ArticleContent<T extends QuestionArticle | TaskArticle>({ article }: ArticleContentProps<T>)  {
-
+export default function ArticleContent<
+  T extends QuestionArticle | TaskArticle,
+>({ article }: ArticleContentProps<T>) {
   if (!article) {
     return (
       <Box>
@@ -19,9 +26,10 @@ export default function ArticleContent<T extends QuestionArticle | TaskArticle>(
     );
   }
 
-  const parsedContent = typeof article.content === "string"
-  ? JSON.parse(article.content)
-  : article.content;
+  const parsedContent =
+    typeof article.content === "string"
+      ? JSON.parse(article.content)
+      : article.content;
 
   // console.log(parsedContent[0])
 
@@ -77,7 +85,6 @@ export default function ArticleContent<T extends QuestionArticle | TaskArticle>(
 
   // 첨부파일 렌더링
   const renderFiles = (files: ArticleFile[]) => {
-
     return files.map((file, index) => {
       const fileName = file.originalName;
       return (

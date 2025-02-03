@@ -7,6 +7,7 @@ import { Box } from "@chakra-ui/react";
 import CommentItem from "@/src/components/common/CommentItem";
 import { ArticleComment } from "@/src/types";
 
+
 interface ArticleCommentsProps {
   comments: ArticleComment[];
   setCommentIsWritten: React.Dispatch<React.SetStateAction<boolean>>;
