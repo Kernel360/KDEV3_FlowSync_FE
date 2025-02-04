@@ -9,12 +9,12 @@ export async function registerComment(
   taskId?: number,
   parentId?: number,
 ) {
-  console.log("되냐?")
   const pathname = typeof window !== "undefined" ? window.location.pathname : "";
+
   let apiURL: string = "";
-  console.log("questionId:", questionId);
+
   if (pathname.includes("/questions")) {
-    apiURL = `/projects/${projectId}/questions/${questionId}/comments`;
+    apiURL = `${BASE_URL}/projects/${projectId}/questions/${questionId}/comments`;
   } else if (pathname.includes("/tasks")) {
     apiURL = `${BASE_URL}/projects/${projectId}/approvals/${taskId}/comments`;
   }
@@ -24,10 +24,12 @@ export async function registerComment(
   }
 
   if (!apiURL) {
-    // console.log("안됨")
     throw new Error("API URL is not defined");
   }
-  console.log(apiURL)
-  const response = await axiosInstance.post(apiURL, requestData);
+  const response = await axiosInstance.post(apiURL, requestData, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   return response.data;
 }
