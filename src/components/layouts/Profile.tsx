@@ -14,7 +14,6 @@ import { ChevronDown } from "lucide-react";
 import { Loading } from "@/src/components/common/Loading";
 import axiosInstance from "@/src/api/axiosInstance";
 import { getRandomProfileImage } from "@/src/utils/getRandomProfileImage";
-import { useRouter } from "next/navigation";
 
 interface UserProfileData {
   name: string;
@@ -25,7 +24,6 @@ interface UserProfileData {
 export default function Profile() {
   const [userData, setUserData] = useState<UserProfileData | null>(null);
   const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
-  const route = useRouter();
 
   useEffect(() => {
     // 사용자 정보 가져오기
