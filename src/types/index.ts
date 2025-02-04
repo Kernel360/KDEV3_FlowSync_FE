@@ -316,6 +316,7 @@ export interface NoticeListResponse {
 export interface ProjectProgressStepProps {
   id: string;
   title: string;
+  value: string;
   count: number;
 }
 
@@ -347,4 +348,9 @@ export interface QuestionRequestData extends BaseArticleRequestData {
 
 export interface TaskRequestData extends BaseArticleRequestData {
   progressStepId?: number;
+}
+
+export interface NoticeRequestData extends BaseArticleRequestData {
+  category?: string;
+  priority?: string;
 }
