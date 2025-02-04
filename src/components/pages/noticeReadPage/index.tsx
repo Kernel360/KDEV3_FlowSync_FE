@@ -10,15 +10,14 @@ import { useState, useEffect } from "react";
 import ArticleContent from "@/src/components/common/ArticleContent";
 import BackButton from "@/src/components/common/BackButton";
 import { readNoticeApi } from "@/src/api/ReadArticle";
-
-import { Article } from "@/src/types";
+import { NoticeArticle } from "@/src/types";
 
 export default function QuestionReadPage() {
   const { noticeId } = useParams() as {
     noticeId: string;
   };
 
-  const [article, setArticle] = useState<Article | null>(null);
+  const [article, setArticle] = useState<NoticeArticle | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 

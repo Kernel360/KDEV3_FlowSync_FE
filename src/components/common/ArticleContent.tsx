@@ -2,14 +2,25 @@
 import { Box, Text, Image, VStack } from "@chakra-ui/react";
 
 // 절대 경로 파일
-import { Article, ArticleLink, ArticleFile, ContentBlock } from "@/src/types";
+import {
+  QuestionArticle,
+  TaskArticle,
+  ArticleLink,
+  ArticleFile,
+  ContentBlock,
+  NoticeArticle,
+} from "@/src/types";
 import { formatDateWithTime } from "@/src/utils/formatDateUtil";
 
-interface ArticleContentProps {
-  article: Article | null;
+interface ArticleContentProps<
+  T extends QuestionArticle | TaskArticle | NoticeArticle,
+> {
+  article: T | null;
 }
 
-export default function ArticleContent({ article }: ArticleContentProps) {
+export default function ArticleContent<
+  T extends QuestionArticle | TaskArticle | NoticeArticle,
+>({ article }: ArticleContentProps<T>) {
   if (!article) {
     return (
       <Box>
@@ -53,8 +64,8 @@ export default function ArticleContent({ article }: ArticleContentProps) {
   };
 
   // 링크 렌더링
-  const renderLinks = (links: Article["linkList"]) => {
-    return links.map((link: ArticleLink, index: number) => {
+  const renderLinks = (links: ArticleLink[]) => {
+    return links.map((link, index) => {
       const url =
         link.url.startsWith("http://") || link.url.startsWith("https://")
           ? link.url
@@ -114,9 +125,9 @@ export default function ArticleContent({ article }: ArticleContentProps) {
         {article.title}
       </Text>
 
-      {/* 작성자, 작성 일시 */}
+      {/* 작성자, 작성 일시 (NoticeArticle인 경우 작성자 정보 숨김) */}
       <Box mb={4}>
-        <Text>작성자: {article.author}</Text>
+        {"author" in article && <Text>작성자: {article.author}</Text>}
         <Text>{formatDateWithTime(article.regAt)}</Text>
       </Box>
 
