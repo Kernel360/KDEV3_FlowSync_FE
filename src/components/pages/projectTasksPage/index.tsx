@@ -1,7 +1,13 @@
 "use client";
 
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { Box, Table, createListCollection } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Table,
+  createListCollection,
+} from "@chakra-ui/react";
 import CommonTable from "@/src/components/common/CommonTable";
 import Pagination from "@/src/components/common/Pagination";
 import StatusTag from "@/src/components/common/StatusTag";
@@ -112,14 +118,24 @@ export default function ProjectTasksPage() {
         boxShadow="md"
         mb="30px"
       >
-        {/* 검색 섹션 */}
-        <SearchSection keyword={keyword} placeholder="제목 입력">
-          <StatusSelectBox
-            statusFramework={taskStatusFramework}
-            selectedValue={status}
-            queryKey="status"
-          />
-        </SearchSection>
+        <Flex justifyContent={"space-between"}>
+          <Button
+            variant={"surface"}
+            _hover={{ backgroundColor: "#00a8ff", color: "white" }}
+            disabled
+          >
+            신규 등록
+          </Button>
+          {/* 검색 섹션 */}
+          <SearchSection keyword={keyword} placeholder="제목 입력">
+            <StatusSelectBox
+              statusFramework={taskStatusFramework}
+              selectedValue={status}
+              queryKey="status"
+            />
+          </SearchSection>
+        </Flex>
+
         {/* 
           CommonTable: 게시글 목록을 렌더링하는 공통 테이블 컴포넌트
           - headerTitle: 테이블 헤더
