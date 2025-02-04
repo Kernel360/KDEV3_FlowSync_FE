@@ -23,6 +23,7 @@ import {
 } from "@/src/api/projects";
 import { useFetchBoardList } from "@/src/hook/useFetchBoardList";
 import ProgressStepSection from "@/src/components/common/ProgressStepSection";
+import GuideButton from "../../common/GuideButton";
 
 const taskStatusFramework = createListCollection<{
   id: string;
@@ -126,6 +127,8 @@ export default function ProjectTasksPage() {
           >
             신규 등록
           </Button>
+          <GuideButton guideText="* 이 페이지는 추후 개발이 진행될 예정입니다. 참고 부탁드립니다" />
+
           {/* 검색 섹션 */}
           <SearchSection keyword={keyword} placeholder="제목 입력">
             <StatusSelectBox
