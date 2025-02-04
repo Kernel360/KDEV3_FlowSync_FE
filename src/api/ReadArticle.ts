@@ -19,3 +19,19 @@ export async function readQuestionApi(
     throw new Error("질문 데이터를 가져오는 중 문제가 발생했습니다.");
   }
 }
+
+export async function readNoticeApi(
+  noticeId: string,
+): Promise<Article> {
+  try {
+    const response = await axiosInstance.get<ApiResponse>(
+      `/notices/${noticeId}`,
+    );
+
+    // console.log(response.data.data.content)
+    return response.data.data;
+  } catch (error) {
+    console.error("API 호출 실패:", error);
+    throw new Error("질문 데이터를 가져오는 중 문제가 발생했습니다.");
+  }
+}
