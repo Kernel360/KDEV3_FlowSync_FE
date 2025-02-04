@@ -9,6 +9,7 @@ export async function registerComment(
   taskId?: number,
   parentId?: number,
 ) {
+  console.log("되냐?")
   const pathname = typeof window !== "undefined" ? window.location.pathname : "";
   let apiURL: string = "";
   console.log("questionId:", questionId);
@@ -23,6 +24,7 @@ export async function registerComment(
   }
 
   if (!apiURL) {
+    // console.log("안됨")
     throw new Error("API URL is not defined");
   }
   console.log(apiURL)
