@@ -9,7 +9,8 @@ export async function registerComment(
   taskId?: number,
   parentId?: number,
 ) {
-  const pathname = typeof window !== "undefined" ? window.location.pathname : "";
+  const pathname =
+    typeof window !== "undefined" ? window.location.pathname : "";
 
   let apiURL: string = "";
 
@@ -26,10 +27,12 @@ export async function registerComment(
   if (!apiURL) {
     throw new Error("API URL is not defined");
   }
+
   const response = await axiosInstance.post(apiURL, requestData, {
     headers: {
       "Content-Type": "application/json",
     },
   });
+
   return response.data;
 }

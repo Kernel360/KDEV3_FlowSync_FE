@@ -243,6 +243,7 @@ export interface ContentBlock {
 }
 
 // 게시글
+
 export interface Article {
   id: number;
   number: number;

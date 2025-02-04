@@ -49,7 +49,6 @@ export default function CommentBox({
           parentId ? Number(parentId) : undefined,
         );
       }
-
       if (responseData?.result === "SUCCESS") {
         console.log(responseData.result);
         setCommentIsWritten((prev: boolean) => !prev);

@@ -11,7 +11,7 @@ export async function readQuestionApi(
       `${BASE_URL}/projects/${projectId}/questions/${questionId}`,
     );
 
-    // console.log(response.data.data.content)
+    console.log(response.data.data.content)
     return response.data.data;
   } catch (error) {
     console.error("API 호출 실패:", error);
@@ -27,7 +27,9 @@ export async function readTaskApi(
     const response = await axiosInstance.get<TaskApiResponse>(
       `${BASE_URL}/projects/${projectId}/approvals/${approvalId}`
     )
+
     // console.log(response.data)
+
     return response.data.data
   } catch (error) {
     console.log("Api 호출 실패", error)
