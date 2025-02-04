@@ -6,8 +6,8 @@ import { Box } from "@chakra-ui/react";
 import BackButton from "@/src/components/common/BackButton";
 import { NoticeRequestData } from "@/src/types";
 import { createNoticeApi } from "@/src/api/notices";
-import ArticleForm from "@/src/components/common/ArticleForm";
 import SelectInput from "@/src/components/common/FormSelectInput";
+import dynamic from "next/dynamic";
 
 const categoryData = [
   { id: 1, title: "서비스업데이트", value: "SERVICE_UPDATE" },
@@ -19,6 +19,13 @@ const priorityData = [
   { id: 1, title: "긴급", value: "EMERGENCY" },
   { id: 2, title: "일반", value: "NORMAL" },
 ];
+
+const ArticleForm = dynamic(
+  () => import("@/src/components/common/ArticleForm"),
+  {
+    ssr: false,
+  },
+);
 
 export default function NoticeRegisterPage() {
   const [title, setTitle] = useState<string>("");
@@ -37,11 +44,9 @@ export default function NoticeRegisterPage() {
           ? { priority: requestData.priority }
           : {}),
       });
-      alert("저장이 완료되었습니다.");
       router.push(`/notices`);
     } catch (error) {
       console.error("저장 실패:", error);
-      alert("저장 중 문제가 발생했습니다.");
     }
   };
 

@@ -317,7 +317,7 @@ export interface ProjectProgressStepProps {
   id: string;
   title: string;
   value: string;
-  count: number;
+  count?: number;
 }
 
 export interface UserInfoResponse {

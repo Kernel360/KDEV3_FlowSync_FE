@@ -11,7 +11,7 @@ import { createQuestionApi } from "@/src/api/RegisterArticle";
 import { ProjectProgressStepProps, QuestionRequestData } from "@/src/types";
 import { fetchProjectQuestionProgressStep as fetchProjectQuestionProgressStepApi } from "@/src/api/projects";
 import { useFetchData } from "@/src/hook/useFetchData";
-import FormSelectInput from "../../common/FormSelectInput";
+import FormSelectInput from "@/src/components/common/FormSelectInput";
 
 export default function QuestionRegisterPage() {
   const { projectId } = useParams();
