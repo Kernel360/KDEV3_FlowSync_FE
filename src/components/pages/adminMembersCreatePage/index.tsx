@@ -38,15 +38,16 @@ export default function AdminMembersCreatePage() {
     async function fetchOrganization() {
       try {
         const organizationData = await getOrganizationsApi();
-        console.log(organizationData);
-        setOrganizations(organizationData.dtoList);
+        // console.log("페칭출력", organizationData.data.dtoList);
+
+        setOrganizations(organizationData.data.dtoList);
       } catch (error) {
         console.error("업체 정보 불러오지 못함 : ", error);
       }
     }
     fetchOrganization();
   }, []);
-
+  
   function validateInputs() {
     if (!checkAllInputs()) {
       alert("입력값을 확인하세요.");
@@ -126,15 +127,6 @@ export default function AdminMembersCreatePage() {
         selectedOrganization={selectedOrganization}
         setSelectedOrganization={setSelectedOrganization}
       />
-      {/* <InputForm
-        id="organizationId"
-        type="text"
-        label="업체 ID"
-        placeholder="ex) 123e4567-e89b-12d3-a456-426614174000"
-        value={inputValues.organizationId}
-        error={inputErrors.organizationId}
-        onChange={(e) => handleInputChange("organizationId", e.target.value)}
-      /> */}
       <InputForm
         id="name"
         type="text"

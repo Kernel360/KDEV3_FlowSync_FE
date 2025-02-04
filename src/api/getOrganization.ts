@@ -11,6 +11,7 @@ export async function getOrganizationsApi(type?: string, status?: string) {
       `${BASE_URL}/admins/organizations`,
       { params },
     );
+    // console.log("2132132",response)
 
     return response.data;
   } catch (error) {
