@@ -1,3 +1,5 @@
+// 회사와 멤버 모두 선택하는 컴포넌트
+
 import { Flex, Box, Text, Button } from "@chakra-ui/react";
 import React from "react";
 
