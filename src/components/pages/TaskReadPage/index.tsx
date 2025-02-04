@@ -27,6 +27,7 @@ export default function TaskReadPage() {
   const [commentList, setCommentList] = useState<ArticleComment[]>([]);
   const [commentIsWritten, setCommentIsWritten] = useState<boolean>(false);
 
+
   useEffect(() => {
     const loadTask = async () => {
       try {
@@ -76,6 +77,7 @@ export default function TaskReadPage() {
       <Flex justifyContent={"center"}>
         <SignToApprove />
       </Flex>
+
 
 
       {/* 댓글 섹션 */}
