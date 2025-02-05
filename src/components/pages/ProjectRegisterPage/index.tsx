@@ -9,13 +9,14 @@ import ProjectForm from "@/src/components/pages/ProjectRegisterPage/components/P
 
 export default function ProjectRegisterPage() {
   return (
-    <Flex overflowX={"auto"}>
+    <Flex overflowX={"auto"} >
       <Box
+        transform={"scale(0.8)"}
         maxW="1400px"
         minW={"1400px"}
         w="100%"
         mx="auto"
-        mt={10}
+        mt={-150}
         p={6}
         borderWidth="1"
         borderRadius="lg"
