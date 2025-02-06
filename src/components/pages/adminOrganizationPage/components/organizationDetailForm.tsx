@@ -79,7 +79,6 @@ export default function OrganizationDetailForm({
 
   function validateInputs() {
     // 🔹 `Object.entries()`를 사용하여 모든 필드에 대한 유효성 검사 수행
-    // 🔹 `Object.entries()`를 사용하여 모든 필드에 대한 유효성 검사 수행
     const updatedErrors = Object.entries(
       validationRulesOfUpdatingOrganization,
     ).reduce(
@@ -160,21 +159,20 @@ export default function OrganizationDetailForm({
     }
 
     try {
-      const organizationData = {
-        type: formData.type,
-        name: formData.name,
-        brNumber: formData.brNumber,
-        brCertificateUrl: formData.brCertificateUrl,
-        streetAddress: formData.streetAddress,
-        detailAddress: formData.detailAddress,
-        phoneNumber: formData.phoneNumber,
-      };
-
       const response = await updateOrganization(
         organizationId,
-        organizationData,
-        selectedFile, // 파일 전달,
+        {
+          type: formData.type,
+          name: formData.name,
+          brNumber: formData.brNumber,
+          brCertificateUrl: formData.brCertificateUrl,
+          streetAddress: formData.streetAddress,
+          detailAddress: formData.detailAddress,
+          phoneNumber: formData.phoneNumber,
+        },
+        selectedFile,
       );
+
       // 수정된 데이터만 렌더링
       refetchOrganizationData();
       setIsChanged({}); // 모든 필드 변경 상태 및 스타일 초기화

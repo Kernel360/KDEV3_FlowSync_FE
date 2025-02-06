@@ -97,7 +97,7 @@ async function validateAndRefreshTokens(
 }
 
 export async function middleware(request: NextRequest) {
-  return NextResponse.next();
+  // return NextResponse.next();
   // 요청 경로
   const pathname = request.nextUrl.pathname;
 
