@@ -67,14 +67,6 @@ export const validationRulesOfLogin = {
 // 회원 생성 페이지 - 유효성 검증 규칙
 // 입력값에 대한 검증 규칙
 export const validationRulesOfCreatingMember = {
-  // organizationId: {
-  //   isValid: (value: number) => typeof value !== "number" && !isNaN(value), // trim(): value에서 공백이 모두 제거된 값을 반환
-  //   errorMessage: "업체ID를 입력하세요.",
-  // },
-  // organizationId: {
-  //   isValid: (value: string) => typeof value !== "number", // trim(): value에서 공백이 모두 제거된 값을 반환
-  //   errorMessage: "업체ID를 입력하세요.",
-  // },
   name: {
     isValid: (value: string) => value.trim() !== "",
     errorMessage: "회원 성함을 입력하세요.",
