@@ -14,7 +14,6 @@ function shouldBypassMiddleware(pathname: string): boolean {
   );
 }
 
-
 /**
  * 로그인 페이지로 리디렉트 (쿠키 삭제 후)
  */
@@ -30,39 +29,20 @@ function handleUnauthorized(request: NextRequest) {
  * 쿠키 삭제 함수
  */
 function clearCookies(response: NextResponse) {
-  ["access", "refresh"].forEach((cookieName) => {
-    response.cookies.set(cookieName, "", {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      path: "/",
-      domain: "flowssync.com",
-      maxAge: 0, // 즉시 만료
-    });
-  });
+  response.headers.set("Set-Cookie", [
+    "access=; Path=/; HttpOnly; Secure; SameSite=None; Domain=flowssync.com; Max-Age=0",
+    "refresh=; Path=/; HttpOnly; Secure; SameSite=None; Domain=flowssync.com; Max-Age=0"
+  ].join(", "));
 }
 
 /**
  * 쿠키 설정 함수
  */
 function setAuthCookies(response: NextResponse, accessToken: string, refreshToken: string) {
-  response.cookies.set("access", accessToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-    path: "/",
-    domain: "flowssync.com",
-    maxAge: 24 * 60 * 60, // 24시간 유지
-  });
-
-  response.cookies.set("refresh", refreshToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-    path: "/",
-    domain: "flowssync.com",
-    maxAge: 24 * 60 * 60, // 24시간 유지
-  });
+  response.headers.set("Set-Cookie", [
+    `access=${accessToken}; Path=/; HttpOnly; Secure; SameSite=None; Domain=flowssync.com; Max-Age=${30 * 60}`,
+    `refresh=${refreshToken}; Path=/; HttpOnly; Secure; SameSite=None; Domain=flowssync.com; Max-Age=${24 * 60 * 60}`
+  ].join(", "));
 }
 
 /**
@@ -82,7 +62,7 @@ async function validateAndRefreshTokens(
   const response = NextResponse.next();
 
   try {
-    // 🔹 1. AccessToken 검증 (401 발생 가능)
+    // 🔹 1. AccessToken 검증
     if (accessToken) {
       userInfoResponse = await fetchUserInfo(accessToken);
       if (userInfoResponse.result === "SUCCESS") {
@@ -90,41 +70,42 @@ async function validateAndRefreshTokens(
       }
     }
   } catch (error: any) {
+    console.log("에러코드:", error.response?.status);
     if (error.response?.status === 401) {
       console.warn("🔄 Access Token 만료 → Refresh Token 사용 시도");
     } else {
+      console.log("refresh:", refreshToken)
       console.error("❌ AccessToken 검증 중 오류 발생:", error.message);
       clearCookies(response);
-      return {}; // ❌ 예기치 못한 에러 발생 시 종료
+      return { response: NextResponse.redirect(new URL("/login", request.url)) };
     }
+  }
+
+  if(!refreshToken) {
+    console.warn("❌ Refresh Token 없음 → 로그인 페이지로 이동");
+    return {}
   }
   
   try {
-    // 🔹 2. RefreshToken이 있으면 AccessToken 재발급 시도
-    if (refreshToken) {
-      console.log("🔄 Access Token 만료됨 → Refresh Token 사용");
-      const reissueResponse = await fetchReissueToken(refreshToken);
-  
-      if (
-        reissueResponse.data?.access &&
-        reissueResponse.data?.refresh
-      ) {
-        console.log("✅ 새 Access Token 발급 성공 → 다시 요청 진행");
-  
-        setAuthCookies(response, reissueResponse.data.access, reissueResponse.data.refresh);
+    // 🔹 2. Access Token 만료 → Refresh Token으로 재발급 시도
+    console.log("🔄 Access Token 만료됨 → Refresh Token 사용");
+    const reissueResponse = await fetchReissueToken(refreshToken);
 
-        // 🔹 3. 재발급된 AccessToken으로 사용자 정보 가져오기
-        userInfoResponse = await fetchUserInfo(reissueResponse.data.access);
-        if (userInfoResponse.result === "SUCCESS") {
-          return { userInfo: userInfoResponse.data, response };
-        }
-      } else {
-        return {}
+    if (reissueResponse.data?.access && reissueResponse.data?.refresh) {
+      console.log("✅ 새 Access Token 발급 성공 → 다시 요청 진행");
+
+      // 쿠키에 새 AccessToken & RefreshToken 저장
+      setAuthCookies(response, reissueResponse.data.access, reissueResponse.data.refresh);
+
+      // 새 Access Token으로 유저 정보 가져오기
+      const userInfoResponse = await fetchUserInfo(reissueResponse.data.access);
+      if (userInfoResponse.result === "SUCCESS") {
+        return { userInfo: userInfoResponse.data, response };
       }
     }
   } catch (error: any) {
     console.error("❌ Refresh Token 사용 중 오류 발생:", error.message);
-    clearCookies(response); 
+    clearCookies(response);
   }
   
   return {}; // ❌ 모든 시도 실패 시 빈 객체 반환
