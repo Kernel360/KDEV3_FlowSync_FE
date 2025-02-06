@@ -9,6 +9,7 @@ import FileAddSection from "@/src/components/common/FileAddSection";
 import LinkAddSection from "@/src/components/common/LinkAddSection";
 import { uploadFileApi } from "@/src/api/RegisterArticle";
 import { BaseArticleRequestData } from "@/src/types";
+import SignUpload from "@/src/components/pages/TaskRegisterPage/components/SignUpload";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -155,6 +156,11 @@ export default function ArticleForm({
         uploadedFileSize={uploadedFileSize}
         setUploadedFileSize={setUploadedFileSize}
       />
+
+      {/* 서명 업로드 */}
+      <Box display={"flex"} justifyContent={"center"}>
+        <SignUpload />
+      </Box>
 
       {/* 작성 버튼 */}
       <Button
