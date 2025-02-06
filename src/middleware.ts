@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 import { fetchReissueToken, fetchUserInfo } from "@/src/api/auth";
 import { UserInfoResponse } from "./types";
 
+// const ADMIN_ONLY_PAGE = ["admin", "super-admin"];
+
 /**
  * 정적 파일 요청 및 `/login` 페이지는 미들웨어 실행 제외
  */
@@ -95,6 +97,7 @@ async function validateAndRefreshTokens(
 }
 
 export async function middleware(request: NextRequest) {
+  return NextResponse.next();
   // 요청 경로
   const pathname = request.nextUrl.pathname;
 
@@ -109,14 +112,16 @@ export async function middleware(request: NextRequest) {
     return handleUnauthorized(request);
   }
 
+  response?.headers.set("x-user-id", userInfo.id);
+  response?.headers.set("x-user-role", userInfo.role);
+
   // 관리자 권한 없으면 홈으로 이동
   if (pathname.startsWith("/admin") && userInfo.role !== "ADMIN") {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
   // `x-user-role` 헤더 추가하여 서버 컴포넌트에서 사용 가능하도록 설정
-  response?.headers.set("x-user-id", userInfo.id);
-  response?.headers.set("x-user-role", userInfo.role);
+
   return response;
 }
 
