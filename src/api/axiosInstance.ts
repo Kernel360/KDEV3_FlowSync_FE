@@ -24,17 +24,17 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     const status = error.response?.status;
-    // 개발 단계에서 에러를 중앙관리하기위한 구문
-    // 추후 중앙화된 로깅 도구를 사용하거나 제거
-    // 에러 처리는 개별 컴포넌트에서 진행
-    if (status === 401) {
-      console.error("인증 오류!");
-    } else if (status == 403) {
-      console.error("403 Forbidden - 권한이 부족합니다.");
+
+    if (status == 403) {
+      console.error("⛔ 403 Forbidden - 권한이 부족합니다.");
+      alert("권한이 없습니다. 홈으로 이동합니다.");
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 100);
     } else if (status >= 500) {
-      console.error("500+ Server Error - 서버 오류 발생.");
+      console.error("🚨 500+ Server Error - 서버 오류 발생.");
     } else {
-      console.error("예상치 못한 오류 발생:", error.message);
+      console.error("❌ 예상치 못한 오류 발생:", error.message);
     }
     return Promise.reject(error); // 에러를 호출한 컴포넌트로 전달
   },
