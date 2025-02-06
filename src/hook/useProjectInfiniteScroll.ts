@@ -26,6 +26,7 @@ export function useProjectInfiniteScroll(status: string) {
       if (!hasMore || loading) return;
   
       setLoading(true);
+
       try {
         const response = await fetchProjectList("", status, page, 20);
         const newProjects = response.data.projects;
@@ -73,6 +74,7 @@ export function useProjectInfiniteScroll(status: string) {
   //     (_, i) => i + 1,
   //   );
 
+
   //   (async () => {
   //     setLoading(true);
   //       const responses = await Promise.all(
@@ -81,7 +83,6 @@ export function useProjectInfiniteScroll(status: string) {
   //         ),
   //       );
   //       const allProjects = responses.flatMap((res) => res.data.projects);
-
   //       if (allProjects.length === 0) {
   //         setHasMore(false); // 첫 로딩에도 데이터가 없으면 더 이상 요청하지 않음
   //         return;
