@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Box, Flex, Button, Image, Text } from "@chakra-ui/react";
 import { bringSignApi, sendSignApi } from "@/src/api/signature";
 import SignaturePad from "signature_pad";
+import DropDownInfoTop from "@/src/components/common/DropDownInfoTop";
 
 export default function SignUpload() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -58,7 +59,7 @@ export default function SignUpload() {
 
         if (signaturePad) {
           signaturePad.fromDataURL(responseData.data.signatureUrl);
-          //   console.log(responseData.data.signatureUrl);
+            // console.log(responseData.data.signatureUrl);
         }
       } else {
         console.log("못불러왔다리");
@@ -105,8 +106,11 @@ export default function SignUpload() {
       </Box>
       <Flex justifyContent={"center"} gap={4}>
         <Button onClick={bringSignature}>서명 불러오기</Button>
-        <Button onClick={saveSignature}>등록</Button>
         <Button onClick={clearSignature}>지우기</Button>
+        <Button onClick={saveSignature}>등록</Button>
+        <DropDownInfoTop
+          text={`결재 글은 서명을 기입해야 작성이 가능합니다. \n "서명 불러오기" 는 기존에 저장된 서명을 불러옵니다. \n 새 서명을 기입하고 "등록" 을 누르면 기존에 저장되어 있던 서명은 삭제됩니다. `}
+        />
       </Flex>
     </Flex>
   );
