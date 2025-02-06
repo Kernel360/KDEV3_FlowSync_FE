@@ -77,6 +77,29 @@ export default function OrganizationDetailForm({
     }
   }
 
+  function validateInputs() {
+    // 🔹 `Object.entries()`를 사용하여 모든 필드에 대한 유효성 검사 수행
+    // 🔹 `Object.entries()`를 사용하여 모든 필드에 대한 유효성 검사 수행
+    const updatedErrors = Object.entries(
+      validationRulesOfUpdatingOrganization,
+    ).reduce(
+      (errors, [inputName, validationRule]) => {
+        if (
+          !validationRule.isValid(
+            formData[inputName as keyof OrganizationProps],
+          )
+        ) {
+          errors[inputName] = validationRule.errorMessage;
+        }
+        return errors;
+      },
+      {} as { [inputName: string]: string },
+    );
+
+    setErrors(updatedErrors); // 에러 상태 업데이트
+    return Object.keys(updatedErrors).length === 0; // 에러가 없으면 true 반환
+  }
+
   // 📌 입력 값 변경 시 상태(formData)를 업데이트.
   function handleInputUpdate(inputName: string, value: string) {
     // 숫자만 남기기
@@ -123,29 +146,6 @@ export default function OrganizationDetailForm({
       ...prev,
       [inputName]: true,
     }));
-  }
-
-  function validateInputs() {
-    // 🔹 `Object.entries()`를 사용하여 모든 필드에 대한 유효성 검사 수행
-    // 🔹 `Object.entries()`를 사용하여 모든 필드에 대한 유효성 검사 수행
-    const updatedErrors = Object.entries(
-      validationRulesOfUpdatingOrganization,
-    ).reduce(
-      (errors, [inputName, validationRule]) => {
-        if (
-          !validationRule.isValid(
-            formData[inputName as keyof OrganizationProps],
-          )
-        ) {
-          errors[inputName] = validationRule.errorMessage;
-        }
-        return errors;
-      },
-      {} as { [inputName: string]: string },
-    );
-
-    setErrors(updatedErrors); // 에러 상태 업데이트
-    return Object.keys(updatedErrors).length === 0; // 에러가 없으면 true 반환
   }
 
   // 📌 updateOrganization()을 호출하여 업체 정보를 수정
