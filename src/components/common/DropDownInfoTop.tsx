@@ -43,7 +43,7 @@ export default function DropDownInfoTop({ text }: DropdownInfoProps) {
       {isOpen && (
         <Box
         position="absolute"
-        bottom="40px" // ✅ 버튼 위에 배치
+        bottom="40px"
         left="0"
         minWidth="200px"
         bg="white"
