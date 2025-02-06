@@ -10,28 +10,25 @@ function shouldBypassMiddleware(pathname: string): boolean {
   return (
     pathname.startsWith("/_next/") || // Next.js 정적 리소스
     pathname.startsWith("/static/") || // 직접 제공하는 정적 파일
-    pathname === "/favicon.ico" || // 파비콘 요청
-    pathname === "/robots.txt" || // SEO 관련 파일 요청
-    pathname === "/login" // 로그인 페이지 (무한 리다이렉트 방지)
+    ["/favicon.ico", "/robots.txt", "/login"].includes(pathname)
   );
 }
 
+
 /**
- * 로그인 페이지로 리다이렉트
+ * 로그인 페이지로 리디렉트 (쿠키 삭제 후)
  */
 function handleUnauthorized(request: NextRequest) {
   console.log("🔹 Unauthorized Access → Redirecting to login");
   const res = NextResponse.redirect(new URL("/login", request.url));
-  res.headers.set(
-    "Set-Cookie",
-    [
-      "access=; Path=/; HttpOnly; Secure; SameSite=none; Max-Age=0",
-      "refresh=; Path=/; HttpOnly; Secure; SameSite=none; Max-Age=0",
-    ].join(", "),
-  );
+  clearCookies(res);
   return res;
 }
 
+
+/**
+ * 쿠키 삭제 함수
+ */
 function clearCookies(response: NextResponse) {
   ["access", "refresh"].forEach((cookieName) => {
     response.cookies.set(cookieName, "", {
@@ -45,6 +42,9 @@ function clearCookies(response: NextResponse) {
   });
 }
 
+/**
+ * 쿠키 설정 함수
+ */
 function setAuthCookies(response: NextResponse, accessToken: string, refreshToken: string) {
   response.cookies.set("access", accessToken, {
     httpOnly: true,
@@ -71,7 +71,7 @@ function setAuthCookies(response: NextResponse, accessToken: string, refreshToke
 const adminPages = ["/admin"];
 
 /**
- * 🔄 토큰 검증 및 리프레시 로직 (`try-catch` 적용)
+ * 🔄 토큰 검증 및 리프레시 로직
  */
 async function validateAndRefreshTokens(
   request: NextRequest
@@ -118,6 +118,8 @@ async function validateAndRefreshTokens(
         if (userInfoResponse.result === "SUCCESS") {
           return { userInfo: userInfoResponse.data, response };
         }
+      } else {
+        return {}
       }
     }
   } catch (error: any) {
@@ -146,7 +148,7 @@ export async function middleware(request: NextRequest) {
   // 🔹 ✅ 로그인한 유저가 `/login`으로 접근할 경우 차단
   if (pathname === "/login") {
     console.warn("🚫 로그인한 유저가 로그인 페이지에 접근 → 홈으로 이동");
-    return NextResponse.redirect(new URL("/", request.url));
+    return handleUnauthorized(request);
   }
 
   // `x-user-role` 헤더 추가하여 서버 컴포넌트에서 사용 가능하도록 설정
@@ -154,12 +156,9 @@ export async function middleware(request: NextRequest) {
   response?.headers.set("x-user-role", userInfo.role);
 
   // 🔹 ✅ 관리자 권한 검사를 배열을 사용하여 수행
-  if (adminPages.includes(pathname) && userInfo.role !== "ADMIN") {
+  if (adminPages.some((path) => pathname.startsWith(path)) && userInfo.role !== "ADMIN") {
     console.warn("🚫 권한이 부족하여 홈으로 리디렉트됨");
-
-    const res = NextResponse.redirect(new URL("/", request.url));
-
-    return res;
+    return  NextResponse.redirect(new URL("/", request.url));
   }
   
   return response;

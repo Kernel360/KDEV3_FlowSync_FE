@@ -1,4 +1,5 @@
 import axios from "axios";
+import { fetchReissueToken } from "@/src/api/auth";
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL, // MSW용 환경 변수로 기본 URL 설정
@@ -19,25 +20,42 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
-// 응답 인터셉터 추가
+let isRefreshing = false;
+let refreshPromise: Promise<any> | null = null;
+
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
+    const originalRequest = error.config;
     const status = error.response?.status;
 
-    if (status == 403) {
-      console.error("⛔ 403 Forbidden - 권한이 부족합니다.");
-      alert("권한이 없습니다. 홈으로 이동합니다.");
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 100);
-    } else if (status >= 500) {
-      console.error("🚨 500+ Server Error - 서버 오류 발생.");
-    } else {
-      console.error("❌ 예상치 못한 오류 발생:", error.message);
+    if (status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      if (!isRefreshing) {
+        isRefreshing = true;
+        refreshPromise = fetchReissueToken();
+      }
+
+      try {
+        const reissueResponse = await refreshPromise;
+
+        if (reissueResponse.result === "SUCCESS" && reissueResponse.data?.access) {
+          console.log("✅ 토큰 재발급 성공 → 기존 요청 재시도");
+          return axiosInstance(originalRequest);
+        } else {
+          window.location.href = "/login";
+        }
+      } catch (refreshError) {
+        window.location.href = "/login";
+      } finally {
+        isRefreshing = false;
+        refreshPromise = null;
+      }
     }
-    return Promise.reject(error); // 에러를 호출한 컴포넌트로 전달
-  },
+
+    return Promise.reject(error);
+  }
 );
 
 export default axiosInstance;
