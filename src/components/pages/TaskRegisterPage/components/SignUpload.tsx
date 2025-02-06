@@ -58,8 +58,8 @@ export default function SignUpload() {
         console.log("잘불러왔다리", responseData.data.signatureUrl);
 
         if (signaturePad) {
+          // console.log(responseData.data.signatureUrl);
           signaturePad.fromDataURL(responseData.data.signatureUrl);
-            // console.log(responseData.data.signatureUrl);
         }
       } else {
         console.log("못불러왔다리");
