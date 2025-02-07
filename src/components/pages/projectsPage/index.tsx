@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Head from "next/head";
 import { createListCollection, Heading, Stack, Table } from "@chakra-ui/react";
-import { fetchProjectList as fetchProjectListApi } from "@/src/api/projects";
+import { fetchProjectListApi } from "@/src/api/projects";
 import StatusTag from "@/src/components/common/StatusTag";
 import ProjectStatusCards from "@/src/components/pages/projectsPage/components/ProjectsStatusCards";
 import CommonTable from "@/src/components/common/CommonTable";
@@ -98,7 +98,7 @@ function ProjectsPageContent() {
    * @param id 프로젝트 ID (백엔드 혹은 테이블에서 받아온 값)
    */
   const handleRowClick = (id: string) => {
-    router.push(`/projects/${id}/tasks`);
+    router.push(`/projects/${id}/approvals`);
   };
 
   return (

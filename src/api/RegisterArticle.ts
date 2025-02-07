@@ -1,5 +1,5 @@
 import axiosInstance from "@/src/api/axiosInstance";
-import { QuestionRequestData, TaskRequestData } from "@/src/types";
+import { QuestionRequestData, ApprovalRequestData } from "@/src/types";
 
 export async function uploadFileApi(file: File) {
   const formData = new FormData();
@@ -28,8 +28,9 @@ export async function createQuestionApi(
 // 결재글 생성
 export async function createTaskApi(
   projectId: number,
-  requestData: TaskRequestData,
+  requestData: ApprovalRequestData,
 ) {
+
   const response = await axiosInstance.post(
     `/projects/${projectId}/approvals`,
     requestData,
@@ -66,8 +67,8 @@ export async function deleteQuestionApi(
   }
 }
 
-// 질문글 삭제
-export async function deleteQuestionApi(
+// 결재글 삭제
+export async function deleteApprovalApi(
   projectId: number,
   questionId: number,
 ) {

@@ -11,29 +11,30 @@ import ArticleContent from "@/src/components/common/ArticleContent";
 import ArticleComments from "@/src/components/common/ArticleComments";
 import CommentBox from "@/src/components/common/CommentBox";
 import BackButton from "@/src/components/common/BackButton";
-import { readTaskApi } from "@/src/api/ReadArticle";
-import SignToApprove from "@/src/components/pages/TaskReadPage/components/SignToApprove";
-import { ArticleComment, TaskArticle } from "@/src/types";
+import { readApprovalApi } from "@/src/api/ReadArticle";
+import SignToApprove from "@/src/components/pages/ApprovalReadPage/components/SignToApprove";
+import { ArticleComment, ApprovalArticle } from "@/src/types";
 import DropDownMenu from "@/src/components/common/DropDownMenu";
 
-export default function TaskReadPage() {
-  const { projectId, taskId } = useParams() as {
+
+export default function ApprovalReadPage() {
+  const { projectId, approvalId } = useParams() as {
     projectId: string;
-    taskId: string;
+    approvalId: string;
   };
 
-  const [article, setArticle] = useState<TaskArticle | null>(null);
+  const [article, setArticle] = useState<ApprovalArticle | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [commentList, setCommentList] = useState<ArticleComment[]>([]);
   const [commentIsWritten, setCommentIsWritten] = useState<boolean>(false);
 
   useEffect(() => {
-    const loadTask = async () => {
+    const loadApproval = async () => {
       try {
-        const responseData = await readTaskApi(
+        const responseData = await readApprovalApi(
           Number(projectId),
-          Number(taskId),
+          Number(approvalId),
         );
         setArticle(responseData);
         setCommentList(responseData.commentList ?? []);
@@ -47,8 +48,8 @@ export default function TaskReadPage() {
         setLoading(false);
       }
     };
-    loadTask();
-  }, [projectId, taskId, commentIsWritten]);
+    loadApproval();
+  }, [projectId, approvalId, commentIsWritten]);
 
   if (error) {
     return <Box>에러 발생: {error}</Box>;
@@ -58,21 +59,21 @@ export default function TaskReadPage() {
     return <Box>로딩 중...</Box>;
   }
 
-  const handleEdit = () => {
-      router.push(`/projects/${projectId}/questions/${questionId}/edit`)
-    }
+  // const handleEdit = () => {
+  //     router.push(`/projects/${projectId}/questions/${questionId}/edit`)
+  //   }
   
-    const handleDelete = async() => {
-      const confirmDelete = window.confirm("정말로 삭제하시겠습니까?")
-      if (!confirmDelete) return;
-      try {
-        await deleteQuestionApi(Number(projectId), Number(questionId))
-        alert("게시글이 삭제되었습니다.")
-        router.push(`/projects/${projectId}/questions`)
-      } catch (error) {
-        alert(`삭제 중 문제가 발생했습니다 : ${error}`)
-      }
-    }
+  //   const handleDelete = async() => {
+  //     const confirmDelete = window.confirm("정말로 삭제하시겠습니까?")
+  //     if (!confirmDelete) return;
+  //     try {
+  //       await deleteQuestionApi(Number(projectId), Number(questionId))
+  //       alert("게시글이 삭제되었습니다.")
+  //       router.push(`/projects/${projectId}/questions`)
+  //     } catch (error) {
+  //       alert(`삭제 중 문제가 발생했습니다 : ${error}`)
+  //     }
+  //   }
 
     
 
@@ -90,7 +91,7 @@ export default function TaskReadPage() {
       <BackButton />
       <Flex justifyContent="space-between">
         <BackButton />
-        <DropDownMenu onEdit={handleEdit} onDelete={handleDelete} />
+        {/* <DropDownMenu onEdit={handleEdit} onDelete={handleDelete} /> */}
       </Flex>
       {/* 게시글 내용 */}
 
