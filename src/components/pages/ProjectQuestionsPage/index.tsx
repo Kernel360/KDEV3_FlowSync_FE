@@ -4,32 +4,31 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import {
   Box,
   Button,
+  createListCollection,
   Flex,
   Table,
-  createListCollection,
 } from "@chakra-ui/react";
 import CommonTable from "@/src/components/common/CommonTable";
-import Pagination from "@/src/components/common/Pagination";
 import StatusTag from "@/src/components/common/StatusTag";
 import { ProjectLayout } from "@/src/components/layouts/ProjectLayout";
 import SearchSection from "@/src/components/common/SearchSection";
-import StatusSelectBox from "@/src/components/common/FilterSelectBox";
-import { formatDynamicDate } from "@/src/utils/formatDateUtil";
-import { useProjectApprovalProgressStepData } from "@/src/hook/useFetchData";
-import { useProjectApprovalList } from "@/src/hook/useFetchBoardList";
+import FilterSelectBox from "@/src/components/common/FilterSelectBox";
+import Pagination from "@/src/components/common/Pagination";
 import ProgressStepSection from "@/src/components/common/ProgressStepSection";
+import { formatDynamicDate } from "@/src/utils/formatDateUtil";
+import { useProjectQuestionList } from "@/src/hook/useFetchBoardList";
+import { useProjectQuestionProgressStepData } from "@/src/hook/useFetchData";
 import ErrorAlert from "@/src/components/common/ErrorAlert";
 
-const taskStatusFramework = createListCollection<{
+const questionStatusFramework = createListCollection<{
   id: string;
   label: string;
   value: string;
 }>({
   items: [
     { id: "1", label: "전체", value: "" },
-    { id: "2", label: "대기", value: "WAIT" },
-    { id: "3", label: "반려", value: "REJECTED" },
-    { id: "4", label: "승인", value: "APPROVED" },
+    { id: "2", label: "답변대기", value: "WAIT" },
+    { id: "3", label: "답변완료", value: "COMPLETED" },
   ],
 });
 
@@ -40,7 +39,7 @@ const STATUS_LABELS: Record<string, string> = {
   ANSWER: "답변",
 };
 
-export default function ProjectTasksPage() {
+export default function ProjectQuestionsPage() {
   const { projectId } = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -56,18 +55,17 @@ export default function ProjectTasksPage() {
 
   // QuestionProgressStep 데이터 패칭
   const {
-    data: approvalProgressStepData,
-    loading: approvalProgressStepLoading,
-    error: approvalProgressStepError,
-  } = useProjectApprovalProgressStepData(resolvedProjectId);
-
-  // ProjectApprovalList 데이터 패칭
+    data: questionProgressStepData,
+    loading: questionProgressStepLoading,
+    error: questionProgressStepError,
+  } = useProjectQuestionProgressStepData(resolvedProjectId);
+  // 프로젝트 질문 게시판 목록 데이터 패칭
   const {
-    data: projectApprovalList,
+    data: projectQuestionList,
     paginationInfo,
-    loading: projectApprovalLoading,
-    error: projectApprovalError,
-  } = useProjectApprovalList(
+    loading: projectQuestionListLoading,
+    error: projectQuestionError,
+  } = useProjectQuestionList(
     resolvedProjectId,
     keyword,
     progressStep,
@@ -85,19 +83,25 @@ export default function ProjectTasksPage() {
   };
 
   const handleRowClick = (taskId: string) => {
-    router.push(`/projects/${projectId}/tasks/${taskId}`);
+    router.push(`/projects/${projectId}/questions/${taskId}`);
+  };
+
+  // 신규등록 버튼 클릭 시 - 질문글 등록 페이지로 이동
+  const handleProjectQuestionCreateButton = () => {
+    router.push(`/projects/${projectId}/questions/new`);
   };
 
   return (
     <ProjectLayout>
-      {approvalProgressStepError && (
+      {/* 프로젝트 단계 섹션 */}
+      {questionProgressStepError && (
         <ErrorAlert message="프로젝트 단계 정보를 불러오지 못했습니다. 다시 시도해주세요." />
       )}
-      {/* 프로젝트 단계 섹션 */}
       <ProgressStepSection
-        progressStep={approvalProgressStepData || []}
-        loading={approvalProgressStepLoading}
+        progressStep={questionProgressStepData || []}
+        loading={questionProgressStepLoading}
       />
+
       <Box
         direction="column"
         padding="30px 23px"
@@ -112,21 +116,21 @@ export default function ProjectTasksPage() {
           <Button
             variant={"surface"}
             _hover={{ backgroundColor: "#00a8ff", color: "white" }}
+            onClick={handleProjectQuestionCreateButton}
           >
             신규 등록
           </Button>
-
           {/* 검색 섹션 */}
           <SearchSection keyword={keyword} placeholder="제목 입력">
-            <StatusSelectBox
-              statusFramework={taskStatusFramework}
+            <FilterSelectBox
+              statusFramework={questionStatusFramework}
               selectedValue={status}
               queryKey="status"
             />
           </SearchSection>
         </Flex>
-        {projectApprovalError && (
-          <ErrorAlert message="프로젝트 결제 목록을 불러오지 못했습니다. 다시 시도해주세요." />
+        {projectQuestionError && (
+          <ErrorAlert message="프로젝트 질문 목록을 불러오지 못했습니다. 다시 시도해주세요." />
         )}
         {/* 
           CommonTable: 게시글 목록을 렌더링하는 공통 테이블 컴포넌트
@@ -144,29 +148,30 @@ export default function ProjectTasksPage() {
                 "& > th": { textAlign: "center" },
               }}
             >
+              <Table.ColumnHeader>카테고리</Table.ColumnHeader>
+              <Table.ColumnHeader>작성자</Table.ColumnHeader>
               <Table.ColumnHeader>제목</Table.ColumnHeader>
-              <Table.ColumnHeader>등록일</Table.ColumnHeader>
               <Table.ColumnHeader>상태</Table.ColumnHeader>
-              <Table.ColumnHeader>유형</Table.ColumnHeader>
+              <Table.ColumnHeader>작성일</Table.ColumnHeader>
             </Table.Row>
           }
-          data={projectApprovalList}
-          loading={projectApprovalLoading}
-          renderRow={(approval) => (
+          data={projectQuestionList}
+          loading={projectQuestionListLoading}
+          renderRow={(question) => (
             <>
               <Table.Cell>
                 <StatusTag>
-                  {STATUS_LABELS[approval.category] || "알 수 없음"}
+                  {STATUS_LABELS[question.category] || "알 수 없음"}
                 </StatusTag>
               </Table.Cell>
               <Table.Cell>{"주농퐉"}</Table.Cell>
-              <Table.Cell>{approval.title}</Table.Cell>
+              <Table.Cell>{question.title}</Table.Cell>
               <Table.Cell>
                 <StatusTag>
-                  {STATUS_LABELS[approval.status] || "알 수 없음"}
+                  {STATUS_LABELS[question.status] || "알 수 없음"}
                 </StatusTag>
               </Table.Cell>
-              <Table.Cell>{formatDynamicDate(approval.regAt)}</Table.Cell>
+              <Table.Cell>{formatDynamicDate(question.regAt)}</Table.Cell>
             </>
           )}
           handleRowClick={handleRowClick}
