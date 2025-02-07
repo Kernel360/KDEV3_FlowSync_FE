@@ -2,8 +2,8 @@
 "use client";
 
 // 외부 라이브러리
-import { Flex, Box, VStack, Button, Image } from "@chakra-ui/react";
-import { useParams } from "next/navigation";
+import { Flex, Box, VStack} from "@chakra-ui/react";
+import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 // 절대 경로 파일
@@ -14,12 +14,14 @@ import BackButton from "@/src/components/common/BackButton";
 import { readQuestionApi } from "@/src/api/ReadArticle";
 import DropDownMenu from "@/src/components/common/DropDownMenu";
 import { QuestionArticle, ArticleComment } from "@/src/types";
+import { deleteQuestionApi } from "@/src/api/RegisterArticle";
 
 export default function QuestionReadPage() {
   const { projectId, questionId } = useParams() as {
     projectId: string;
     questionId: string;
   };
+  const router = useRouter();
 
   const [article, setArticle] = useState<QuestionArticle | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -27,6 +29,7 @@ export default function QuestionReadPage() {
   const [commentList, setCommentList] = useState<ArticleComment[]>([]);
   const [commentIsWritten, setCommentIsWritten] = useState<boolean>(false);
 
+  // 글 렌더링
   useEffect(() => {
     const loadTask = async () => {
       try {
@@ -58,6 +61,22 @@ export default function QuestionReadPage() {
     return <Box>로딩 중...</Box>;
   }
 
+  const handleEdit = () => {
+    router.push(`/projects/${projectId}/questions/${questionId}/edit`)
+  }
+
+  const handleDelete = async() => {
+    const confirmDelete = window.confirm("정말로 삭제하시겠습니까?")
+    if (!confirmDelete) return;
+    try {
+      await deleteQuestionApi(Number(projectId), Number(questionId))
+      alert("게시글이 삭제되었습니다.")
+      router.push(`/projects/${projectId}/questions`)
+    } catch (error) {
+      alert(`삭제 중 문제가 발생했습니다 : ${error}`)
+    }
+  }
+
   return (
     <Flex
       direction="column"
@@ -72,7 +91,7 @@ export default function QuestionReadPage() {
     >
       <Flex justifyContent="space-between">
         <BackButton />
-        <DropDownMenu />
+        <DropDownMenu onEdit={handleEdit} onDelete={handleDelete} />
       </Flex>
 
       {/* 게시글 내용 */}
