@@ -2,7 +2,7 @@
 "use client";
 
 // 외부 라이브러리
-import { Box, VStack } from "@chakra-ui/react";
+import { Flex, Box, VStack, Button, Image } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -12,7 +12,7 @@ import ArticleComments from "@/src/components/common/ArticleComments";
 import CommentBox from "@/src/components/common/CommentBox";
 import BackButton from "@/src/components/common/BackButton";
 import { readQuestionApi } from "@/src/api/ReadArticle";
-
+import DropDownMenu from "@/src/components/common/DropDownMenu";
 import { QuestionArticle, ArticleComment } from "@/src/types";
 
 export default function QuestionReadPage() {
@@ -27,16 +27,14 @@ export default function QuestionReadPage() {
   const [commentList, setCommentList] = useState<ArticleComment[]>([]);
   const [commentIsWritten, setCommentIsWritten] = useState<boolean>(false);
 
-
   useEffect(() => {
     const loadTask = async () => {
-
       try {
         const responseData = await readQuestionApi(
           Number(projectId),
           Number(questionId),
         );
-        
+
         setArticle(responseData);
         setCommentList(responseData.commentList ?? []);
       } catch (err) {
@@ -61,7 +59,8 @@ export default function QuestionReadPage() {
   }
 
   return (
-    <Box
+    <Flex
+      direction="column"
       maxW="1000px"
       w="100%"
       mx="auto"
@@ -71,16 +70,21 @@ export default function QuestionReadPage() {
       borderRadius="lg"
       boxShadow="md"
     >
-      <BackButton />
+      <Flex justifyContent="space-between">
+        <BackButton />
+        <DropDownMenu />
+      </Flex>
 
       {/* 게시글 내용 */}
       <ArticleContent article={article} />
-
       {/* 댓글 섹션 */}
       <VStack align="stretch" gap={8} mt={10}>
-        <ArticleComments comments={commentList} setCommentIsWritten={setCommentIsWritten} />
+        <ArticleComments
+          comments={commentList}
+          setCommentIsWritten={setCommentIsWritten}
+        />
         <CommentBox setCommentIsWritten={setCommentIsWritten} />
       </VStack>
-    </Box>
+    </Flex>
   );
 }
