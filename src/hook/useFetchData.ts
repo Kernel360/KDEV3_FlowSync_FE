@@ -1,5 +1,8 @@
-import { CommonResponseType } from "@/src/types";
 import { useEffect, useState } from "react";
+import { CommonResponseType, ProjectInfoProps, ProjectProgressStepProps, UserInfoResponse } from "@/src/types";
+import { fetchProjectApprovalProgressStepApi, fetchProjectInfoApi, fetchProjectQuestionProgressStepApi } from "@/src/api/projects";
+import { showToast } from "@/src/utils/showToast";
+import { fetchUserInfoApi } from "@/src/api/auth";
 
 interface UseFetchDataProps<T, P extends any[]> {
   fetchApi: (...args: P) => Promise<CommonResponseType<T>>;
@@ -32,7 +35,16 @@ export function useFetchData<T, P extends any[]>({
       setError(null);
     } catch (err: any) {
       console.error("Error fetching data:", err);
-      setError(err.message || "An error occurred");
+      const errorMessage = err.response?.data?.message || err.message || "데이터를 불러오는데 실패했습니다.";
+      showToast({
+        title: "요청 실패",
+        description: errorMessage,
+        type: "error",
+        duration: 3000,
+        error: errorMessage,
+      });
+
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -44,3 +56,35 @@ export function useFetchData<T, P extends any[]>({
 
   return { data, loading, error };
 }
+
+/**
+ * 프로젝트 질문 Progress Step 데이터 패칭 훅
+ */
+export const useProjectQuestionProgressStepData = (resolvedProjectId: string) =>
+  useFetchData<ProjectProgressStepProps[], [string]>({
+    fetchApi: fetchProjectQuestionProgressStepApi,
+    params: [resolvedProjectId],
+  });
+
+  /**
+ * 프로젝트 정보 데이터 패칭 훅
+ */
+export const useProjectInfo = (resolvedProjectId: string) =>
+  useFetchData<ProjectInfoProps, [string]>({
+    fetchApi: fetchProjectInfoApi,
+    params: [resolvedProjectId],
+  });
+
+  /**
+ * 결재 Progress Step 데이터 패칭 훅
+ */
+export const useProjectApprovalProgressStepData = (resolvedProjectId: string) =>
+  useFetchData<ProjectProgressStepProps[], [string]>({
+    fetchApi: fetchProjectApprovalProgressStepApi,
+    params: [resolvedProjectId],
+  });
+
+export const useUserInfo = () => useFetchData<UserInfoResponse, []>({
+  fetchApi: fetchUserInfoApi,
+  params: []
+});

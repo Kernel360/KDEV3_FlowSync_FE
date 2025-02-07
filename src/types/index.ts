@@ -88,12 +88,12 @@ export interface OrganizationProps {
   status: string;
   brNumber: string;
   name: string;
-  reg_at: string;
+  regAt: string;
   brCertificateUrl: string;
   streetAddress: string;
   detailAddress: string;
   phoneNumber: string;
-  remark: string | null;
+  remark: string;
 }
 
 // `createOrganization` 함수에서 입력값의 타입 정의
@@ -174,7 +174,7 @@ export interface ProjectInfoProps {
 }
 
 // 결재글 속성
-export interface ProjectTaskProps {
+export interface ProjectApprovalProps {
   id: string;
   number: number;
   title: string;
@@ -189,8 +189,8 @@ export interface ProjectTaskProps {
   pageSize: number; // 페이지 크기
 }
 
-export interface ProjectTaskListResponse {
-  projectApprovals: ProjectTaskProps[];
+export interface ProjectApprovalListResponse {
+  projectApprovals: ProjectApprovalProps[];
   meta: PaginationProps; // 페이지네이션 메타 정보
 }
 
@@ -222,11 +222,11 @@ export interface QuestionApiResponse {
   data: QuestionArticle;
 }
 
-export interface TaskApiResponse {
+export interface ApprovalApiResponse {
   code: number;
   result: string;
   message: string;
-  data: TaskArticle;
+  data: ApprovalArticle;
 }
 
 export interface NoticeApiResponse {
@@ -242,6 +242,24 @@ export interface CommentApiResponse {
   message: string;
   data: ArticleComment;
 }
+
+
+
+export interface SignApiResponse {
+  code: number;
+  result: string;
+  message: string;
+  data: SignData;
+}
+
+export interface SignData {
+  hasSignatures: boolean;
+  signatureUrl: string;
+}
+
+
+
+
 
 // 게시글의 콘텐츠 블럭
 export interface ContentBlock {
@@ -285,7 +303,7 @@ export interface QuestionArticle {
   commentList: ArticleComment[];
 }
 
-export interface TaskArticle {
+export interface ApprovalArticle {
   id: number;
   number: number;
   title: string;
@@ -331,7 +349,6 @@ export interface ArticleFile {
   size: number;
 }
 
-
 // 댓글
 export interface ArticleComment {
   id: number;
@@ -342,7 +359,6 @@ export interface ArticleComment {
   parentId: number;
   isParent: boolean;
 }
-
 
 // 회원/업체 생성 페이지 입력 폼 인터페이스
 export interface InputFormData {
@@ -364,6 +380,7 @@ export interface InputFormData {
   onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   isChanged?: boolean;
+  maxLength?: number;
 }
 
 // 공지사항
@@ -410,14 +427,19 @@ export interface BaseArticleRequestData {
   title: string;
   content: { type: string; data: string | { src: string } }[];
   linkList: { name: string; url: string }[];
-  fileInfoList: { originalName: string; saveName: string; url: string; size: number }[];
+  fileInfoList: {
+    originalName: string;
+    saveName: string;
+    url: string;
+    size: number;
+  }[];
 }
 
 export interface QuestionRequestData extends BaseArticleRequestData {
   progressStepId?: number;
 }
 
-export interface TaskRequestData extends BaseArticleRequestData {
+export interface ApprovalRequestData extends BaseArticleRequestData {
   progressStepId?: number;
 }
 
