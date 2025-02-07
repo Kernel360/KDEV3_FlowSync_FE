@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from "react";
-import { fetchProjectList } from "@/src/api/projects";
+import { fetchProjectListApi } from "@/src/api/projects";
 import { ProjectProps } from "@/src/types";
 
 /**
@@ -28,7 +28,7 @@ export function useProjectInfiniteScroll(status: string) {
       setLoading(true);
 
       try {
-        const response = await fetchProjectList("", status, page, 20);
+        const response = await fetchProjectListApi("", status, page, 20);
         const newProjects = response.data.projects;
 
         if (!newProjects || newProjects.length === 0) {
@@ -50,6 +50,7 @@ export function useProjectInfiniteScroll(status: string) {
         setHasMore(false); // 오류 발생 시 무한 요청 방지
       } finally {
         setLoading(false);
+
       }
     },
     [status, hasMore, loading],
@@ -68,6 +69,7 @@ export function useProjectInfiniteScroll(status: string) {
   /**
    * 📌 첫 로딩 시 미리 데이터를 가져오는 함수
    */
+
   // useEffect(() => {
   //   const prefetchPagesArray = Array.from(
   //     { length: prefetchPages },
@@ -102,6 +104,7 @@ export function useProjectInfiniteScroll(status: string) {
 
   //   setCurrentPage(prefetchPages + 1);
   // }, [status]);
+
 
   /**
    *  Intersection Observer를 활용한 무한 스크롤 감지
