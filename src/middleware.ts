@@ -140,7 +140,9 @@ async function validateAndRefreshTokens(
       );
 
       // 새 Access Token으로 유저 정보 가져오기
-      const userInfoResponse = await fetchUserInfoApi(reissueResponse.data.access);
+      const userInfoResponse = await fetchUserInfoApi(
+        reissueResponse.data.access,
+      );
       if (userInfoResponse.result === "SUCCESS") {
         return { userInfo: userInfoResponse.data, response };
       }
@@ -154,7 +156,6 @@ async function validateAndRefreshTokens(
 }
 
 export async function middleware(request: NextRequest) {
-  return NextResponse.next();
   // 요청 경로
   const pathname = request.nextUrl.pathname;
 

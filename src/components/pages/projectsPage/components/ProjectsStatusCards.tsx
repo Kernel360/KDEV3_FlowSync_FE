@@ -10,7 +10,7 @@ import {
   Swords,
   Wrench,
 } from "lucide-react";
-import StatusCard from "@/src/components/pages/projectsPage/components/ProjectsStatusCard";
+import StatusCard from "@/src/components/pages/ProjectsPage/components/ProjectsStatusCard";
 import { useColorModeValue } from "@/src/components/ui/color-mode";
 import { ProjectStatus } from "@/src/constants/projectStatus";
 

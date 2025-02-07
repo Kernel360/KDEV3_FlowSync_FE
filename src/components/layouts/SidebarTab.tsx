@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import {
   MenuContent,
   MenuItem,
@@ -28,7 +28,6 @@ const ADMIN_MENU_ITEMS = [
 export default function SidebarTab({ memberRole }: SidebarTabProps) {
   const bgColor = useColorModeValue("white", "gray.900");
   const hoverBgColor = useColorModeValue("gray.100", "gray.700");
-  const activeColor = useColorModeValue("blue.500", "blue.300");
   const textColor = useColorModeValue("gray.800", "white");
   const borderColor = useColorModeValue("gray.300", "gray.700");
 

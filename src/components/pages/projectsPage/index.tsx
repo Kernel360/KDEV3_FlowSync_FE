@@ -3,9 +3,6 @@
 import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Head from "next/head";
-<<<<<<< Updated upstream
-import { createListCollection, Heading, Stack, Table } from "@chakra-ui/react";
-=======
 import {
   Box,
   createListCollection,
@@ -14,23 +11,16 @@ import {
   Stack,
   Table,
 } from "@chakra-ui/react";
-import { fetchProjectListApi } from "@/src/api/projects";
->>>>>>> Stashed changes
 import StatusTag from "@/src/components/common/StatusTag";
-import ProjectStatusCards from "@/src/components/pages/projectsPage/components/ProjectsStatusCards";
+import ProjectStatusCards from "@/src/components/pages/ProjectsPage/components/ProjectsStatusCards";
 import CommonTable from "@/src/components/common/CommonTable";
 import Pagination from "@/src/components/common/Pagination";
 import SearchSection from "@/src/components/common/SearchSection";
 import StatusSelectBox from "@/src/components/common/FilterSelectBox";
-<<<<<<< Updated upstream
 import { useProjectList } from "@/src/hook/useFetchBoardList";
 import ErrorAlert from "@/src/components/common/ErrorAlert";
 import { formatDynamicDate } from "@/src/utils/formatDateUtil";
-=======
-import { useFetchBoardList } from "@/src/hook/useFetchBoardList";
-import { ProjectListResponse } from "@/src/types";
 import { useColorModeValue } from "@/src/components/ui/color-mode";
->>>>>>> Stashed changes
 
 const projectStatusFramework = createListCollection<{
   label: string;
@@ -138,7 +128,6 @@ function ProjectsPageContent() {
        * 프로젝트 현황(예: 진행 중, 완료 등)을 시각적으로 표시합니다.
        * title prop으로 "프로젝트 현황"을 전달.
        */}
-<<<<<<< Updated upstream
       <ProjectStatusCards title={"프로젝트 현황"} />
       <Stack width="full">
         {/* 페이지 최상단 제목 */}
@@ -153,67 +142,8 @@ function ProjectsPageContent() {
             queryKey="status"
           />
         </SearchSection>
-        {projectListError && (
-          <ErrorAlert message="프로젝트 목록을 불러오지 못했습니다. 다시 시도해주세요." />
-        )}
-        {/*
-         * 공통 테이블(CommonTable)
-         *  - headerTitle: 테이블 헤더 구성
-         *  - data: 테이블에 표시될 데이터
-         *  - loading: 로딩 상태
-         *  - renderRow: 한 줄씩 어떻게 렌더링할지 정의 (jsx 반환)
-         *  - handleRowClick: 행 클릭 이벤트 핸들러
-         */}
-        <CommonTable
-          headerTitle={
-            <Table.Row
-              backgroundColor={"#eee"}
-              css={{
-                "& > th": { textAlign: "center" },
-              }}
-            >
-              <Table.ColumnHeader>프로젝트명</Table.ColumnHeader>
-              <Table.ColumnHeader>고객사</Table.ColumnHeader>
-              <Table.ColumnHeader>개발사</Table.ColumnHeader>
-              <Table.ColumnHeader>프로젝트 관리단계</Table.ColumnHeader>
-              <Table.ColumnHeader>프로젝트 시작일</Table.ColumnHeader>
-              <Table.ColumnHeader>프로젝트 종료일</Table.ColumnHeader>
-            </Table.Row>
-          }
-          data={projectList}
-          loading={projectListLoading}
-          renderRow={(project) => (
-            <>
-              <Table.Cell>{project.name}</Table.Cell>
-              <Table.Cell>{project.customerName}</Table.Cell>
-              <Table.Cell>{project.developerName}</Table.Cell>
-              <Table.Cell>
-                <StatusTag>
-                  {STATUS_LABELS[project.status] || "알 수 없음"}
-                </StatusTag>
-              </Table.Cell>
-              <Table.Cell>{formatDynamicDate(project.startAt)}</Table.Cell>
-              <Table.Cell>{formatDynamicDate(project.closeAt)}</Table.Cell>
-            </>
-          )}
-          handleRowClick={handleRowClick}
-        />
-        {/*
-         * 페이지네이션 컴포넌트
-         * paginationInfo: 현재 페이지, 총 페이지, 페이지 크기 등의 정보
-         * handlePageChange: 페이지 이동 시 실행될 콜백
-         */}
-        <Pagination
-          paginationInfo={
-            paginationInfo && {
-              ...paginationInfo,
-              currentPage: paginationInfo.currentPage,
-            }
-          }
-          handlePageChange={handlePageChange}
-        />
       </Stack>
-=======
+
       <Box bg={bgColor} p="4" minHeight="100vh">
         <Stack spaceY="SECTION_SPACING">
           <ProjectStatusCards title={"프로젝트 현황"} />
@@ -231,6 +161,9 @@ function ProjectsPageContent() {
                 />
               </SearchSection>
             </Flex>
+            {projectListError && (
+              <ErrorAlert message="프로젝트 목록을 불러오지 못했습니다. 다시 시도해주세요." />
+            )}
             {/*
              * 공통 테이블(CommonTable)
              *  - headerTitle: 테이블 헤더 구성
@@ -239,6 +172,7 @@ function ProjectsPageContent() {
              *  - renderRow: 한 줄씩 어떻게 렌더링할지 정의 (jsx 반환)
              *  - handleRowClick: 행 클릭 이벤트 핸들러
              */}
+
             <CommonTable
               headerTitle={
                 <Table.Row
@@ -250,7 +184,7 @@ function ProjectsPageContent() {
                   <Table.ColumnHeader>프로젝트명</Table.ColumnHeader>
                   <Table.ColumnHeader>고객사</Table.ColumnHeader>
                   <Table.ColumnHeader>개발사</Table.ColumnHeader>
-                  <Table.ColumnHeader>프로젝트 상태</Table.ColumnHeader>
+                  <Table.ColumnHeader>프로젝트 관리단계</Table.ColumnHeader>
                   <Table.ColumnHeader>프로젝트 시작일</Table.ColumnHeader>
                   <Table.ColumnHeader>프로젝트 종료일</Table.ColumnHeader>
                 </Table.Row>
@@ -267,8 +201,8 @@ function ProjectsPageContent() {
                       {STATUS_LABELS[project.status] || "알 수 없음"}
                     </StatusTag>
                   </Table.Cell>
-                  <Table.Cell>{project.startAt}</Table.Cell>
-                  <Table.Cell>{project.closeAt}</Table.Cell>
+                  <Table.Cell>{formatDynamicDate(project.startAt)}</Table.Cell>
+                  <Table.Cell>{formatDynamicDate(project.closeAt)}</Table.Cell>
                 </>
               )}
               handleRowClick={handleRowClick}
@@ -291,7 +225,6 @@ function ProjectsPageContent() {
           </Stack>
         </Stack>
       </Box>
->>>>>>> Stashed changes
     </>
   );
 }

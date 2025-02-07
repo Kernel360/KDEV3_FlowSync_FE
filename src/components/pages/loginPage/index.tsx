@@ -2,21 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  Box,
-  Flex,
-  PopoverArrow,
-  Text,
-  useBreakpointValue,
-  VStack,
-} from "@chakra-ui/react";
-import {
-  PopoverBody,
-  PopoverContent,
-  PopoverRoot,
-  PopoverTitle,
-  PopoverTrigger,
-} from "@/src/components/ui/popover";
+import { Box, Text, VStack } from "@chakra-ui/react";
 import { login } from "@/src/api/auth";
 import { useForm } from "@/src/hook/useForm";
 import InputForm from "@/src/components/common/InputForm";

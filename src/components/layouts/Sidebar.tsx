@@ -3,14 +3,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useColorModeValue } from "@/src/components/ui/color-mode";
 import SidebarTab from "@/src/components/layouts/SidebarTab";
-import { useSidebar } from "@/src/context/SidebarContext";
-<<<<<<< Updated upstream
 import { useUserInfo } from "@/src/hook/useFetchData";
-import { Loading } from "../common/Loading";
-=======
-import { fetchUserInfo as fetchUserInfoApi } from "@/src/api/auth";
-import { useFetchData } from "@/src/hook/useFetchData";
-import { UserInfoResponse } from "@/src/types";
 import { Loading } from "@/src/components/common/Loading";
 
 interface SidebarProps {
@@ -21,11 +14,9 @@ interface SidebarProps {
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const bgColor = useColorModeValue("white", "gray.900");
   const borderColor = useColorModeValue("gray.300", "gray.700");
-  const textColor = useColorModeValue("gray.800", "white");
+  // const textColor = useColorModeValue("gray.800", "white");
   const hoverBgColor = useColorModeValue("gray.100", "gray.700");
->>>>>>> Stashed changes
 
-  const { selectedProjectFilter, setSelectedProjectFilter } = useSidebar();
   const { data: userInfoData, loading: userInfoLoading } = useUserInfo();
 
   const userRole = userInfoData?.role;
