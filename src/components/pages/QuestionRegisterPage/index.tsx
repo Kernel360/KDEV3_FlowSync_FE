@@ -49,7 +49,7 @@ export default function QuestionRegisterPage() {
           ? { progressStepId: requestData.progressStepId }
           : {}),
       });
-      alert("저장이 완료되었습니다.");
+      // alert("저장이 완료되었습니다.");
       router.push(`/projects/${projectId}/questions`);
     } catch (error) {
       console.error("저장 실패:", error);

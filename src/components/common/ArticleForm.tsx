@@ -107,7 +107,7 @@ export default function ArticleForm({
 
         handleSave({
           title: title,
-          content: content, // TODO 이거 백엔드 수정해야 함. 1/28
+          content: content,
           linkList: linkList,
           fileInfoList: uploadedFiles,
         });
