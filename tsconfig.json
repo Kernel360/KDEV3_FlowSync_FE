@@ -28,7 +28,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/pages/ProjectApprovalPage"
+    "src/components/pages/ProjectApprovalPage"
   ],
   "exclude": ["node_modules"]
 }

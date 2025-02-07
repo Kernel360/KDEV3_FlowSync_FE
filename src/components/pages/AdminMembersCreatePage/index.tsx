@@ -11,7 +11,7 @@ import { defaultValuesOfMember } from "@/src/constants/defaultValues";
 import { validationRulesOfCreatingMember } from "@/src/constants/validationRules";
 import { createMember } from "@/src/api/members";
 import { getOrganizationsApi } from "@/src/api/getOrganization";
-import SelectedOrganization from "@/src/pages/AdminMembersCreatePage/components/SelectOrganization";
+import SelectedOrganization from "@/src/components/pages/AdminMembersCreatePage/components/SelectOrganization";
 
 interface OrgProps {
   id: number;
