@@ -65,3 +65,19 @@ export async function deleteQuestionApi(
     throw new Error("댓글 삭제 실패");
   }
 }
+
+// 질문글 삭제
+export async function deleteQuestionApi(
+  projectId: number,
+  questionId: number,
+) {
+  try {
+    const response = await axiosInstance.delete(
+      `projects/${projectId}/questions/${questionId}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("캐치에러", error);
+    throw new Error("댓글 삭제 실패");
+  }
+}
