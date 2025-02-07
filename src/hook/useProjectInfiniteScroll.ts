@@ -52,17 +52,6 @@ export function useProjectInfiniteScroll(status: string) {
         setLoading(false);
 
       }
-  
-      setProjectList((prev) => {
-        const existingIds = new Set(prev.map((item) => item.id));
-        const uniqueNewProjects = newProjects.filter(
-          (item) => !existingIds.has(item.id),
-        );
-        return [...prev, ...uniqueNewProjects];
-      });
-  
-      setCurrentPage((prev) => prev + 1);
-      setLoading(false);
     },
     [status, hasMore, loading],
   );
