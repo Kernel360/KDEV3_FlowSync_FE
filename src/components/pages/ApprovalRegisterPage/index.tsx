@@ -57,7 +57,7 @@ export default function ApprovalRegisterPage() {
 
   return (
     <Box
-      maxW="1000px"
+      maxW="1000px" 
       w={"100%"}
       mx="auto"
       mt={10}
