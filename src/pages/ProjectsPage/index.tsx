@@ -12,7 +12,7 @@ import {
   Table,
 } from "@chakra-ui/react";
 import StatusTag from "@/src/components/common/StatusTag";
-import ProjectStatusCards from "@/src/components/pages/ProjectsPage/components/ProjectsStatusCards";
+import ProjectStatusCards from "@/src/pages/ProjectsPage/components/ProjectsStatusCards";
 import CommonTable from "@/src/components/common/CommonTable";
 import Pagination from "@/src/components/common/Pagination";
 import SearchSection from "@/src/components/common/SearchSection";
