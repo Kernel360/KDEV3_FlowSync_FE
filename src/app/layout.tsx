@@ -14,11 +14,9 @@ export const metadata: Metadata = {
   description: "The World Best PMS Service",
 };
 
-// const useMsw = process.env.USE_MSW === "true";
-
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html suppressHydrationWarning>
+    <html suppressHydrationWarning={true} data-theme="light">
       <body>
         <ChakraProvider>
           <Toaster />

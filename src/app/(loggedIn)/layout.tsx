@@ -1,14 +1,8 @@
 "use client";
 
-import { ReactNode } from "react";
-import {
-  Box,
-  Container,
-  Flex,
-  IconButton,
-  Text,
-  useBreakpointValue,
-} from "@chakra-ui/react";
+import { ReactNode, useEffect, useState } from "react";
+import { Box, Flex } from "@chakra-ui/react";
+import { useColorModeValue } from "@/src/components/ui/color-mode";
 import Header from "@/src/components/layouts/Header";
 import Sidebar from "@/src/components/layouts/Sidebar";
 import { SidebarProvider } from "@/src/context/SidebarContext";
@@ -18,53 +12,82 @@ interface DashboardLayoutProps {
 }
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
-  // 반응형 레이아웃을 위한 사이드바 너비 조정
-  const sidebarWidth = useBreakpointValue({
-    base: "250px", // 모바일: 전체 화면
-    md: "250px", // 태블릿 이상: 고정 너비
-  });
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [colorMode, setColorMode] = useState("white");
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  const contentPadding = useBreakpointValue({
-    base: 4, // 모바일: 좁은 여백
-    md: 10, // 태블릿 이상: 넓은 여백
-  });
+  // 다크모드 색상 설정
+  const bgColor = useColorModeValue("white", "gray.800"); // 전체 배경색
+  const marginBgColor = useColorModeValue("white", "gray.900"); // 마진 영역 배경색
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("chakra-ui-color-mode");
+    if (savedTheme) {
+      setColorMode(savedTheme);
+    }
+    setIsLoaded(true);
+  }, [setColorMode]);
+
+  if (!isLoaded) return null; // 로딩 상태 추가
+
   return (
-    <Flex direction="column" minHeight="100vh" bg="white">
-      <Header />
-      <Flex flex="1" overflow="hidden">
-        {/* <Header /> */}
-        <Container
-          maxWidth={"100%"}
-          display="flex"
-          flexDirection="row"
-          margin={0}
-          padding={0}
-          flexShrink={0} // 사이드바 크기 변경 방지
+    <SidebarProvider>
+      <Flex
+        direction="column"
+        minHeight="100vh"
+        bg={bgColor}
+        transition="background-color 0.3s"
+      >
+        <Header onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+        <Flex
+          direction="row"
+          height="calc(100vh - var(--header-height))"
+          bg={marginBgColor} // 마진 영역의 배경색 설정
         >
-          <SidebarProvider>
-            <Sidebar />
-          </SidebarProvider>
-          {/* 메인 컨텐츠 */}
-          <Flex
-            as="main"
-            flex="1"
-            height="100%"
-            align="flex-start"
-            justify="center"
-            overflow="hidden"
-            bg="white"
+          {/* Sidebar 영역 */}
+          <Box
+            width={isSidebarOpen ? "18%" : "0"}
+            transition="width 0.3s ease"
+            overflowY="auto"
+            bg={bgColor}
           >
-            <Box
-              maxW="container.xl"
-              width="100%"
-              height="100%"
-              p={contentPadding} // 반응형 패딩
+            <Sidebar
+              isOpen={isSidebarOpen}
+              onClose={() => setIsSidebarOpen(false)}
+            />
+          </Box>
+
+          {/* Main Content */}
+          <Box
+            flex={1}
+            bg={marginBgColor} // 마진 영역의 배경색 설정
+            marginTop="2%"
+            marginX={isSidebarOpen ? "2%" : "10%"}
+            transition="margin 0.3s ease-in-out"
+            borderRadius="lg" // 둥근 모서리 추가 (선택 사항)
+            padding={4}
+          >
+            <Flex
+              as="main"
+              flex={isSidebarOpen ? "82%" : "1"} // 나머지 공간 비율로 설정
+              justify="center"
+              align="flex-start"
+              overflowY="auto"
+              // padding={4}
+              bg={bgColor}
+              transition="flex-basis 0.3s ease"
             >
-              {children}
-            </Box>
-          </Flex>
-        </Container>
+              <Box
+                width="100%"
+                maxWidth="var(--content-max-width)"
+                bg={bgColor}
+              >
+                {children}
+              </Box>
+            </Flex>
+          </Box>
+        </Flex>
       </Flex>
-    </Flex>
+    </SidebarProvider>
   );
 }
