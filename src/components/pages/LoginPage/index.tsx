@@ -1,9 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Button, Image, Text } from "@chakra-ui/react";
 import { login } from "@/src/api/auth";
 import { useForm } from "@/src/hook/useForm";
 import InputForm from "@/src/components/common/InputForm";
@@ -85,11 +84,10 @@ export default function LoginPage() {
         <Box className={styles.loginHeader}>
           <Box className={styles.loginLogo}>
             <Image
-              src="/logo.png"
+              src="/logo.png" // public 디렉토리의 로고 파일 경로
               alt="FlowSync"
-              className={styles.loginLogoIcon}
-              width={500} // 너비 비율
-              height={500} // 높이 비율
+              height="30px" // 원하는 크기로 설정
+              objectFit="contain"
             />
             <Text className={styles.loginLogoName}>FlowSync</Text>
           </Box>
