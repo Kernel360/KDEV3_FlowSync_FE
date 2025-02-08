@@ -2,13 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Box, Button, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Text } from "@chakra-ui/react";
 import { login } from "@/src/api/auth";
 import { useForm } from "@/src/hook/useForm";
 import InputForm from "@/src/components/common/InputForm";
 import { defaultValuesOfLogin } from "@/src/constants/defaultValues";
 import { validationRulesOfLogin } from "@/src/constants/validationRules";
 import styles from "@/src/components/pages/LoginPage/Login.module.css";
+import Image from "next/image";
 
 export const GUIDE_MESSAGE = `
   본 애플리케이션은 B2B 기업 회원 전용 서비스로 기획되었습니다. 테스트를 위한 계정 정보를 안내 드립니다.
@@ -86,8 +87,10 @@ export default function LoginPage() {
             <Image
               src="/logo.png" // public 디렉토리의 로고 파일 경로
               alt="FlowSync"
-              height="30px" // 원하는 크기로 설정
+              width={35} // 원하는 크기로 설정
+              height={35}
               objectFit="contain"
+              priority
             />
             <Text className={styles.loginLogoName}>FlowSync</Text>
           </Box>

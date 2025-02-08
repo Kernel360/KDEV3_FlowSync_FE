@@ -10,6 +10,7 @@ function shouldBypassMiddleware(pathname: string): boolean {
   return (
     pathname.startsWith("/_next/") || // Next.js 정적 리소스
     pathname.startsWith("/static/") || // 직접 제공하는 정적 파일
+    pathname === "/login" ||
     ["/favicon.ico", "/robots.txt", "/logo.png"].includes(pathname)
   );
 }
