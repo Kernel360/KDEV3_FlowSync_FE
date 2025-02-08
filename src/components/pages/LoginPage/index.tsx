@@ -87,9 +87,9 @@ export default function LoginPage() {
             <Image
               src="/logo.png"
               alt="FlowSync"
+              className={styles.loginLogoIcon}
               width={500} // 너비 비율
               height={500} // 높이 비율
-              className={styles.loginLogoIcon}
             />
             <Text className={styles.loginLogoName}>FlowSync</Text>
           </Box>
