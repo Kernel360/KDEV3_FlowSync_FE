@@ -1,3 +1,3 @@
-import ProjectsWorkFlowPage from "@/src/components/pages/ProjectsWorkFlowPage";
+import ProjectWorkFlowPage from "@/src/components/pages/ProjectWorkFlowPage";
 
-export default ProjectsWorkFlowPage;
+export default ProjectWorkFlowPage;
