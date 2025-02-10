@@ -3,14 +3,14 @@
 "use client";
 // 목데이터 사용
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Box } from "@chakra-ui/react";
 import BackButton from "@/src/components/common/BackButton";
 import ArticleForm from "@/src/components/common/ArticleForm";
 import { createTaskApi } from "@/src/api/RegisterArticle";
 import { ProjectProgressStepProps, ApprovalRequestData } from "@/src/types";
-import { fetchProjectQuestionProgressStepApi as fetchProjectQuestionProgressStepApi } from "@/src/api/projects";
+import { projectProgressStepApi } from "@/src/api/projects";
 import { useFetchData } from "@/src/hook/useFetchData";
 import FormSelectInput from "@/src/components/common/FormSelectInput";
 import "./edit.css";
@@ -25,19 +25,28 @@ export default function ProjectApprovalsNewPage() {
     : projectId || "";
 
   const { data: progressStepData } = useFetchData<
-    ProjectProgressStepProps[],
+    { id: number; name: string }[],
     [string]
   >({
-    fetchApi: fetchProjectQuestionProgressStepApi,
+    fetchApi: projectProgressStepApi,
     params: [resolvedProjectId],
   });
 
-  const filteredProgressSteps =
-    progressStepData?.filter((step) => step.value !== "ALL") || [];
+  const progressStepOptions = progressStepData
+    ? progressStepData.map((step) => ({
+        id: step.id, // key 값
+        title: step.name, // 사용자에게 보이는 텍스트
+        value: String(step.id), // select 요소에서 사용할 값
+      }))
+    : [];
 
-  const [progressStepId, setProgressStepId] = useState<number>(
-    filteredProgressSteps.length > 0 ? Number(filteredProgressSteps[0].id) : 0,
-  );
+  const [progressStepId, setProgressStepId] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    if (progressStepOptions.length > 0 && progressStepId === undefined) {
+      setProgressStepId(progressStepOptions[0].id);
+    }
+  }, [progressStepOptions]);
 
   const handleSave = async <T extends ApprovalRequestData>(requestData: T) => {
     try {
@@ -54,7 +63,7 @@ export default function ProjectApprovalsNewPage() {
       alert("저장 중 문제가 발생했습니다.");
     }
   };
-
+  console.log(progressStepId)
   return (
     <Box
       maxW="1000px"
@@ -68,12 +77,12 @@ export default function ProjectApprovalsNewPage() {
     >
       <BackButton />
 
-      <ArticleForm title={title} setTitle={setTitle} handleSave={handleSave}>
+      <ArticleForm title={title} setTitle={setTitle} handleSave={handleSave} progressStepId={progressStepId ?? 0}>
         <FormSelectInput
           label="진행 단계"
           selectedValue={progressStepId}
           setSelectedValue={setProgressStepId}
-          options={filteredProgressSteps || []}
+          options={progressStepOptions}
         />
       </ArticleForm>
     </Box>

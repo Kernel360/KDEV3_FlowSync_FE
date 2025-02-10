@@ -70,11 +70,11 @@ export async function deleteQuestionApi(
 // 결재글 삭제
 export async function deleteApprovalApi(
   projectId: number,
-  questionId: number,
+  approvalId: number,
 ) {
   try {
     const response = await axiosInstance.delete(
-      `projects/${projectId}/questions/${questionId}`,
+      `projects/${projectId}/approvals/${approvalId}`,
     );
     return response.data;
   } catch (error) {

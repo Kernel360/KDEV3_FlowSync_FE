@@ -309,10 +309,20 @@ export interface ApprovalArticle {
   status: string;
   deletedYn: string;
   author: string;
+  register: {
+    role: string;
+    name: string;
+    organizationId: number;
+    organizationName: string;
+    organizationType: string;
+    signatureUrl: string;
+  }
   fileList: ArticleFile[];
   linkList: ArticleLink[];
   commentList: ArticleComment[];
 }
+
+
 
 export interface NoticeArticle {
   id: string;
@@ -418,6 +428,7 @@ export interface UserInfoResponse {
 
 export interface BaseArticleRequestData {
   title: string;
+  progressStepId: number;
   content: { type: string; data: string | { src: string } }[];
   linkList: { name: string; url: string }[];
   fileInfoList: {
