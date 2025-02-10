@@ -16,18 +16,16 @@ export default function CommentBox({
   setIsReplying,
   setCommentIsWritten,
 }: CommentBoxProps) {
-  const { projectId, questionId, taskId } = useParams() as {
+  const { projectId, questionId, approvalId } = useParams() as {
     projectId: string;
     questionId?: string;
-    taskId?: string;
+    approvalId?: string;
   };
 
   const [commentText, setCommentText] = useState<string>("");
   const pathname = usePathname();
 
   const handleSave = async () => {
-    // console.log(projectId, questionId)
-    // console.log(projectId, taskId)
     try {
       const requestData = { content: commentText };
       let responseData: CommentApiResponse | undefined;
@@ -40,12 +38,12 @@ export default function CommentBox({
           undefined,
           parentId ? Number(parentId) : undefined,
         );
-      } else if (pathname.includes("/tasks")) {
+      } else if (pathname.includes("/approvals")) {
         responseData = await registerComment(
           Number(projectId),
           requestData,
           undefined, // questionId는 undefined로 전달
-          Number(taskId),
+          Number(approvalId),
           parentId ? Number(parentId) : undefined,
         );
       }

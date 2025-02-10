@@ -48,7 +48,7 @@ export default function ProjectApprovalsNewPage() {
           : {}),
       });
       alert("저장이 완료되었습니다.");
-      router.push(`/projects/${projectId}/tasks`);
+      router.push(`/projects/${projectId}/approvals`);
     } catch (error) {
       console.error("저장 실패:", error);
       alert("저장 중 문제가 발생했습니다.");

@@ -84,8 +84,8 @@ export default function ProjectApprovalsPage() {
     router.push(`?${params.toString()}`);
   };
 
-  const handleRowClick = (taskId: string) => {
-    router.push(`/projects/${projectId}/tasks/${taskId}`);
+  const handleRowClick = (approvalId: string) => {
+    router.push(`/projects/${projectId}/approvals/${approvalId}`);
   };
 
   return (

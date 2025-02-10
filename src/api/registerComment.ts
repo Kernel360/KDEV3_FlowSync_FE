@@ -6,7 +6,7 @@ export async function registerComment(
   projectId: number,
   requestData: any,
   questionId?: number,
-  taskId?: number,
+  approvalId?: number,
   parentId?: number,
 ) {
   const pathname =
@@ -16,8 +16,8 @@ export async function registerComment(
 
   if (pathname.includes("/questions")) {
     apiURL = `${BASE_URL}/projects/${projectId}/questions/${questionId}/comments`;
-  } else if (pathname.includes("/tasks")) {
-    apiURL = `${BASE_URL}/projects/${projectId}/approvals/${taskId}/comments`;
+  } else if (pathname.includes("/approvals")) {
+    apiURL = `${BASE_URL}/projects/${projectId}/approvals/${approvalId}/comments`;
   }
 
   if (parentId) {
