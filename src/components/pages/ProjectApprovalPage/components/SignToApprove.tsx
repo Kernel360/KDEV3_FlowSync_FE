@@ -118,21 +118,30 @@ export default function SignUpload({ signatureUrl }: SigntoUploadProps) {
       const response = await axiosInstance.post(
         `projects/${projectId}/approvals/${approvalId}/reject`,
       );
+      if (response.data.result === "SUCCESS") {
+        disableSignaturePad();
+        setIsignatureComplete(true);
+      }
+      // return response.data.result;
     } catch (error) {
       console.error(error);
     }
   };
 
-  const confirmArrroval = async () => {
+  const confirmArrroval = async () => { 
     try {
       const response = await axiosInstance.post(
         `projects/${projectId}/approvals/${approvalId}/confirm`,
       );
+      if (response.data.result === "SUCCESS") {
+        disableSignaturePad();
+        setIsignatureComplete(true);
+      }
+      // return response.data.result;
     } catch (error) {
       console.error(error);
     }
   };
-
 
   return (
     <Flex direction={"column"} align="center">
