@@ -113,7 +113,7 @@ export default function SignUpload({ signatureUrl }: SigntoUploadProps) {
     }
   };
 
-  const rejectArrroval = async () => {
+  const rejectApproval = async () => {
     try {
       const response = await axiosInstance.post(
         `projects/${projectId}/approvals/${approvalId}/reject`,
@@ -229,7 +229,7 @@ export default function SignUpload({ signatureUrl }: SigntoUploadProps) {
             <Button mr={3} onClick={saveSignature}>
               등록
             </Button>
-            <Button mr={3} backgroundColor={"red.200"} onClick={rejectArrroval}>
+            <Button mr={3} backgroundColor={"red.200"} onClick={rejectApproval}>
               승인 반려
             </Button>
             <DropDownInfoTop

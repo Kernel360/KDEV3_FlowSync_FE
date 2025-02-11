@@ -26,6 +26,11 @@ export default function CommentBox({
   const pathname = usePathname();
 
   const handleSave = async () => {
+    if (!commentText.trim()) {
+      alert("댓글을 입력하세요.");
+      return;
+    }
+
     try {
       const requestData = { content: commentText };
       let responseData: CommentApiResponse | undefined;

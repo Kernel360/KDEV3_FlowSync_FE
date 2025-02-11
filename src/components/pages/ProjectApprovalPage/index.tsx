@@ -31,6 +31,9 @@ export default function ProjectApprovalPage() {
   const [commentList, setCommentList] = useState<ArticleComment[]>([]);
   const [commentIsWritten, setCommentIsWritten] = useState<boolean>(false);
   const [signatureUrl, setSignatureUrl] = useState<string>("");
+
+  console.log(category)
+
   useEffect(() => {
     const loadApproval = async () => {
       try {

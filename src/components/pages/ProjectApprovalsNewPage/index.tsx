@@ -22,7 +22,7 @@ export default function ProjectApprovalsNewPage() {
   const router = useRouter();
   const [title, setTitle] = useState<string>("");
   const [category, setCategory] = useState<string>("");
-  console.log(category);
+  // console.log(category);
   const resolvedProjectId = Array.isArray(projectId)
     ? projectId[0]
     : projectId || "";

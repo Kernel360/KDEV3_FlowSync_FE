@@ -67,6 +67,20 @@ export async function deleteQuestionApi(
   }
 }
 
+// 결재글 수정
+export async function editApprovalAPI(
+  projectId: number,
+  approvalId: number,
+  requestData: ApprovalRequestData,
+) {
+  const response = await axiosInstance.post(
+    `projects/${projectId}/approvals/${approvalId}`,
+    requestData,
+  );
+  return response.data;
+}
+
+
 // 결재글 삭제
 export async function deleteApprovalApi(
   projectId: number,

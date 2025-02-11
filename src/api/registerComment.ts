@@ -1,6 +1,5 @@
 import axiosInstance from "@/src/api/axiosInstance";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export async function registerComment(
   projectId: number,
@@ -12,23 +11,23 @@ export async function registerComment(
   const pathname =
     typeof window !== "undefined" ? window.location.pathname : "";
 
-  let apiURL: string = "";
+  let apiPATH: string = "";
 
   if (pathname.includes("/questions")) {
-    apiURL = `${BASE_URL}/projects/${projectId}/questions/${questionId}/comments`;
+    apiPATH = `/projects/${projectId}/questions/${questionId}/comments`;
   } else if (pathname.includes("/approvals")) {
-    apiURL = `${BASE_URL}/projects/${projectId}/approvals/${approvalId}/comments`;
+    apiPATH = `/projects/${projectId}/approvals/${approvalId}/comments`;
   }
 
   if (parentId) {
-    apiURL += `/${parentId}/recomments`;
+    apiPATH += `/${parentId}/recomments`;
   }
 
-  if (!apiURL) {
+  if (!apiPATH) {
     throw new Error("API URL is not defined");
   }
 
-  const response = await axiosInstance.post(apiURL, requestData, {
+  const response = await axiosInstance.post(apiPATH, requestData, {
     headers: {
       "Content-Type": "application/json",
     },
