@@ -1,4 +1,4 @@
-import { Button, Textarea, Box } from "@chakra-ui/react";
+import { Button, Textarea, Box, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { registerComment } from "@/src/api/registerComment";
 import { useParams } from "next/navigation";
@@ -65,12 +65,14 @@ export default function CommentBox({
 
   return (
     <Box>
+      <Text color={"gray.400"}>{`${commentText.length} / 250`}</Text>
       <Textarea
         placeholder="댓글을 입력하세요."
         onChange={(e) => setCommentText(e.target.value)}
         value={commentText}
+        maxLength={250}
       />
-      <Button mt={2} colorScheme="blue" onClick={handleSave}>
+      <Button mt={2} colorScheme="blue" onClick={handleSave} mr={4}>
         댓글 작성
       </Button>
     </Box>
