@@ -2,7 +2,7 @@
 "use client";
 
 // 외부 라이브러리
-import { Box, VStack, Flex } from "@chakra-ui/react";
+import { Box, VStack, Flex, Text } from "@chakra-ui/react";
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -25,6 +25,7 @@ export default function ProjectApprovalPage() {
   const router = useRouter();
 
   const [article, setArticle] = useState<ApprovalArticle | null>(null);
+  const [category, setCategory] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [commentList, setCommentList] = useState<ArticleComment[]>([]);
@@ -38,6 +39,7 @@ export default function ProjectApprovalPage() {
           Number(approvalId),
         );
         setArticle(responseData);
+        setCategory(responseData.category);
         setCommentList(responseData.commentList ?? []);
         setSignatureUrl(responseData.register.signatureUrl);
       } catch (err) {
@@ -94,7 +96,15 @@ export default function ProjectApprovalPage() {
         <DropDownMenu onEdit={handleEdit} onDelete={handleDelete} />
       </Flex>
       {/* 게시글 내용 */}
-
+      {category === "NORMAL_REQUEST" ? (
+        <Text fontSize={"xl"} fontWeight={"bold"} color={"blue"} mb={2}>
+          일반 요청
+        </Text>
+      ) : (
+        <Text fontSize={"xl"} fontWeight={"bold"} color={"red"} mb={2}>
+          진행단계 완료 요청
+        </Text>
+      )}
       <ArticleContent article={article} />
 
       <Box display={"flex"} justifyContent={"center"}>
