@@ -21,8 +21,8 @@ export default function SignToApprove({
   };
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [signaturePad, setSignaturePad] = useState<SignaturePad | null>(null);
-  const [yourSignatureUrl, setYourSignatureUrl] = useState<string>(""); // 결재자 사인 url
-  const [isSignatureComplete, setIsignatureComplete] = useState<boolean>(false);
+  const [yourSignatureUrl, setYourSignatureUrl] = useState<string>(approverSignatureUrl ?? ""); // 결재자 사인 url
+  const [isSignatureComplete, setIsignatureComplete] = useState<boolean>(!!approverSignatureUrl);
 
   // console.log(yourSignatureUrl)
 
