@@ -344,13 +344,19 @@ export interface ApprovalArticle {
     organizationName: string;
     organizationType: string;
     signatureUrl: string;
-  }
+  };
+  approver: {
+    role: string;
+    name: string;
+    organizationId: number;
+    organizationName: string;
+    organizationType: string;
+    signatureUrl: string;
+  };
   fileList: ArticleFile[];
   linkList: ArticleLink[];
   commentList: ArticleComment[];
 }
-
-
 
 export interface NoticeArticle {
   id: string;

@@ -30,9 +30,10 @@ export default function ProjectApprovalPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [commentList, setCommentList] = useState<ArticleComment[]>([]);
   const [commentIsWritten, setCommentIsWritten] = useState<boolean>(false);
-  const [signatureUrl, setSignatureUrl] = useState<string>("");
+  const [registerSignatureUrl, setRegisterSignatureUrl] = useState<string>("");
+  const [approverSignatureUrl, setApproverSignatureUrl] = useState<string>("");
 
-  console.log(category)
+  console.log(category);
 
   useEffect(() => {
     const loadApproval = async () => {
@@ -44,7 +45,8 @@ export default function ProjectApprovalPage() {
         setArticle(responseData);
         setCategory(responseData.category);
         setCommentList(responseData.commentList ?? []);
-        setSignatureUrl(responseData.register.signatureUrl);
+        setRegisterSignatureUrl(responseData.register.signatureUrl);
+        setApproverSignatureUrl(responseData.approver?.signatureUrl);
       } catch (err) {
         setError(
           err instanceof Error
@@ -111,7 +113,7 @@ export default function ProjectApprovalPage() {
       <ArticleContent article={article} />
 
       <Box display={"flex"} justifyContent={"center"}>
-        <SignToApprove signatureUrl={signatureUrl} />
+        <SignToApprove registerSignatureUrl={registerSignatureUrl} approverSignatureUrl={approverSignatureUrl} />
       </Box>
 
       {/* 댓글 섹션 */}

@@ -7,10 +7,14 @@ import DropDownInfoTop from "@/src/components/common/DropDownInfoTop";
 import axiosInstance from "@/src/api/axiosInstance";
 
 interface SigntoUploadProps {
-  signatureUrl: string; // 요청자 사인 url
+  registerSignatureUrl: string; // 요청자 사인 url
+  approverSignatureUrl?: string;
 }
 
-export default function SignUpload({ signatureUrl }: SigntoUploadProps) {
+export default function SignToApprove({
+  registerSignatureUrl,
+  approverSignatureUrl,
+}: SigntoUploadProps) {
   const { projectId, approvalId } = useParams() as {
     projectId: string;
     approvalId: string;
@@ -24,10 +28,15 @@ export default function SignUpload({ signatureUrl }: SigntoUploadProps) {
 
   // 캔버스 초기화
   useEffect(() => {
+    if (approverSignatureUrl) {
+      setIsignatureComplete(true); // 서명이 이미 존재하면 다시 입력할 수 없도록 설정
+      setYourSignatureUrl(approverSignatureUrl); // 서명 이미지도 업데이트
+    }
+
     if (canvasRef.current) {
       setSignaturePad(new SignaturePad(canvasRef.current));
     }
-  }, []);
+  }, [approverSignatureUrl]);
 
   // 서명 지우기
   const clearSignature = () => {
@@ -113,6 +122,7 @@ export default function SignUpload({ signatureUrl }: SigntoUploadProps) {
     }
   };
 
+  // 승인 반려
   const rejectApproval = async () => {
     try {
       const response = await axiosInstance.post(
@@ -128,7 +138,8 @@ export default function SignUpload({ signatureUrl }: SigntoUploadProps) {
     }
   };
 
-  const confirmArrroval = async () => { 
+  // 승인
+  const confirmArrroval = async () => {
     try {
       const response = await axiosInstance.post(
         `projects/${projectId}/approvals/${approvalId}/confirm`,
@@ -161,8 +172,13 @@ export default function SignUpload({ signatureUrl }: SigntoUploadProps) {
         </Flex>
         <Flex direction={"row"}>
           <Box border={"2px solid black"} borderRadius={"10px"} mr="20px">
-            {signatureUrl ? (
-              <Image width={250} height={166.6} src={signatureUrl} alt="서명" />
+            {registerSignatureUrl ? (
+              <Image
+                width={250}
+                height={166.6}
+                src={registerSignatureUrl}
+                alt="서명"
+              />
             ) : (
               <Text
                 display="flex"
