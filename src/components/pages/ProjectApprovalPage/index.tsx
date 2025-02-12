@@ -83,7 +83,6 @@ export default function ProjectApprovalPage() {
       alert(`삭제 중 문제가 발생했습니다 : ${error}`);
     }
   };
-
   return (
     <Box
       maxW="1000px"

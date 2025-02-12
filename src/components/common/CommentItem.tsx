@@ -64,8 +64,8 @@ export default function CommentItem({
         const filteredComment = responseData.commentList.find(
           (comment: { id: number }) => comment.id === commentId,
         );
-        console.log(filteredComment);
-        return filteredComment;
+        console.log(filteredComment?.content);
+        return filteredComment?.content;
       } else if (pathname.includes("/approvals") && approvalId) {
         const responseData = await readApprovalApi(
           Number(projectId),
@@ -88,6 +88,7 @@ export default function CommentItem({
     setEditedContent(
       typeof existingContent === "string" ? existingContent : "",
     );
+    // console.log(existingContent)
     setIsEditing(true);
   };
 

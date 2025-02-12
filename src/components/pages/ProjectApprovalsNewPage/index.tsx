@@ -21,7 +21,7 @@ export default function ProjectApprovalsNewPage() {
   const { projectId } = useParams();
   const router = useRouter();
   const [title, setTitle] = useState<string>("");
-  const [category, setCategory] = useState<string>("");
+  const [category, setCategory] = useState<string>("NORMAL_REQUEST");
   // console.log(category);
   const resolvedProjectId = Array.isArray(projectId)
     ? projectId[0]
@@ -69,7 +69,7 @@ export default function ProjectApprovalsNewPage() {
       alert("저장 중 문제가 발생했습니다.");
     }
   };
-  console.log(progressStepId);
+
   return (
     <Box
       maxW="1000px"
@@ -90,7 +90,12 @@ export default function ProjectApprovalsNewPage() {
         progressStepId={progressStepId ?? 0}
       >
         <Box>
-          <Box display={"flex"} flexDirection={"row"} alignItems={"center"} gap={2}>
+          <Box
+            display={"flex"}
+            flexDirection={"row"}
+            alignItems={"center"}
+            gap={2}
+          >
             <Text>요청 종류</Text>
             <DropDownInfoTop text="완료 요청은 해당 단계의 마지막 결재 글입니다." />
           </Box>
