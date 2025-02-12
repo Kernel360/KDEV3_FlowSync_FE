@@ -67,16 +67,13 @@ export default function ArticleForm({
     initializeEditor(initialContent);
 
     return () => {
-<<<<<<< HEAD
-      if (editorRef.current && typeof editorRef.current.destroy === "function") {
-          editorRef.current.destroy();
-=======
+
       if (
         editorRef.current &&
         typeof editorRef.current.destroy === "function"
       ) {
         editorRef.current.destroy();
->>>>>>> main
+
       }
       editorRef.current = null;
   };
