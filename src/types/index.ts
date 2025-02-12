@@ -463,7 +463,7 @@ export interface UserInfoResponse {
 
 export interface BaseArticleRequestData {
   title: string;
-  progressStepId: number;
+  progressStepId?: number;
   content: { type: string; data: string | { src: string } }[];
   linkList: { name: string; url: string }[];
   fileInfoList: {
