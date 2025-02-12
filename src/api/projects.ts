@@ -37,6 +37,7 @@ export async function fetchProjectInfoApi(projectId: string) {
   const response = await axiosInstance.get(
     `/projects/${projectId}/projectInfo`,
   );
+  console.log(response.data)
   return response.data;
 }
 
