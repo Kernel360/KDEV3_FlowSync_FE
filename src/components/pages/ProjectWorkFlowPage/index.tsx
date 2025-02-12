@@ -1,17 +1,17 @@
 "use client";
 
+import { useParams } from "next/navigation";
 import { ProjectLayout } from "@/src/components/layouts/ProjectLayout";
-import GuideButton from "@/src/components/common/GuideButton";
+import ProjectsManagementStepCards from "@/src/components/pages/ProjectWorkFlowPage/components/ProjectManagementStepCards";
+import { ProjectInfoProvider } from "@/src/context/ProjectInfoContext";
 
 export default function ProjectWorkFlowPage() {
+  const { projectId } = useParams();
   return (
-    <ProjectLayout>
-      프로젝트 진척관리 페이지
-      <GuideButton
-        label="도움말"
-        guideText="* 이 페이지는 추후 개발이 진행될 예정입니다. 참고 부탁드립니다"
-        position={{ top: "20%", right: "20%" }}
-      />
-    </ProjectLayout>
+    <ProjectInfoProvider projectId={projectId as string}>
+      <ProjectLayout>
+        <ProjectsManagementStepCards title={"관리 단계 변경"} />
+      </ProjectLayout>
+    </ProjectInfoProvider>
   );
 }

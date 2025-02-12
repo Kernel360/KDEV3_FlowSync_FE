@@ -29,13 +29,13 @@ const icons = [
   <OctagonX key="7" size="60%" color="black" />,
 ];
 
-interface ProjectsStatusCardsProps {
+interface ProjectsManagementStepCardsProps {
   title: string;
 }
 // 프로젝트 현황을 하나 보여주는 카드
-export default function ProjectsStatusCards({
+export default function ProjectsManagementStepCards({
   title,
-}: ProjectsStatusCardsProps) {
+}: ProjectsManagementStepCardsProps) {
   const {
     data: managementStepsCountData,
     loading: managementStepsCountLoading,
