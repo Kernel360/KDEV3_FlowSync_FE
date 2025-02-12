@@ -69,7 +69,7 @@ export default function CommentItem({
         const filteredComment = responseData.commentList.find(
           (comment: { id: number }) => comment.id === commentId,
         );
-        // console.log(filteredComment?.content);
+
         return filteredComment?.content;
       } else if (pathname.includes("/approvals") && approvalId) {
         const responseData = await readApprovalApi(
@@ -79,7 +79,6 @@ export default function CommentItem({
         const filteredComment = responseData.commentList.find(
           (comment: { id: number }) => comment.id === commentId,
         );
-        // console.log(filteredComment?.content);
         return filteredComment?.content;
       }
     } catch (error) {
@@ -89,7 +88,6 @@ export default function CommentItem({
   };
 
   const handleEdit = async (commentId: number) => {
-    console.log("수정 버튼 클릭 - 댓글 ID:", commentId);
 
     const existingContent = await fetchComment(commentId);
     setEditedContent(
@@ -146,6 +144,7 @@ export default function CommentItem({
         );
       }
       setCommentIsWritten((prev) => !prev);
+
     } catch (error) {
       console.log(error);
     }
@@ -153,8 +152,10 @@ export default function CommentItem({
 
   const handleCancel = () => {
     setIsEditing(false);
+
     setEditedContent(comment.content);
   };
+
 
   return (
     <Box
@@ -194,7 +195,9 @@ export default function CommentItem({
               p={2}
               zIndex={10}
             >
+
               {isEditing ? (
+
                 ""
               ) : (
                 <Button size="xs" onClick={() => handleEdit(comment.id)}>
@@ -211,6 +214,7 @@ export default function CommentItem({
 
       {isEditing && (
         <Box>
+
           <Button
             mt={2}
             mr={2}
@@ -223,6 +227,7 @@ export default function CommentItem({
           <Button mt={2} size="xs" colorScheme="blue" onClick={handleCancel}>
             취소
           </Button>
+
         </Box>
       )}
 
