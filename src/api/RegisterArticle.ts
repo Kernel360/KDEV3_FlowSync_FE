@@ -44,7 +44,7 @@ export async function editQuestionAPI(
   questionId: number,
   requestData: QuestionRequestData,
 ) {
-  const response = await axiosInstance.post(
+  const response = await axiosInstance.put(
     `projects/${projectId}/questions/${questionId}`,
     requestData,
   );
@@ -73,7 +73,7 @@ export async function editApprovalAPI(
   approvalId: number,
   requestData: ApprovalRequestData,
 ) {
-  const response = await axiosInstance.post(
+  const response = await axiosInstance.put(
     `projects/${projectId}/approvals/${approvalId}`,
     requestData,
   );
