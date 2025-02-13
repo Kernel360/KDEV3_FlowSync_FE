@@ -10,6 +10,7 @@ import {
   ProjectListSidebarResponse,
   ProjectInfoProps,
   ManagementStepCountMap,
+  ProgressStep,
 } from "@/src/types";
 
 
