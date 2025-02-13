@@ -27,8 +27,7 @@ interface SidebarTabProps {
 
 // 관리자 메뉴 항목
 const ADMIN_MENU_ITEMS = [
-  { value: "/", title: "홈", icon: Home },
-  { value: "/projects", title: "프로젝트 관리", icon: Briefcase },
+  { value: "/", title: "프로젝트 관리", icon: Briefcase },
   { value: "/admin/organizations", title: "업체 관리", icon: Building },
   { value: "/admin/members", title: "회원 관리", icon: Users },
   { value: "/notices", title: "공지사항 관리", icon: Bell },
