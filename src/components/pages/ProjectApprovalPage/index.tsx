@@ -32,8 +32,7 @@ export default function ProjectApprovalPage() {
   const [commentIsWritten, setCommentIsWritten] = useState<boolean>(false);
   const [registerSignatureUrl, setRegisterSignatureUrl] = useState<string>("");
   const [approverSignatureUrl, setApproverSignatureUrl] = useState<string>("");
-
-  console.log(category);
+  const [registerOrgId, setRegisterOrgId] = useState<number>(); // 자기 업체 글인지 확인
 
   useEffect(() => {
     const loadApproval = async () => {
@@ -47,6 +46,7 @@ export default function ProjectApprovalPage() {
         setCommentList(responseData.commentList ?? []);
         setRegisterSignatureUrl(responseData.register.signatureUrl);
         setApproverSignatureUrl(responseData.approver?.signatureUrl);
+        setRegisterOrgId(responseData.register.organizationId);
       } catch (err) {
         setError(
           err instanceof Error
@@ -127,6 +127,7 @@ export default function ProjectApprovalPage() {
         <SignToApprove
           registerSignatureUrl={registerSignatureUrl}
           approverSignatureUrl={approverSignatureUrl}
+          registerOrgId={registerOrgId}
         />
       </Box>
 
