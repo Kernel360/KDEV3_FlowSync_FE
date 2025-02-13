@@ -171,11 +171,18 @@ export interface ProjectInfoProps {
 export interface ProjectProps {
   id: string; // 프로젝트 ID
   name: string; // 프로젝트 이름
-  status: string; // 계약 단계
-  startAt: string; // 시작일시
+  description: string;
+  managementStep: string;
+  regAt: string; // 등록일
+  updateAt: string; // 수정일
+  startAt: string; // 시작일
+  deadlineAt: string; // 예정 마감일
   closeAt: string; // 마감일시
-  customerName: string; // 고객사 이름
+  deletedYn: string; // 삭제여부
+  devOwnerId: string; // 개발사 대표 담당자 ID
   developerName: string; // 개발사 이름
+  customerName: string; // 고객사 이름
+  clickable: number; // 클릭 가능 여부
 }
 
 // 프로젝트 상세 조회
@@ -200,32 +207,84 @@ export interface ProjectListResponse {
   meta: PaginationProps; // 페이지네이션 메타 정보
 }
 
-// 프로젝트 기본 정보
-export interface ProjectInfoProps {
-  projectTitle: string; // 프로젝트명
-  jobRole: string; // 직무
-  profileImageUrl: string; // 프로필 이미지 URL
-  name: string; // 담당자 이름
-  jobTitle: string; // 직급
-  phoneNum: string; // 담당자 연락처
-  projectStartAt: string; // 프로젝트 시작일
-  projectCloseAt: string; // 프로젝트 종료일
+export interface ProjectSidebarProps {
+  id: string;
+  name: string;
+  clickable: string;
+}
+export interface ProjectListSidebarResponse {
+  projects: ProjectSidebarProps[];
+  meta: PaginationProps; // 페이지네이션 메타 정보
 }
 
-// 결재글 속성
+// 프로젝트 기본 정보
+export interface ProjectInfoProps {
+  id: string;
+  projectName: string; // 프로젝트명
+  description: string; // 설명
+  managementStep: string; // 관리단계
+  developerOrgName: string; // 개발사명
+  developerOwnerName: string; // 개발사 대표 담당자 이름
+  developerProfileImageUrl: string; // 개발사 대표 담당자 이미지 URL
+  developerJobRole: string; // 개발사 직무
+  developerJobTitle: string; // 개발사 직급
+  developerPhoneNum: string; // 개발사 대표담당자 번호
+  customerOrgName: string; // 고객사 이름
+  customerOwnerName: string; // 고객사 대표담당자 이름
+  customerProfileImageUrl: string; //고객사 이미지 URL
+  customerJobRole: string; // 고객사 직무
+  customerJobTitle: string; // 고객사
+  customerPhoneNum: string; // 고객사 대표담당자 번호
+  startAt: string; // 시작일
+  deadlineAt: string; // 마감일
+  closeAt: string; // 종료일
+}
+
+export interface ProgressStep {
+  id: string;
+  name: string;
+  description: string;
+  stepOrder: string;
+  status: string;
+  startAt: string;
+  closeAt: string;
+  deadlineAt: string;
+  projectId: string;
+  relatedApprovalId: string;
+}
+
+export interface Register {
+  id: string;
+  role: string;
+  name: string;
+  organizationId: string;
+  organizationName: string;
+  organizationType: string;
+}
+
+export interface Approver {
+  id: string;
+  role: string;
+  name: string;
+  organizationId: string;
+  organizationName: string;
+  organizationType: string;
+}
+
+// 결재글 목록 속성
 export interface ProjectApprovalProps {
   id: string;
-  number: number;
+  projectId: string;
+  progressStep: ProgressStep;
   title: string;
-  content: string;
+  status: string; // 결제 상태 WAIT, APPROVED, REJECTED
+  category: string; // 결제 유형 COMPLETE_REQUEST, NORMAL_REQUEST
+  register: Register;
   regAt: string;
-  editAt: string;
-  approveAt: string;
-  category: string; // 진행단계
-  status: string; // 게시글 유형
-  deletedYn: string;
-  currentPage: number; // 현재 페이지
-  pageSize: number; // 페이지 크기
+  updatedAt: string;
+  approvedAt: string;
+  approver: Approver;
+  deleted: boolean;
 }
 
 export interface ProjectApprovalListResponse {
@@ -233,20 +292,16 @@ export interface ProjectApprovalListResponse {
   meta: PaginationProps; // 페이지네이션 메타 정보
 }
 
-// 질문글 속성
+// 질문글 목록 속성
 export interface ProjectQuestionProps {
   id: string;
-  number: number;
   title: string;
-  content: string;
-  regAt: string;
-  editAt: string;
-  approveAt: string;
-  category: string; // 진행단계
-  status: string; // 게시글 유형
-  deletedYn: string;
-  currentPage: number; // 현재 페이지
-  pageSize: number; // 페이지 크기
+  progressStep: ProgressStep;
+  category: string; // QUESTION, ANSWER
+  status: string; // WAIT, COMPLETED
+  createdDate: string;
+  register: Register;
+  projectId: string;
 }
 
 export interface ProjectQuestionListResponse {
@@ -348,6 +403,22 @@ export interface ApprovalArticle {
   status: string;
   deletedYn: string;
   author: string;
+  register: {
+    role: string;
+    name: string;
+    organizationId: number;
+    organizationName: string;
+    organizationType: string;
+    signatureUrl: string;
+  };
+  approver: {
+    role: string;
+    name: string;
+    organizationId: number;
+    organizationName: string;
+    organizationType: string;
+    signatureUrl: string;
+  };
   fileList: ArticleFile[];
   linkList: ArticleLink[];
   commentList: ArticleComment[];
@@ -359,7 +430,7 @@ export interface NoticeArticle {
   content: ContentBlock[];
   category: string;
   priority: string;
-  isDeleted: boolean;
+  isDeleted: string;
   regAt: string;
   updatedAt: string;
   fileList: ArticleFile[];
@@ -437,7 +508,8 @@ export interface ProjectProgressStepProps {
   id: string;
   title: string;
   value: string;
-  count?: number;
+  count: number;
+  status: string;
 }
 
 export interface UserInfoResponse {
@@ -457,6 +529,7 @@ export interface UserInfoResponse {
 
 export interface BaseArticleRequestData {
   title: string;
+  progressStepId?: number;
   content: { type: string; data: string | { src: string } }[];
   linkList: { name: string; url: string }[];
   fileInfoList: {
@@ -478,4 +551,12 @@ export interface ApprovalRequestData extends BaseArticleRequestData {
 export interface NoticeRequestData extends BaseArticleRequestData {
   category?: string;
   priority?: string;
+}
+
+export interface ManagementStepCountMap {
+  IN_PROGRESS: number;
+  MAINTENANCE: number;
+  PAUSED: number;
+  COMPLETED: number;
+  CONTRACT: number;
 }

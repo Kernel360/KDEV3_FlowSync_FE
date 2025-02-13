@@ -7,6 +7,9 @@ import {
   ProjectApprovalListResponse,
   ProjectDetailProps,
   CreateProjectInput,
+  ProjectListSidebarResponse,
+  ProjectInfoProps,
+  ManagementStepCountMap,
 } from "@/src/types";
 
 /**
@@ -77,12 +80,12 @@ export async function deleteProjectApi(
  */
 export async function fetchProjectListApi(
   keyword: string = "",
-  status: string = "",
+  managementStep: string = "",
   currentPage: number,
   pageSize: number,
 ): Promise<CommonResponseType<ProjectListResponse>> {
   const response = await axiosInstance.get("/projects", {
-    params: { keyword, status, currentPage, pageSize },
+    params: { keyword, managementStep, currentPage, pageSize },
   });
 
   return response.data;
@@ -101,15 +104,30 @@ export async function fetchProjectDetailsApi(
   return response.data.data;
 }
 
+export async function fetchProjectListSidebarApi(
+  managementStep: string = "",
+  currentPage: number,
+  pageSize: number,
+): Promise<CommonResponseType<ProjectListSidebarResponse>> {
+  const response = await axiosInstance.get("/projects/management-steps", {
+    params: { managementStep, currentPage, pageSize },
+  });
+
+  return response.data;
+}
+
 /**
  * (고객사/개발사/관리자 공통 페이지) 특정 프로젝트의 요약 정보를 가져옵니다.
  * @param projectId 프로젝트 식별자
  * @returns 프로젝트 상세 정보
  */
-export async function fetchProjectInfoApi(projectId: string) {
+export async function fetchProjectInfoApi(
+  projectId: string,
+): Promise<CommonResponseType<ProjectInfoProps>> {
   const response = await axiosInstance.get(
-    `/projects/${projectId}/projectInfo`,
+    `/projects/${projectId}/project-info`,
   );
+  console.log(response.data);
   return response.data;
 }
 
@@ -141,13 +159,40 @@ export async function fetchProjectApprovalProgressStepApi(
   return response.data;
 }
 
+// 프로젝트 단계 정보
+export async function projectProgressStepApi(projectId: string) {
+  const response = await axiosInstance.get(
+    `/projects/${projectId}/progress-steps`,
+  );
+  return response.data;
+}
+
+// 프로젝트 관리 단계 수정
+export async function projectManagementStepApi(
+  projectId: string,
+  managementStep: string,
+) {
+  const response = await axiosInstance.put(
+    `/projects/${projectId}/management-steps`,
+    {},
+    {
+      params: { managementStep },
+    },
+  );
+  return response.data;
+}
+
 /**
- * 전체 프로젝트 상태 요약 정보를 가져옵니다.
- * 예: 진행 중, 완료 등 상태별 프로젝트 수
- * @returns 프로젝트 상태 요약 정보
+ * 프로젝트 관리단계별 개수를 가져옵니다.
+ * 예: 진행 중, 완료 등 관리단계별 프로젝트 수
+ * @returns 프로젝트 관리단계 개수 정보
  */
-export async function fetchProjectsStatusCount() {
-  const response = await axiosInstance.get("/projects/status-summary");
+export async function fetchProjectsManagementStepsCountApi(): Promise<
+  CommonResponseType<{
+    managementStepCountMap: ManagementStepCountMap;
+  }>
+> {
+  const response = await axiosInstance.get("/projects/management-steps/count");
   return response.data;
 }
 
