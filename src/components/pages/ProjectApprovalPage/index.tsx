@@ -31,8 +31,8 @@ export default function ProjectApprovalPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [commentList, setCommentList] = useState<ArticleComment[]>([]);
   const [commentIsWritten, setCommentIsWritten] = useState<boolean>(false);
-  const [registerSignatureUrl, setRegisterSignatureUrl] = useState<string>("");
-  const [approverSignatureUrl, setApproverSignatureUrl] = useState<string>("");
+  const [registerSignatureUrl, setRegisterSignatureUrl] = useState<string>();
+  const [approverSignatureUrl, setApproverSignatureUrl] = useState<string>();
   const [registerOrgId, setRegisterOrgId] = useState<number>(); // 자기 업체 글인지 확인
 
   useEffect(() => {
@@ -69,17 +69,18 @@ export default function ProjectApprovalPage() {
     return <Box>로딩 중...</Box>;
   }
 
+  console.log(approverSignatureUrl)
   const handleEdit = () => {
-    if (approverSignatureUrl !== "") {
+    if (approverSignatureUrl !== undefined) {
       alert("결재가 완료된 글은 수정할 수 없습니다.");
       return;
     }
-
+  
     router.push(`/projects/${projectId}/approvals/${approvalId}/edit`);
   };
 
   const handleDelete = async () => {
-    if (approverSignatureUrl !== "") {
+    if (approverSignatureUrl !== undefined) {
       alert("결재가 완료된 글은 삭제할 수 없습니다.");
       return;
     }

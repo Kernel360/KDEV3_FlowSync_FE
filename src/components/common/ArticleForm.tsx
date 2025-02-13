@@ -58,6 +58,7 @@ export default function ArticleForm({
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFilesProps[]>([]);
   const [uploadedFileSize, setUploadedFileSize] = useState<number[]>([]);
   const [isDisabled, setisDisabled] = useState<boolean>(false);
+  const [isSignYes, setIsSignYes] = useState<boolean>(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -167,6 +168,10 @@ export default function ArticleForm({
         }
         if (content.length === 0) {
           window.alert("내용을 입력하세요.");
+          return;
+        }
+        if (isSignYes === false) {
+          window.alert("서명을 입력하세요")
           return;
         }
 
@@ -321,7 +326,7 @@ export default function ArticleForm({
             />
           </Box>
           <Box display={"flex"} justifyContent={"center"}>
-            <SignUpload />
+            <SignUpload setIsSignYes={setIsSignYes} />
           </Box>
         </Box>
       )}
