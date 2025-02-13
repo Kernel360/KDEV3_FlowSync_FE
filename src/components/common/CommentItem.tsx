@@ -208,7 +208,7 @@ export default function CommentItem({
               {isEditing ? (
                 ""
               ) : (
-                <Button size="xs" onClick={() => handleEdit(comment.id)}>
+                <Button size="xs" mr={2} onClick={() => handleEdit(comment.id)}>
                   수정
                 </Button>
               )}
