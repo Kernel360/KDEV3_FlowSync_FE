@@ -32,7 +32,7 @@ export async function deleteApprovalComment(
     const response = await axiosInstance.delete(
       `${BASE_URL}/projects/${projectId}/approvals/${approvalId}/comments/${commentId}`,
     );
-    console.log(projectId, approvalId, commentId)
+
     console.log(response.data);
     return response.data;
   } catch (error) {

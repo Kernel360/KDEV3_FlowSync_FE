@@ -88,6 +88,7 @@ export default function CommentItem({
   };
 
   const handleEdit = async (commentId: number) => {
+
     const existingContent = await fetchComment(commentId);
     setEditedContent(
       typeof existingContent === "string" ? existingContent : "",
@@ -100,7 +101,9 @@ export default function CommentItem({
       alert("댓글 내용을 입력하세요.");
       return;
     }
+
     const requestData = { content: editedContent };
+
     try {
       if (pathname.includes("/questions") && questionId) {
         const responseData = await editQuestionComment(
@@ -143,6 +146,7 @@ export default function CommentItem({
         );
       }
       setCommentIsWritten((prev) => !prev);
+
     } catch (error) {
       console.log(error);
     }
@@ -150,7 +154,6 @@ export default function CommentItem({
 
   const handleCancel = () => {
     setIsEditing(false);
-
     setEditedContent(comment.content);
   };
 
@@ -206,6 +209,7 @@ export default function CommentItem({
               zIndex={10}
             >
               {isEditing ? (
+
                 ""
               ) : (
                 <Button size="xs" mr={2} onClick={() => handleEdit(comment.id)}>
@@ -222,6 +226,7 @@ export default function CommentItem({
 
       {isEditing && (
         <Box>
+
           <Button
             mt={2}
             mr={2}
@@ -234,6 +239,7 @@ export default function CommentItem({
           <Button mt={2} size="xs" colorScheme="blue" onClick={handleCancel}>
             취소
           </Button>
+
         </Box>
       )}
 

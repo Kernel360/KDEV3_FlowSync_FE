@@ -2,7 +2,7 @@
 "use client";
 
 // 외부 라이브러리
-import { Box, VStack, Flex, Text, Separator } from "@chakra-ui/react";
+import { Box, VStack, Flex, Text } from "@chakra-ui/react";
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -71,16 +71,18 @@ export default function ProjectApprovalPage() {
 
   console.log(approverSignatureUrl)
   const handleEdit = () => {
+
     if (approverSignatureUrl !== undefined) {
       alert("결재가 완료된 글은 수정할 수 없습니다.");
       return;
     }
-  
     router.push(`/projects/${projectId}/approvals/${approvalId}/edit`);
   };
 
   const handleDelete = async () => {
+
     if (approverSignatureUrl !== undefined) {
+
       alert("결재가 완료된 글은 삭제할 수 없습니다.");
       return;
     }

@@ -8,14 +8,11 @@ import { Box } from "@chakra-ui/react";
 import BackButton from "@/src/components/common/BackButton";
 import ArticleForm from "@/src/components/common/ArticleForm";
 import { createQuestionApi } from "@/src/api/RegisterArticle";
-import { QuestionRequestData } from "@/src/types";
+import { ProgressStep, QuestionRequestData } from "@/src/types";
 import { projectProgressStepApi } from "@/src/api/projects";
-import { useProjectApprovalProgressStepData } from "@/src/hook/useFetchData";
 import { useFetchData } from "@/src/hook/useFetchData";
 import FormSelectInput from "@/src/components/common/FormSelectInput";
 import "@/src/components/pages/ProjectQuestionsNewPage/edit.css";
-import ErrorAlert from "@/src/components/common/ErrorAlert";
-import { Loading } from "@/src/components/common/Loading";
 
 export default function ProjectQuestionsNewPage() {
   const { projectId } = useParams();
@@ -27,31 +24,28 @@ export default function ProjectQuestionsNewPage() {
     : projectId || "";
 
   // ProgressStep 데이터 패칭
-  const { data: progressStepData } = useFetchData<
-    { id: number; name: string }[],
-    [string]
-  >({
+  const { data: progressStepData } = useFetchData<ProgressStep[], [string]>({
     fetchApi: projectProgressStepApi,
     params: [resolvedProjectId],
   });
 
-
   const progressStepOptions = progressStepData
-  ? progressStepData.map((step) => ({
-      id: step.id, // key 값
-      title: step.name, // 사용자에게 보이는 텍스트
-      value: String(step.id), // select 요소에서 사용할 값
-    }))
-  : [];
+    ? progressStepData.map((step) => ({
+        id: Number(step.id), // key 값
+        title: step.name, // 사용자에게 보이는 텍스트
+        value: String(step.id), // select 요소에서 사용할 값
+      }))
+    : [];
 
-  const [progressStepId, setProgressStepId] = useState<number | undefined>(undefined);
+  const [progressStepId, setProgressStepId] = useState<number | undefined>(
+    undefined,
+  );
 
   useEffect(() => {
-      if (progressStepOptions.length > 0 && progressStepId === undefined) {
-        setProgressStepId(progressStepOptions[0].id);
-      }
-    }, [progressStepOptions]);
-  
+    if (progressStepOptions.length > 0 && progressStepId === undefined) {
+      setProgressStepId(progressStepOptions[0].id);
+    }
+  }, [progressStepOptions]);
 
   const handleSave = async <T extends QuestionRequestData>(requestData: T) => {
     try {
@@ -69,7 +63,6 @@ export default function ProjectQuestionsNewPage() {
     }
   };
 
-
   return (
     <Box
       maxW="1000px"
@@ -83,8 +76,12 @@ export default function ProjectQuestionsNewPage() {
     >
       <BackButton />
 
-      <ArticleForm title={title} setTitle={setTitle} handleSave={handleSave} progressStepId={progressStepId ?? 0}>
-       
+      <ArticleForm
+        title={title}
+        setTitle={setTitle}
+        handleSave={handleSave}
+        progressStepId={progressStepId ?? 0}
+      >
         <FormSelectInput
           label="진행 단계"
           selectedValue={progressStepId}

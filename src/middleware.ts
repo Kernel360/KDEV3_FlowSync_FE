@@ -80,7 +80,7 @@ async function validateAndRefreshTokens(
       }
     }
   } catch (error: any) {
-    if (error.response?.status === 401) {
+    if (error.response?.status === 401 || error.response?.status === 403) {
       console.warn("🔄 Access Token 만료 → Refresh Token 사용 시도");
     } else {
       console.error("❌ AccessToken 검증 중 오류 발생:", error.message);
@@ -110,17 +110,13 @@ async function validateAndRefreshTokens(
           return { userInfo: userInfoResponse.data, response };
         }
       } else {
+        console.warn("❌ Refresh Token 없음 → 로그인 페이지로 이동");
         return { response };
       }
     }
   } catch (error: any) {
     console.error("❌ Refresh Token 사용 중 오류 발생:", error.message);
     clearCookies(response);
-  }
-
-  if (!refreshToken) {
-    console.warn("❌ Refresh Token 없음 → 로그인 페이지로 이동");
-    return { response };
   }
 
   try {

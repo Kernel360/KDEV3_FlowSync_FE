@@ -69,14 +69,16 @@ export default function ArticleForm({
     initializeEditor(initialContent);
 
     return () => {
+
       if (
         editorRef.current &&
         typeof editorRef.current.destroy === "function"
       ) {
         editorRef.current.destroy();
+
       }
       editorRef.current = null;
-    };
+  };
   }, []);
 
   const initializeEditor = (content: any[] = []) => {

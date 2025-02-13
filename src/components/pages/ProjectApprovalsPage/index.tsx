@@ -161,7 +161,15 @@ export default function ProjectApprovalsPage() {
           data={projectApprovalList}
           loading={projectApprovalLoading}
           renderRow={(approval) => (
-            <>
+            <Table.Row
+              key={approval.id}
+              onClick={() => handleRowClick(approval.id)}
+              css={{
+                cursor: "pointer",
+                "&:hover": { backgroundColor: "#f5f5f5" },
+                "& > td": { textAlign: "center" },
+              }}
+            >
               <Table.Cell>{approval.progressStep.name}</Table.Cell>
               <Table.Cell>
                 <StatusTag>{approval.category}</StatusTag>
@@ -178,9 +186,8 @@ export default function ProjectApprovalsPage() {
                 {formatDynamicDate(approval.approvedAt) || "-"}
               </Table.Cell>
               <Table.Cell>{formatDynamicDate(approval.regAt)}</Table.Cell>
-            </>
+            </Table.Row>
           )}
-          handleRowClick={handleRowClick}
         />
         <Pagination
           paginationInfo={
