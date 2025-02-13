@@ -2,7 +2,7 @@
 "use client";
 
 // 외부 라이브러리
-import { Box, VStack, Flex, Text } from "@chakra-ui/react";
+import { Box, VStack, Flex, Text, Separator } from "@chakra-ui/react";
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -16,6 +16,7 @@ import SignToApprove from "@/src/components/pages/ProjectApprovalPage/components
 import { ArticleComment, ApprovalArticle } from "@/src/types";
 import { deleteApprovalApi } from "@/src/api/RegisterArticle";
 import DropDownMenu from "@/src/components/common/DropDownMenu";
+import DropDownInfoBottom from "../../common/DropDownInfoBottom";
 
 export default function ProjectApprovalPage() {
   const { projectId, approvalId } = useParams() as {
@@ -69,7 +70,6 @@ export default function ProjectApprovalPage() {
   }
 
   const handleEdit = () => {
-
     if (approverSignatureUrl !== "") {
       alert("결재가 완료된 글은 수정할 수 없습니다.");
       return;
@@ -79,7 +79,6 @@ export default function ProjectApprovalPage() {
   };
 
   const handleDelete = async () => {
-
     if (approverSignatureUrl !== "") {
       alert("결재가 완료된 글은 삭제할 수 없습니다.");
       return;
@@ -123,12 +122,20 @@ export default function ProjectApprovalPage() {
       )}
       <ArticleContent article={article} />
 
-      <Box display={"flex"} justifyContent={"center"}>
+      <Box display={"flex"} direction={"row"} alignItems={"center"}>
+        <Text fontWeight="bold" pr={2}>
+          서명
+        </Text>
+        <DropDownInfoBottom
+          text={`결재 글은 서명을 기입해야 결재가 완료됩니다. \n "서명 불러오기" 는 기존에 저장된 서명을 불러옵나다. \n 새 서명을 기입하고 "등록" 을 누르면 기존에 저장되어 있던 서명은 삭제됩니다.`}
+        />
+        </Box>
+      <Box display={"flex"} direction={"column"} justifyContent={"center"}>
         <SignToApprove
           registerSignatureUrl={registerSignatureUrl}
           approverSignatureUrl={approverSignatureUrl}
           registerOrgId={registerOrgId}
-        />
+          />
       </Box>
 
       {/* 댓글 섹션 */}

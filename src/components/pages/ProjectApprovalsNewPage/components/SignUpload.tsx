@@ -103,7 +103,7 @@ export default function SignUpload() {
               </Text>
             )}
           </Box>
-          <Box border={"2px solid black"} borderRadius={"10px"}>
+          <Box border={"2px solid black"} borderRadius={"10px"} backgroundColor={"gray.300"}>
             <Text
               display="flex"
               alignItems="center"
@@ -113,7 +113,7 @@ export default function SignUpload() {
               height={166.6}
               color="gray.500"
             >
-              결재자 서명
+              결재자 서명이 입력될 칸입니다.
             </Text>
           </Box>
         </Flex>
@@ -136,9 +136,6 @@ export default function SignUpload() {
         <Button onClick={bringSignature}>서명 불러오기</Button>
         <Button onClick={clearSignature}>지우기</Button>
         <Button onClick={saveSignature}>등록</Button>
-        <DropDownInfoTop
-          text={`결재 글은 서명을 기입해야 작성이 가능합니다. \n "서명 불러오기" 는 기존에 저장된 서명을 불러옵니다. \n 새 서명을 기입하고 "등록" 을 누르면 기존에 저장되어 있던 서명은 삭제됩니다. `}
-        />
       </Flex>
     </Flex>
   );
