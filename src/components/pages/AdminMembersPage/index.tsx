@@ -38,6 +38,7 @@ const memberStatusFramework = createListCollection<{
     { label: "전체", value: "" },
     { label: "활성화", value: "ACTIVE" },
     { label: "비활성화", value: "INACTIVE" },
+    { label: "삭제됨", value: "DELETED" },
   ],
 });
 
@@ -49,6 +50,7 @@ const ROLE_LABELS: Record<string, string> = {
 const STATUS_LABELS: Record<string, string> = {
   ACTIVE: "활성화",
   INACTIVE: "비활성화",
+  DELETED: "삭제됨",
 };
 
 export default function AdminMembersPage() {

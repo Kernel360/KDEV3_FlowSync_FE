@@ -89,12 +89,12 @@ export interface OrganizationProps {
   status: string;
   brNumber: string;
   name: string;
-  regAt: string;
+  regAt?: string;
   brCertificateUrl: string;
   streetAddress: string;
   detailAddress: string;
   phoneNumber: string;
-  remark: string;
+  remark?: string;
 }
 
 // `createOrganization` 함수에서 입력값의 타입 정의
