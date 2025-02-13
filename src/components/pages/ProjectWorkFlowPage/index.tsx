@@ -85,7 +85,7 @@ export default function ProjectWorkFlowPage() {
       <ProjectLayout>
         <ProjectsManagementStepCards title={"관리 단계 변경"} />
       </ProjectLayout>
-      <Heading size="2xl" color={textColor} lineHeight="base">
+      <Heading size="2xl" color={textColor} lineHeight="base" mb={3}>
         진행단계 요약
       </Heading>
       {progressStepError && (
