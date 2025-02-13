@@ -8,7 +8,7 @@ import DropDownInfoTop from "@/src/components/common/DropDownInfoTop";
 import axiosInstance from "@/src/api/axiosInstance";
 
 interface SigntoUploadProps {
-  registerSignatureUrl: string; // 요청자 사인 url
+  registerSignatureUrl?: string; // 요청자 사인 url
   approverSignatureUrl?: string;
   registerOrgId?: number;
 }
