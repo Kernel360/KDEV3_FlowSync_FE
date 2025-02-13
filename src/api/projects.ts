@@ -161,7 +161,9 @@ export async function fetchProjectApprovalProgressStepApi(
 }
 
 // 프로젝트 단계 정보
-export async function projectProgressStepApi(projectId: string): Promise<CommonResponseType<ProgressStep[]>> {
+export async function projectProgressStepApi(
+  projectId: string,
+): Promise<CommonResponseType<ProgressStep[]>> {
   const response = await axiosInstance.get(
     `/projects/${projectId}/progress-steps`,
   );
