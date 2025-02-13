@@ -56,7 +56,7 @@ export default function ArticleForm({
   const [linkList, setLinkList] = useState<LinkListProps[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFilesProps[]>([]);
   const [uploadedFileSize, setUploadedFileSize] = useState<number[]>([]);
-
+  const [isDisabled, setisDisabled] = useState<boolean>(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -67,16 +67,14 @@ export default function ArticleForm({
     initializeEditor(initialContent);
 
     return () => {
-
       if (
         editorRef.current &&
         typeof editorRef.current.destroy === "function"
       ) {
         editorRef.current.destroy();
-
       }
       editorRef.current = null;
-  };
+    };
   }, []);
 
   const initializeEditor = (content: any[] = []) => {
@@ -150,6 +148,7 @@ export default function ArticleForm({
   };
 
   const handleEditorSave = async () => {
+    setisDisabled(true);
     if (editorRef.current) {
       try {
         const savedData = await editorRef.current.save();
@@ -331,6 +330,7 @@ export default function ArticleForm({
         boxShadow={"md"}
         _hover={{ bg: "red.600" }}
         onClick={handleEditorSave}
+        disabled={isDisabled}
       >
         {submitButtonLabel}
       </Button>
