@@ -129,21 +129,21 @@ export default function ProjectsManagementStepCards({
       mb="2rem"
       width="full"
       mx="auto"
-      border={`1px solid ${borderColor}`}
-      borderRadius="lg"
-      boxShadow="md"
       bg={bgColor}
-      p={4}
+      transition="all 0.3s ease-in-out"
     >
-      <Heading size="xl" color={textColor} mb="16px" textAlign="left">
+      <Heading size="2xl" color={textColor} mb="10px" textAlign="left">
         {title}
       </Heading>
       <Flex
         wrap="nowrap"
         justifyContent="center"
         alignItems="center"
-        gap={8}
+        p={4}
+        border={`1px solid ${borderColor}`}
         borderRadius="lg"
+        boxShadow="md"
+        gap={8}
         bg={bgColor}
       >
         {mappedData.map((item) => {
