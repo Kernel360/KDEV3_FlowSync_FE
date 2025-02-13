@@ -10,6 +10,7 @@ import {
   ProjectListSidebarResponse,
   ProjectInfoProps,
   ManagementStepCountMap,
+  ProgressStep,
 } from "@/src/types";
 
 /**
@@ -160,7 +161,9 @@ export async function fetchProjectApprovalProgressStepApi(
 }
 
 // 프로젝트 단계 정보
-export async function projectProgressStepApi(projectId: string) {
+export async function projectProgressStepApi(
+  projectId: string,
+): Promise<CommonResponseType<ProgressStep[]>> {
   const response = await axiosInstance.get(
     `/projects/${projectId}/progress-steps`,
   );

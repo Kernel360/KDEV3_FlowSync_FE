@@ -225,7 +225,6 @@ function AdminMembersPageContent() {
               <Table.Cell>{formatDynamicDate(member.regAt)}</Table.Cell>
             </>
           )}
-          handleRowClick={handleRowClick}
         />
         {paginationInfo && (
           <Pagination
