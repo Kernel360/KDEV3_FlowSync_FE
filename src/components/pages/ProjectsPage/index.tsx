@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Head from "next/head";
 import {
   Box,
+  Button,
   createListCollection,
   Flex,
   Heading,
@@ -67,7 +68,6 @@ export default function ProjectsPage() {
 function ProjectsPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-
   const keyword = searchParams?.get("keyword") || "";
   const status = searchParams?.get("status") || "";
   const currentPage = parseInt(searchParams?.get("currentPage") || "1", 10);
@@ -111,8 +111,16 @@ function ProjectsPageContent() {
     router.push(`/projects/${id}/approvals`);
   };
 
-  // 신규등록 버튼 클릭 시 - 공지사항 등록 페이지로 이동
+  //s 신규등록 버튼 클릭 시 - 공지사항 등록 페이지로 이동
   const handleProjectCreateButton = () => {
+    router.push(`/projects/create`);
+  };
+  // 신규등록 버튼 클릭 시 - 공지사항 등록 페이지로 이동
+  const handleEditClick = (id: string) => {
+    router.push(`/projects/${id}/edit`);
+  };
+  // 신규등록 버튼 클릭 시 - 공지사항 등록 페이지로 이동
+  const handleProjectDeleteButton = () => {
     router.push(`/projects/create`);
   };
 
@@ -177,41 +185,93 @@ function ProjectsPageContent() {
              *  - handleRowClick: 행 클릭 이벤트 핸들러
              */}
 
-            <CommonTable
-              headerTitle={
-                <Table.Row
-                  backgroundColor={useColorModeValue("#eee", "gray.700")}
-                  css={{
-                    "& > th": { textAlign: "center" },
-                  }}
-                >
-                  <Table.ColumnHeader>프로젝트명</Table.ColumnHeader>
-                  <Table.ColumnHeader>고객사</Table.ColumnHeader>
-                  <Table.ColumnHeader>개발사</Table.ColumnHeader>
-                  <Table.ColumnHeader>프로젝트 관리단계</Table.ColumnHeader>
-                  <Table.ColumnHeader>프로젝트 시작일</Table.ColumnHeader>
-                  <Table.ColumnHeader>프로젝트 종료일</Table.ColumnHeader>
-                </Table.Row>
-              }
-              data={projectList}
-              loading={projectListLoading}
-              renderRow={(project) => (
-                <>
-                  <Table.Cell>{project.name}</Table.Cell>
-                  <Table.Cell>{project.customerName}</Table.Cell>
-                  <Table.Cell>{project.developerName}</Table.Cell>
-                  <Table.Cell>
-                    <StatusTag>
-                      {STATUS_LABELS[project.status] || "알 수 없음"}
-                    </StatusTag>
-                  </Table.Cell>
-                  <Table.Cell>{formatDynamicDate(project.startAt)}</Table.Cell>
-                  <Table.Cell>{formatDynamicDate(project.closeAt)}</Table.Cell>
-                </>
-              )}
-              handleRowClick={handleRowClick}
-              placeholderHeight="300px" // 자리 표시자 높이
-            />
+            {userRole === "ADMIN" ? (
+              <CommonTable
+                headerTitle={
+                  <Table.Row
+                    backgroundColor={bgColor}
+                    css={{
+                      "& > th": { textAlign: "center" },
+                    }}
+                  >
+                    <Table.ColumnHeader>프로젝트명</Table.ColumnHeader>
+                    <Table.ColumnHeader>고객사</Table.ColumnHeader>
+                    <Table.ColumnHeader>개발사</Table.ColumnHeader>
+                    <Table.ColumnHeader>프로젝트 관리단계</Table.ColumnHeader>
+                    <Table.ColumnHeader>프로젝트 시작일</Table.ColumnHeader>
+                    <Table.ColumnHeader>프로젝트 종료일</Table.ColumnHeader>
+                    <Table.ColumnHeader>프로젝트 관리</Table.ColumnHeader>
+                  </Table.Row>
+                }
+                data={projectList}
+                loading={projectListLoading}
+                renderRow={(project) => (
+                  <>
+                    <Table.Cell>{project.name}</Table.Cell>
+                    <Table.Cell>{project.customerName}</Table.Cell>
+                    <Table.Cell>{project.developerName}</Table.Cell>
+                    <Table.Cell>
+                      <StatusTag>
+                        {STATUS_LABELS[project.status] || "알 수 없음"}
+                      </StatusTag>
+                    </Table.Cell>
+                    <Table.Cell>
+                      {formatDynamicDate(project.startAt)}
+                    </Table.Cell>
+                    <Table.Cell>
+                      {formatDynamicDate(project.closeAt)}
+                    </Table.Cell>
+                    <Table.Cell onClick={(event) => event.stopPropagation()}>
+                      <Button onClick={() => handleEditClick(project.id)}>
+                        수정
+                      </Button>
+                    </Table.Cell>
+                  </>
+                )}
+                handleRowClick={handleRowClick}
+                placeholderHeight="300px" // 자리 표시자 높이
+              />
+            ) : (
+              <CommonTable
+                headerTitle={
+                  <Table.Row
+                    backgroundColor={bgColor}
+                    css={{
+                      "& > th": { textAlign: "center" },
+                    }}
+                  >
+                    <Table.ColumnHeader>프로젝트명</Table.ColumnHeader>
+                    <Table.ColumnHeader>고객사</Table.ColumnHeader>
+                    <Table.ColumnHeader>개발사</Table.ColumnHeader>
+                    <Table.ColumnHeader>프로젝트 관리단계</Table.ColumnHeader>
+                    <Table.ColumnHeader>프로젝트 시작일</Table.ColumnHeader>
+                    <Table.ColumnHeader>프로젝트 종료일</Table.ColumnHeader>
+                  </Table.Row>
+                }
+                data={projectList}
+                loading={projectListLoading}
+                renderRow={(project) => (
+                  <>
+                    <Table.Cell>{project.name}</Table.Cell>
+                    <Table.Cell>{project.customerName}</Table.Cell>
+                    <Table.Cell>{project.developerName}</Table.Cell>
+                    <Table.Cell>
+                      <StatusTag>
+                        {STATUS_LABELS[project.status] || "알 수 없음"}
+                      </StatusTag>
+                    </Table.Cell>
+                    <Table.Cell>
+                      {formatDynamicDate(project.startAt)}
+                    </Table.Cell>
+                    <Table.Cell>
+                      {formatDynamicDate(project.closeAt)}
+                    </Table.Cell>
+                  </>
+                )}
+                handleRowClick={handleRowClick}
+                placeholderHeight="300px" // 자리 표시자 높이
+              />
+            )}
             {/*
              * 페이지네이션 컴포넌트
              * paginationInfo: 현재 페이지, 총 페이지, 페이지 크기 등의 정보

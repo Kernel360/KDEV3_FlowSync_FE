@@ -1,36 +1,42 @@
-import { Button } from "@chakra-ui/react";
+"use client";
+
+import { useState } from "react";
+import { Button, Input, Text } from "@chakra-ui/react";
 import {
-  DialogActionTrigger,
-  DialogBody,
-  DialogCloseTrigger,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
   DialogRoot,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
   DialogTitle,
+  DialogBody,
+  DialogFooter,
+  DialogActionTrigger,
+  DialogCloseTrigger,
 } from "@/src/components/ui/dialog";
+import styles from "@/src/components/common/ActionButtons.module.css";
 
 interface ConfirmDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
   onConfirm: () => void;
   title: string;
   description: string;
   confirmText?: string;
   cancelText?: string;
+  triggerText: string;
 }
 
-export default function ConfirmDialog({
-  isOpen,
-  onClose,
+export default function ConfirmDialogEditDelete({
   onConfirm,
   title,
   description,
   confirmText = "확인",
   cancelText = "취소",
+  triggerText,
 }: ConfirmDialogProps) {
   return (
-    <DialogRoot open={isOpen}>
+    <DialogRoot>
+      <DialogTrigger asChild>
+        <Button className={styles.deleteButton}>{triggerText}</Button>
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
@@ -40,9 +46,7 @@ export default function ConfirmDialog({
         </DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>
-            <Button variant="outline" onClick={onClose}>
-              {cancelText}
-            </Button>
+            <Button variant="outline">{cancelText}</Button>
           </DialogActionTrigger>
           <Button onClick={onConfirm}>{confirmText}</Button>
         </DialogFooter>

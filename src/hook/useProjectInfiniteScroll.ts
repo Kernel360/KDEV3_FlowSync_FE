@@ -53,7 +53,6 @@ export function useProjectInfiniteScroll(status: string) {
         setHasMore(false); // 오류 발생 시 무한 요청 방지
       } finally {
         setLoading(false);
-
       }
     },
     [status, hasMore, loading],
@@ -106,7 +105,6 @@ export function useProjectInfiniteScroll(status: string) {
 
   //   setCurrentPage(prefetchPages + 1);
   // }, [status]);
-
 
   /**
    *  Intersection Observer를 활용한 무한 스크롤 감지

@@ -22,7 +22,7 @@ const icons = [
   <PackageCheck key="4" size="60%" color="black" />,
   <Wrench key="5" size="60%" color="black" />,
   <OctagonPause key="6" size="60%" color="black" />,
-  <OctagonX key="7" size="60%" color="black" />,
+  // <OctagonX key="7" size="60%" color="black" />,
 ];
 
 // 데이터 매핑
@@ -67,15 +67,15 @@ const mappedData = [
     count: 3,
     label: "일시중단",
     icon: icons[5],
-    statusValue: ProjectStatus.MAINTENANCE,
+    statusValue: ProjectStatus.PAUSED,
   },
-  {
-    id: 7,
-    count: 0,
-    label: "삭제",
-    icon: icons[6],
-    statusValue: ProjectStatus.MAINTENANCE,
-  },
+  // {
+  //   id: 7,
+  //   count: 0,
+  //   label: "삭제",
+  //   icon: icons[6],
+  //   statusValue: ProjectStatus.DELETED,
+  // },
 ];
 
 interface ProjectsStatusCardsProps {

@@ -3,6 +3,7 @@
 export interface CommonResponseType<T> {
   code: number; // 상태 코드
   result: string; // 요청 결과 (SUCCESS, FAILURE 등)
+  message?: string;
   data: T; // 제네릭 데이터
 }
 
@@ -131,6 +132,27 @@ export interface DeleteOriginationWithReasonResponse {
   message: string; // 응답 메시지
 }
 
+export interface CreateProjectInput {
+  name: string; // 프로젝트 이름
+  description: string;
+  detail: string;
+  managementStep: string; // 계약단계
+  startAt: string;
+  deadlineAt: string;
+  // closeAt?: string;
+  devOwnerId: string;
+  customerOwnerId: string;
+  developerOrgId: string;
+  customerOrgId: string;
+  members: string[];
+}
+
+// 반환값의 타입 정의
+export interface CreateProjectResponse {
+  success: boolean;
+  member: ProjectProps;
+}
+
 export interface ProjectInfoProps {
   id: string; // 프로젝트 아이디
   projectName: string; // 프로젝트명
@@ -154,6 +176,23 @@ export interface ProjectProps {
   closeAt: string; // 마감일시
   customerName: string; // 고객사 이름
   developerName: string; // 개발사 이름
+}
+
+// 프로젝트 상세 조회
+export interface ProjectDetailProps {
+  id: string; // 프로젝트 ID
+  name: string; // 프로젝트 이름
+  description: string;
+  detail: string;
+  managementStep: string; // 계약단계
+  startAt: string;
+  deadlineAt: string;
+  closeAt?: string;
+  devOwnerId: string;
+  customerOwnerId: string;
+  developerOrgId: string;
+  customerOrgId: string;
+  members: string[];
 }
 
 export interface ProjectListResponse {
