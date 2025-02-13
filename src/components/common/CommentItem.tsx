@@ -88,7 +88,6 @@ export default function CommentItem({
   };
 
   const handleEdit = async (commentId: number) => {
-
     const existingContent = await fetchComment(commentId);
     setEditedContent(
       typeof existingContent === "string" ? existingContent : "",
@@ -101,7 +100,7 @@ export default function CommentItem({
       alert("댓글 내용을 입력하세요.");
       return;
     }
-    const requestData = {content : editedContent}
+    const requestData = { content: editedContent };
     try {
       if (pathname.includes("/questions") && questionId) {
         const responseData = await editQuestionComment(
@@ -144,7 +143,6 @@ export default function CommentItem({
         );
       }
       setCommentIsWritten((prev) => !prev);
-
     } catch (error) {
       console.log(error);
     }
@@ -155,7 +153,6 @@ export default function CommentItem({
 
     setEditedContent(comment.content);
   };
-
 
   return (
     <Box
@@ -172,9 +169,22 @@ export default function CommentItem({
             value={editedContent}
             onChange={(e) => setEditedContent(e.target.value)}
             maxLength={250}
+            style={{
+              wordBreak: "break-word",
+              overflowWrap: "break-word",
+              whiteSpace: "pre-wrap",
+            }}
           />
         ) : (
-          <Text>{comment.content}</Text>
+          <Text
+            style={{
+              wordBreak: "break-word",
+              overflowWrap: "break-word",
+              whiteSpace: "pre-wrap",
+            }}
+          >
+            {comment.content}
+          </Text>
         )}
         <Box ref={dropdownRef}>
           {/* 옵션 버튼 */}
@@ -195,9 +205,7 @@ export default function CommentItem({
               p={2}
               zIndex={10}
             >
-
               {isEditing ? (
-
                 ""
               ) : (
                 <Button size="xs" onClick={() => handleEdit(comment.id)}>
@@ -214,7 +222,6 @@ export default function CommentItem({
 
       {isEditing && (
         <Box>
-
           <Button
             mt={2}
             mr={2}
@@ -227,7 +234,6 @@ export default function CommentItem({
           <Button mt={2} size="xs" colorScheme="blue" onClick={handleCancel}>
             취소
           </Button>
-
         </Box>
       )}
 

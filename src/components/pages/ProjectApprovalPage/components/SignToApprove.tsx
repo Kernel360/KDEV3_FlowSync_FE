@@ -10,7 +10,7 @@ import axiosInstance from "@/src/api/axiosInstance";
 interface SigntoUploadProps {
   registerSignatureUrl: string; // 요청자 사인 url
   approverSignatureUrl?: string;
-  registerOrgId: number;
+  registerOrgId?: number;
 }
 
 export default function SignToApprove({
