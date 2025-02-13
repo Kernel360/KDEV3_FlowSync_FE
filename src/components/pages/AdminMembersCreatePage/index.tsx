@@ -35,7 +35,7 @@ export default function AdminMembersCreatePage() {
   // ✅ 조직 목록을 가져오는 함수
   const fetchOrganizations = async () => {
     try {
-      const orgData = await getOrganizationsApi("ACTIVE");
+      const orgData = await getOrganizationsApi();
       console.log("페칭출력", orgData.data.dtoList);
       setOrganizations(orgData.data.dtoList);
     } catch (error) {
@@ -48,7 +48,7 @@ export default function AdminMembersCreatePage() {
     if (isModalOpen && organizations.length === 0) {
       fetchOrganizations();
     }
-  }, [isModalOpen, organizations]);
+  }, [isModalOpen]);
 
   // 외부 클릭 시 모달 닫기
   useEffect(() => {
@@ -68,10 +68,8 @@ export default function AdminMembersCreatePage() {
 
   // ✅ 조직 선택 시 ID와 Name을 함께 설정
   const handleSelectOrganization = async (orgId: string) => {
-    console.log("선택된 업체 ID: ", orgId);
     setSelectedOrganizationId(orgId);
     const selectedOrg = organizations.find((org) => org.id === orgId);
-    console.log("선택된 업체명: ", selectedOrg?.name);
     setSelectedOrganizationName(selectedOrg ? selectedOrg.name : ""); // 선택된 조직명 업데이트
     setIsModalOpen(false);
   };
@@ -126,7 +124,7 @@ export default function AdminMembersCreatePage() {
       );
       const response = await createMember(
         inputValues.role,
-        String(selectedOrganization?.id),
+        selectedOrganizationId,
         inputValues.name,
         inputValues.email,
         inputValues.password,
@@ -161,7 +159,7 @@ export default function AdminMembersCreatePage() {
         <Flex direction="row" align="center" mb={4}>
           <span
             style={{
-              fontSize: "14px",
+              fontSize: "1rem",
               fontWeight: "bold",
               color: "#4A5568",
             }}
@@ -169,7 +167,11 @@ export default function AdminMembersCreatePage() {
             회원 유형을 선택하세요
           </span>
           <span
-            style={{ color: "red", marginLeft: "4px", marginRight: "24px" }}
+            style={{
+              color: "red",
+              marginLeft: "0.5rem",
+              marginRight: "1.5rem",
+            }}
           >
             *
           </span>
@@ -187,16 +189,18 @@ export default function AdminMembersCreatePage() {
       {/* 회원 생성 페이지 - 회원 정보 입력*/}
 
       <Flex
-        direction={{ base: "column", md: "row" }}
+        direction="row"
         width="100%"
         alignItems="stretch"
+        gap="1rem"
+        align="center"
       >
         <Box flex="1">
           <InputForm
             id="name"
             type="text"
             label="성함"
-            placeholder="ex) 주농퐉"
+            placeholder="ex) 성함을 입력하세요."
             value={inputValues.name}
             error={inputErrors.name}
             onChange={(e) => handleInputChange("name", e.target.value)}
@@ -204,21 +208,24 @@ export default function AdminMembersCreatePage() {
         </Box>
         {/* 입력창 (고객사/개발사를 선택하세요) */}
         <Box flex="1" display="flex" flexDirection="column">
-          <Text fontWeight="bold" mb="0.5rem">
-            소속 업체
-          </Text>
+          <Flex>
+            <Text fontWeight="bold" mb="0.5rem">
+              소속 업체
+            </Text>
+            <span style={{ color: "red", marginLeft: "0.3rem" }}> *</span>
+          </Flex>
           <Input
-            fontSize="0.9rem"
+            fontSize="1rem"
             placeholder="업체를 검색하세요."
             onClick={() => setIsModalOpen(true)}
             readOnly
             value={selectedOrganizationName} // ✅ 조직명 표시
             cursor="pointer"
-            border="1px solid #ccc"
+            border="1px solid var(--input-border, #6c757d) !important" /* ⚡강제 적용 */
             borderRadius="0.5rem"
-            p="0.75rem"
+            padding="0.8rem"
             width="100%"
-            height="5rem"
+            height="3.2rem"
           />
         </Box>
         {/* 모달 */}
