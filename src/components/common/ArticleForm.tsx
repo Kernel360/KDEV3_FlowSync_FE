@@ -172,7 +172,7 @@ export default function ArticleForm({
           window.alert("내용을 입력하세요.");
           return;
         }
-        if (isSignYes === false) {
+        if (pathname.includes("/approvals") && isSignYes === false) {
           window.alert("서명을 입력하세요")
           return;
         }
