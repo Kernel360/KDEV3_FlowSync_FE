@@ -24,7 +24,7 @@ import {
   deleteMember,
 } from "@/src/api/members";
 import { MemberProps } from "@/src/types";
-import DropDownMenu from "../../common/DropDownMenu";
+import DropDownMenu from "@/src/components/common/DropDownMenu";
 
 const memberRoleFramework = createListCollection<{
   label: string;
@@ -179,7 +179,14 @@ function AdminMembersPageContent() {
         <Box display="flex" justifyContent="space-between">
           <Button
             variant={"surface"}
-            _hover={{ backgroundColor: "#00a8ff", color: "white" }}
+            backgroundColor="#00a8ff"
+            color="white"
+            border="none"
+            transition="all 0.3s ease"
+            _hover={{
+              backgroundColor: "#00aaffb9",
+              cursor: "pointer",
+            }}
             onClick={handleMemberCreateButton}
           >
             신규 등록
