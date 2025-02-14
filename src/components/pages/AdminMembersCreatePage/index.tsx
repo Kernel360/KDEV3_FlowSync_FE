@@ -156,6 +156,12 @@ export default function AdminMembersCreatePage() {
     }
   }
 
+  const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (e.key === " ") {
+      e.preventDefault(); // ✅ 스페이스바 입력 차단
+    }
+  };
+
   return (
     <InputFormLayout
       title="▹ 회원 등록"
@@ -328,7 +334,6 @@ export default function AdminMembersCreatePage() {
         value={inputValues.password}
         error={inputErrors.password}
         onChange={(e) => handleInputChange("password", e.target.value)}
-        
       />
       <InputForm
         id="phoneNum"
