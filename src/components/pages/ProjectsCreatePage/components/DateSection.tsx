@@ -55,10 +55,12 @@ export default function DateSection({
           </Text>
           <Box width="100%">
             <DatePicker
+              openToDate={closeAt ? new Date(closeAt) : new Date()}
               selected={startAt ? new Date(startAt) : null}
               onChange={handleStartDateChange}
               dateFormat="yyyy-MM-dd"
-              minDate={new Date()}
+              // minDate={new Date()}
+              maxDate={new Date(closeAt)}
               popperPlacement="bottom-start"
               calendarClassName="datepicker-calendar" // ✅ 캘린더 스타일 추가 가능
               wrapperClassName="datepicker-wrapper" // ✅ Wrapper 스타일 적용
@@ -88,6 +90,7 @@ export default function DateSection({
           </Text>
           <Box width="100%">
             <DatePicker
+              openToDate={startAt ? new Date(startAt) : new Date()}
               selected={closeAt ? new Date(closeAt) : null}
               onChange={handleCloseDateChange}
               dateFormat="yyyy-MM-dd"
