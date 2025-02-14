@@ -51,7 +51,7 @@ export default function ProjectQuestionsPage() {
     ? projectId[0]
     : projectId || "";
   const keyword = searchParams?.get("keyword") || "";
-  const progressStep = searchParams?.get("progressStep") || "";
+  const progressStepId = searchParams?.get("progressStepId") || "";
   const status = searchParams?.get("status") || "";
   const currentPage = parseInt(searchParams?.get("currentPage") || "1", 10);
   const pageSize = parseInt(searchParams?.get("pageSize") || "5", 10);
@@ -71,7 +71,7 @@ export default function ProjectQuestionsPage() {
   } = useProjectQuestionList(
     resolvedProjectId,
     keyword,
-    progressStep,
+    progressStepId,
     status,
     currentPage,
     pageSize,
@@ -126,6 +126,7 @@ export default function ProjectQuestionsPage() {
           {/* 검색 섹션 */}
           <SearchSection keyword={keyword} placeholder="제목 입력">
             <FilterSelectBox
+              placeholder="질문상태"
               statusFramework={questionStatusFramework}
               selectedValue={status}
               queryKey="status"

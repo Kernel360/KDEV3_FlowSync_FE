@@ -13,6 +13,7 @@ import {
   ManagementStepCountMap,
 } from "@/src/types";
 
+
 /**
  * 프로젝트 생성
  * @param requestData 프로젝트 생성 페이지 입력 데이터
@@ -70,6 +71,7 @@ export async function deleteProjectApi(
     throw error;
   }
 }
+
 
 /**
  * 프로젝트 목록을 가져옵니다.
@@ -212,7 +214,7 @@ export async function fetchProjectsManagementStepsCountApi(): Promise<
 export async function fetchProjectQuestionListApi(
   projectId: string,
   keyword: string = "",
-  progressStep: string = "",
+  progressStepId: string = "",
   status: string = "",
   currentPage: number,
   pageSize: number,
@@ -220,7 +222,7 @@ export async function fetchProjectQuestionListApi(
   const response = await axiosInstance.get(`/projects/${projectId}/questions`, {
     params: {
       keyword,
-      progressStep,
+      progressStepId,
       status,
       currentPage,
       pageSize,

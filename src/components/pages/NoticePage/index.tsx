@@ -7,7 +7,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 // 절대 경로 파일
 import BackButton from "@/src/components/common/BackButton";
-import NoticeArticleContent from "@/src/components/common/NoticeArticleContent";
+import NoticeArticleContent from "@/src/components/pages/NoticePage/components/NoticeArticleContent";
 import { useReadNotice } from "@/src/hook/useFetchData";
 import { Loading } from "@/src/components/common/Loading";
 import ErrorAlert from "@/src/components/common/ErrorAlert";
@@ -32,7 +32,7 @@ export default function NoticePage() {
   const { mutate: deleteNotice } = useDeleteNotice();
 
   const isNoticeDeleted = noticeArticle?.isDeleted === "Y";
-  console.log(isNoticeDeleted);
+
   if (noticeLoading) {
     return <Loading />; // ✅ 공통 로딩 컴포넌트 사용
   }
@@ -46,11 +46,8 @@ export default function NoticePage() {
     if (!confirmDelete) return;
     try {
       await deleteNotice(noticeId);
-      alert("공지사항이 삭제되었습니다.");
       router.push(`/notices?currentPage=${currentPage}`);
-    } catch (error) {
-      alert(`삭제 중 문제가 발생했습니다 : ${error}`);
-    }
+    } catch (error) {}
   };
 
   return (

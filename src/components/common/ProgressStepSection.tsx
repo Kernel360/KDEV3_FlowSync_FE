@@ -18,8 +18,9 @@ export default function ProgressStepSection({
   progressStep,
   loading,
 }: ProgressStepSectionProps) {
+  console.log(progressStep);
   // 화면 크기에 따라 `gap` 동적 조절 (작은 화면일수록 간격 좁게)
-  const gapValue = useBreakpointValue({ base: 2, md: 4, lg: 8 });
+  const gapValue = useBreakpointValue({ base: 2, md: 4, lg: 12 });
 
   // 현재 선택된 버튼 id 상태 (기본값은 progressData의 첫 번째 항목)
   const [selectedButtonId, setSelectedButtonId] = useState<string>(
@@ -39,7 +40,7 @@ export default function ProgressStepSection({
 
     // URL 쿼리 파라미터를 수정 (progressStep 값 변경)
     const params = new URLSearchParams(window.location.search);
-    params.set("progressStep", selectedValue);
+    params.set("progressStepId", selectedValue);
 
     // 브라우저 히스토리(주소)를 업데이트
     history.replaceState(null, "", `?${params.toString()}`); // URL 업데이트
@@ -52,11 +53,12 @@ export default function ProgressStepSection({
   return (
     <Flex
       alignItems="center"
-      justifyContent="center"
+      justifyContent="flex-start"
       width="100%"
-      px={3}
-      py={2}
-      gap={gapValue}
+      paddingX="2rem"
+      paddingY="1rem"
+      gap="1rem"
+      // gap={gapValue}
       border="1px solid"
       borderColor="gray.200"
       borderRadius="lg"
@@ -79,7 +81,7 @@ export default function ProgressStepSection({
           text={button.title}
           count={button.count || 0} // 서버에서 받아온 개수 표시
           isSelected={selectedButtonId === button.id} // 선택 상태 전달
-          onClick={() => handleStatusChange(button.id)} // 클릭 핸들러 전달
+          onClick={() => handleStatusChange(button.id)} // 선택된 버튼이면 ProgressStepButton 내부에서 클릭 방지
         />
       ))}
     </Flex>

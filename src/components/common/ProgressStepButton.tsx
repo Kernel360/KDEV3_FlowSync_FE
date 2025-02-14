@@ -16,18 +16,22 @@ export default function ProgressStepButton({
   return (
     <Button
       onClick={onClick}
-      width="164px"
+      width="11%"
       height="48px"
       padding="14px 16px"
-      justifyContent="space-between"
+      justifyContent="center"
       alignItems="center"
       borderRadius="4px"
-      bg="white"
+      bg={isSelected ? "blue.100" : "white"}
       color="black"
-      border={isSelected ? "2px solid #D62A1C" : "1px solid #E5E5EC"} // 클릭 상태에 따라 테두리 변경
+      border={isSelected ? "2px solid blue.500" : "1px solid #E5E5EC"} // 선택 상태일 때 테두리 변경
+      cursor={isSelected ? "default" : "pointer"} // ✅ 선택된 상태에서는 커서 변경
+      _hover={isSelected ? {} : { backgroundColor: "gray.100" }} // ✅ 선택된 상태에서는 hover 효과 제거
     >
-      <Text>{text}</Text>
-      <Text color={isSelected ? "#D62A1C" : "black"}>{count}건</Text>{" "}
+      {/* <Text>{text}</Text> */}
+      <Text color={isSelected ? "#D62A1C" : "black"}>
+        {text} {count}건
+      </Text>{" "}
       {/* 텍스트 색상 변경 */}
     </Button>
   );

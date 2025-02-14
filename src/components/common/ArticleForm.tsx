@@ -3,7 +3,7 @@
 // 외부 라이브러리
 import React, { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Box, Input, Text, Flex, Button } from "@chakra-ui/react";
+import { Box, Input, Text, Flex, Button, Textarea } from "@chakra-ui/react";
 import EditorJS from "@editorjs/editorjs";
 import ImageTool from "@editorjs/image";
 import { uploadFileApi } from "@/src/api/RegisterArticle";
@@ -12,7 +12,6 @@ import FileAddSection from "@/src/components/common/FileAddSection";
 import LinkAddSection from "@/src/components/common/LinkAddSection";
 import DropDownInfoBottom from "@/src/components/common/DropDownInfoBottom";
 import SignUpload from "@/src/components/pages/ProjectApprovalsNewPage/components/SignUpload";
-import DropDownInfoTop from "./DropDownInfoTop";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -69,16 +68,14 @@ export default function ArticleForm({
     initializeEditor(initialContent);
 
     return () => {
-
       if (
         editorRef.current &&
         typeof editorRef.current.destroy === "function"
       ) {
         editorRef.current.destroy();
-
       }
       editorRef.current = null;
-  };
+    };
   }, []);
 
   const initializeEditor = (content: any[] = []) => {
@@ -153,6 +150,7 @@ export default function ArticleForm({
 
   const handleEditorSave = async () => {
     setisDisabled(true);
+    setTimeout(() => setisDisabled(false), 2000);
     if (editorRef.current) {
       try {
         const savedData = await editorRef.current.save();
@@ -172,8 +170,8 @@ export default function ArticleForm({
           window.alert("내용을 입력하세요.");
           return;
         }
-        if (isSignYes === false) {
-          window.alert("서명을 입력하세요")
+        if (pathname.includes("/approvals") && isSignYes === false) {
+          window.alert("서명을 입력하세요");
           return;
         }
 
@@ -283,9 +281,18 @@ export default function ArticleForm({
         <Box flex={2}>
           <Text mb={2}>제목</Text>
           <Input
+            type="text"
             placeholder="제목을 입력하세요."
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            maxHeight={"200px"}
+            maxLength={80}
+            style={{
+              overflow: "hidden",
+              resize: "none", // 크기 조절 방지
+              minHeight: "40px", // 최소 높이
+              height: "40px", // 기본 높이
+            }}
           />
         </Box>
       </Flex>
@@ -308,7 +315,9 @@ export default function ArticleForm({
         />
       </Box>
 
-      <LinkAddSection linkList={linkList} setLinkList={setLinkList} />
+      {!pathname.includes("/notices") && (
+        <LinkAddSection linkList={linkList} setLinkList={setLinkList} />
+      )}
 
       {/* 파일 입력 */}
       <FileAddSection

@@ -92,7 +92,7 @@ export async function updateOrganization(
   return response.data;
 }
 
-// 📌 회원 삭제 (탈퇴 사유 포함 ver.)
+// 📌 업체 삭제 (탈퇴 사유 포함 ver.)
 export async function deleteOriginationWithReason(
   organizationId: string,
   reason: string,
@@ -106,4 +106,14 @@ export async function deleteOriginationWithReason(
   } catch (error) {
     throw error; // 🚨 에러 발생 시 throw
   }
+}
+
+export async function changeOrganizationStatusApi(
+  organizationId: string,
+): Promise<CommonResponseType<OrganizationProps>> {
+    const response = await axiosInstance.post(
+      `/admins/organizations/${organizationId}/changeStatus`,
+    );
+
+    return response.data;
 }

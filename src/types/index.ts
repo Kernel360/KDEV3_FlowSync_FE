@@ -448,7 +448,6 @@ export interface NoticeArticle {
   regAt: string;
   updatedAt: string;
   fileList: ArticleFile[];
-  linkList: ArticleLink[];
 }
 
 // 게시글 첨부링크
@@ -498,6 +497,7 @@ export interface InputFormData {
   disabled?: boolean;
   isChanged?: boolean;
   maxLength?: number;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 // 공지사항

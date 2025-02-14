@@ -18,7 +18,7 @@ import CreateButton from "@/src/components/common/CreateButton";
 import ErrorAlert from "@/src/components/common/ErrorAlert";
 import { useNoticeList } from "@/src/hook/useFetchBoardList";
 import { useUserInfo } from "@/src/hook/useFetchData";
-import DropDownMenu from "../../common/DropDownMenu";
+import DropDownMenu from "@/src/components/common/DropDownMenu";
 import { useDeleteNotice } from "@/src/hook/useMutationData";
 
 const noticeStatusFramework = createListCollection<{
@@ -45,10 +45,22 @@ const noticeIsDeletedFramework = createListCollection<{
   ],
 });
 
+const CATEGORY_LABELS: Record<string, string> = {
+  SERVICE_UPDATE: "서비스 업데이트",
+  POLICY_CHANGE: "정책변경",
+  MAINTENANCE: "점검안내",
+  OTHER: "기타",
+};
+
+const PRIORITY_LABELS: Record<string, string> = {
+  EMERGENCY: "긴급",
+  NORMAL: "일반",
+};
+
 const EMERGENCY_STYLE = {
-  backgroundColor: "#FFEBEB", // 연한 빨강 (긴급 강조)
+  fontSize: "lg",
   fontWeight: "bold",
-  border: "2px solid #D32F2F",
+  color: "red",
 };
 
 export default function NoticesPage() {
@@ -130,6 +142,7 @@ function NoticesPageContent() {
               statusFramework={noticeStatusFramework}
               selectedValue={category}
               queryKey="category"
+              placeholder="카테고리"
               width="120px"
             />
           </SearchSection>
@@ -142,6 +155,7 @@ function NoticesPageContent() {
               statusFramework={noticeStatusFramework}
               selectedValue={category}
               queryKey="category"
+              placeholder="카테고리"
               width="120px"
             />
           </SearchSection>
@@ -158,6 +172,7 @@ function NoticesPageContent() {
               "& > th": { textAlign: "center" },
             }}
           >
+            <Table.ColumnHeader>우선순위</Table.ColumnHeader>
             <Table.ColumnHeader>카테고리</Table.ColumnHeader>
             <Table.ColumnHeader>제목</Table.ColumnHeader>
             <Table.ColumnHeader>등록일</Table.ColumnHeader>
@@ -170,6 +185,7 @@ function NoticesPageContent() {
                       statusFramework={noticeIsDeletedFramework}
                       selectedValue={isDeleted}
                       queryKey="isDeleted"
+                      placeholder="삭제여부"
                       width="150px"
                     />
                   </Flex>
@@ -196,7 +212,10 @@ function NoticesPageContent() {
               }}
             >
               <Table.Cell {...(isEmergency ? EMERGENCY_STYLE : {})}>
-                {notice.category}
+                {PRIORITY_LABELS[notice.priority]}
+              </Table.Cell>
+              <Table.Cell {...(isEmergency ? EMERGENCY_STYLE : {})}>
+                {CATEGORY_LABELS[notice.category]}
               </Table.Cell>
               <Table.Cell {...(isEmergency ? EMERGENCY_STYLE : {})}>
                 {notice.title}
