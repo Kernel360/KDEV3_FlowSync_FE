@@ -137,6 +137,8 @@ export default function DateSection({
         onClick={handleResetDates}
         width="100px"
         alignSelf="center"
+        mt={8}
+        mr={10}
       >
         초기화
       </Button>
