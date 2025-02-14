@@ -91,7 +91,7 @@ export default function DateSection({
               selected={closeAt ? new Date(closeAt) : null}
               onChange={handleCloseDateChange}
               dateFormat="yyyy-MM-dd"
-              minDate={new Date()}
+              minDate={new Date(startAt)}
               popperPlacement="bottom-start"
               calendarClassName="datepicker-calendar" // ✅ 캘린더 스타일 추가 가능
               wrapperClassName="datepicker-wrapper" // ✅ Wrapper 스타일 적용
