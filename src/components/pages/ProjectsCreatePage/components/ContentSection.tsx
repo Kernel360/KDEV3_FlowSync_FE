@@ -30,8 +30,13 @@ export default function ContentSection({
           borderRadius="0.5rem"
           p="0.75rem"
           width="100%"
-          height="5rem"
+          minHeight="5rem"
           overflowY="auto"
+          onInput={(e) => {
+            const target = e.target as HTMLTextAreaElement;
+            target.style.height = "5rem";
+            target.style.height = `${target.scrollHeight}px`;
+          }}
         />
       </Box>
 
@@ -50,6 +55,11 @@ export default function ContentSection({
           width="100%"
           height="5rem"
           overflowY="auto"
+          onInput={(e) => {
+            const target = e.target as HTMLTextAreaElement;
+            target.style.height = "5rem";
+            target.style.height = `${target.scrollHeight}px`;
+          }}
         />
       </Box>
     </Flex>
