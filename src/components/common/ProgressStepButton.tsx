@@ -15,16 +15,8 @@ export default function ProgressStepButton({
 }: ProgressStepButtonProps) {
   return (
     <Button
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
       onClick={onClick}
       width="11%"
-=======
-=======
->>>>>>> Stashed changes
-      onClick={isSelected ? undefined : onClick}
-      width="164px"
->>>>>>> Stashed changes
       height="48px"
       padding="14px 16px"
       justifyContent="center"
