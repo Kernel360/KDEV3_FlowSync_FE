@@ -5,10 +5,10 @@ import { Flex, Text, Box, Input, Button } from "@chakra-ui/react";
 import { useState } from "react";
 
 interface DateSectionProps {
-  startAt: string | null;
-  closeAt: string | null;
-  setStartAt: (value: string | null) => void;
-  setCloseAt: (value: string | null) => void;
+  startAt: string;
+  closeAt: string;
+  setStartAt: (value: string) => void;
+  setCloseAt: (value: string) => void;
 }
 
 export default function DateSection({
@@ -17,7 +17,6 @@ export default function DateSection({
   setStartAt,
   setCloseAt,
 }: DateSectionProps) {
-
   const handleStartDateChange = (date: Date | null) => {
     if (date) {
       console.log("선택한 시작일:", date); // ✅ 선택한 날짜 확인
@@ -36,6 +35,11 @@ export default function DateSection({
       console.log("ISO 변환 값:", date.toISOString()); // ✅ 변환된 값 확인
       setCloseAt(date.toISOString());
     }
+  };
+
+  const handleResetDates = () => {
+    setStartAt("ㅇ");
+    setCloseAt("ㅇ");
   };
 
   return (
@@ -125,6 +129,17 @@ export default function DateSection({
           </Box>
         </Flex>
       </Flex>
+      <Button
+        backgroundColor={"white"}
+        borderColor={"gray.300"}
+        borderRadius={"lg"}
+        _hover={{ backgroundColor: "gray.400" }}
+        onClick={handleResetDates}
+        width="100px"
+        alignSelf="center"
+      >
+        초기화
+      </Button>
     </Flex>
   );
 }

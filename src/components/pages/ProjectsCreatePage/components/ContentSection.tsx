@@ -19,9 +19,14 @@ export default function ContentSection({
     <Flex width="100%" gap="1rem" padding="1rem">
       {/* description 입력 필드 */}
       <Box flex="1">
-        <Text fontWeight="bold" mb={2}>
-          프로젝트 개요
-        </Text>
+        <Flex direction="row" justifyContent="space-between">
+          <Text fontWeight="bold" mb={2}>
+            프로젝트 개요
+          </Text>
+          <Text textAlign="right" color="gray.500">
+            {description.length} / {255}
+          </Text>
+        </Flex>
         <Textarea
           placeholder="내용을 입력하세요"
           value={description}
@@ -37,14 +42,20 @@ export default function ContentSection({
             target.style.height = "5rem";
             target.style.height = `${target.scrollHeight}px`;
           }}
+          maxLength={255}
         />
       </Box>
 
       {/* detail 입력 필드 */}
       <Box flex="1">
-        <Text fontWeight="bold" mb={2}>
-          프로젝트 상세 내용
-        </Text>
+        <Flex direction="row" justifyContent="space-between">
+          <Text fontWeight="bold" mb={2}>
+            프로젝트 상세 내용
+          </Text>
+          <Text textAlign="right" color="gray.500">
+            {detail.length} / {255}
+          </Text>
+        </Flex>
         <Textarea
           placeholder="내용을 입력하세요"
           value={detail}
@@ -60,6 +71,7 @@ export default function ContentSection({
             target.style.height = "5rem";
             target.style.height = `${target.scrollHeight}px`;
           }}
+          maxLength={255}
         />
       </Box>
     </Flex>

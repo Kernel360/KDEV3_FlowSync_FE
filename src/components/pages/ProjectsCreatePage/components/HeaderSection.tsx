@@ -63,9 +63,14 @@ export default function HeaderSection({
 
         {/* 프로젝트명 입력 */}
         <Box flex="4" minWidth="12rem">
-          <Text fontSize="1rem" fontWeight="bold" mb="0.5rem">
-            프로젝트명
-          </Text>
+          <Flex direction="row" justifyContent="space-between">
+            <Text fontSize="1rem" fontWeight="bold" mb="0.5rem">
+              프로젝트명
+            </Text>
+            <Text textAlign="right" color="gray.500">
+              {name.length} / {50}{" "}
+            </Text>
+          </Flex>
           <Input
             placeholder="프로젝트명을 입력하세요."
             value={name}
@@ -77,6 +82,7 @@ export default function HeaderSection({
             border="1px solid #ccc"
             fontSize="1rem"
             lineHeight="1.5rem"
+            maxLength={50}
           />
         </Box>
       </Flex>
