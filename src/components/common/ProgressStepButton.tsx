@@ -13,12 +13,13 @@ export default function ProgressStepButton({
   isSelected,
   onClick,
 }: ProgressStepButtonProps) {
+  console.log("isSelected: ", isSelected);
   return (
     <Button
       onClick={onClick}
       width="11%"
-      height="48px"
-      padding="14px 16px"
+      height="3rem"
+      padding="1rem"
       justifyContent="center"
       alignItems="center"
       borderRadius="4px"
@@ -29,7 +30,7 @@ export default function ProgressStepButton({
       _hover={isSelected ? {} : { backgroundColor: "gray.100" }} // ✅ 선택된 상태에서는 hover 효과 제거
     >
       {/* <Text>{text}</Text> */}
-      <Text color={isSelected ? "#D62A1C" : "black"}>
+      <Text fontWeight="bold">
         {text} {count}건
       </Text>{" "}
       {/* 텍스트 색상 변경 */}

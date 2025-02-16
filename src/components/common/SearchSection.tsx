@@ -51,7 +51,7 @@ export default function SearchSection({
   };
 
   return (
-    <Box mb="10px">
+    <Box mb="0.8rem">
       <Flex gap={4} alignItems="center" justifyContent="end">
         <HStack>
           {children}
@@ -61,12 +61,22 @@ export default function SearchSection({
             value={input}
             onChange={onChangeSearch}
             onKeyDown={onKeyDown}
-            width="300px"
+            width="23rem"
           />
-          <Button width="80px" variant={"surface"} onClick={onSubmit}>
+          <Button
+            width="80px"
+            variant={"surface"}
+            onClick={onSubmit}
+            _hover={{ backgroundColor: "#00a8ff", color: "white" }}
+          >
             검색
           </Button>
-          <Button width="80px" variant={"outline"} onClick={resetSearch}>
+          <Button
+            width="80px"
+            variant={"outline"}
+            onClick={resetSearch}
+            _hover={{ backgroundColor: "#00a8ff", color: "white" }}
+          >
             초기화
           </Button>
         </HStack>
