@@ -10,11 +10,15 @@ import {
   MemberListResponse,
   OrganizationProjectListResponse,
   MemberProjectListResponse,
+  CompletionHistoryListResponse,
 } from "@/src/types";
 import {
   fetchProjectQuestionListApi,
   fetchProjectApprovalListApi,
   fetchProjectListApi,
+  fetchOrganizationProjectListApi,
+  fetchMemberProjectListApi,
+  getCompletionRequestsApi,
 } from "@/src/api/projects";
 import { showToast } from "@/src/utils/showToast";
 import { fetchNoticeListApi } from "@/src/api/notices";
@@ -57,6 +61,7 @@ export function useFetchBoardList<T, P extends any[], K extends keyof T>({
       setData(response.data[keySelector]);
       setPaginationInfo(response.data.meta as PaginationProps);
       setError(null);
+
     } catch (err: any) {
       console.error("Error fetching data:", err);
       // ✅ 서버 응답에서 message 필드가 있는 경우 해당 메시지 사용
@@ -267,4 +272,28 @@ export const useOrganizationList = (
     fetchApi: fetchOrganizationListApi,
     keySelector: "dtoList",
     params: [keyword, type, status, currentPage, pageSize],
+  });
+
+/**
+ * 진행단계 결재 로그 데이터 조회 (완료 요청)
+ */
+export const useProjectCompletionRequestsData = (
+  projectId: string,
+  progressStepId: string,
+  currentPage: number,
+  pageSize: number
+) =>
+  useFetchBoardList<
+    CompletionHistoryListResponse,
+    [string, string, number, number], 
+    "completionHistories"
+  >({
+    fetchApi: (projectId, progressStepId, currentPage, pageSize) =>
+      getCompletionRequestsApi(projectId, {
+        progressStepId,
+        currentPage,
+        pageSize,
+      }),
+    keySelector: "completionHistories",
+    params: [projectId, progressStepId, currentPage, pageSize],
   });
