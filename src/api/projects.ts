@@ -12,7 +12,6 @@ import {
   ProgressStep,
   ManagementStepCountMap,
   OrganizationProjectListResponse,
-  CompletionHistory,
   CompletionHistoryListResponse,
   ProgressStepOrder,
 } from "@/src/types";
