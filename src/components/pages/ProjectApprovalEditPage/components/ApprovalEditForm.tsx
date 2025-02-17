@@ -60,7 +60,6 @@ export default function ApprovalEditForm() {
           Number(projectId),
           Number(approvalId),
         );
-        console.log(responseData);
         setTitle(responseData.title);
         setLinkList(responseData.linkList);
         setUploadedFiles(responseData.fileList);
@@ -139,7 +138,7 @@ export default function ApprovalEditForm() {
           });
         }, 500);
       } catch (error) {
-        console.log("에러 발생: ", error);
+        console.error("에러발생 : ", error);
       }
     };
 

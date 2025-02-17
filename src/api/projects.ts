@@ -168,7 +168,6 @@ export async function fetchProjectDetailsApi(
   projectId: string,
 ): Promise<ProjectDetailProps> {
   const response = await axiosInstance.get(`/admins/projects/${projectId}`);
-  console.log("프로젝트 상세 조회 API 호출 중 - response: ", response);
   return response.data.data;
 }
 
@@ -195,7 +194,6 @@ export async function fetchProjectInfoApi(
   const response = await axiosInstance.get(
     `/projects/${projectId}/project-info`,
   );
-  console.log(response.data);
   return response.data;
 }
 
@@ -371,6 +369,33 @@ export async function updateProjectProgressStepOrderApi(
   const response = await axiosInstance.put(
     `/projects/${projectId}/progress-steps/order`,
     { steps },
+  );
+  return response.data;
+}
+
+/**
+ * 프로젝트 진행 단계 추가 API
+ */
+export async function createProjectProgressStepApi(
+  projectId: string,
+  stepName: string
+): Promise<CommonResponseType<{ id: string; title: string }>> {
+  const response = await axiosInstance.post(
+    `/projects/${projectId}/progress-steps`,
+    { title: stepName } // API 요청 바디
+  );
+  return response.data;
+}
+
+/**
+ * 프로젝트 진행 단계 삭제 API
+ */
+export async function deleteProjectProgressStepApi(
+  projectId: string,
+  progressStepId: string
+): Promise<CommonResponseType<void>> {
+  const response = await axiosInstance.delete(
+    `/projects/${projectId}/progress-steps/${progressStepId}`
   );
   return response.data;
 }

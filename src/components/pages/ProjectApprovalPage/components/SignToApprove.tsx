@@ -30,7 +30,6 @@ export default function SignToApprove({
   ); // 결재자 사인 url
   const [isSignatureComplete, setIsignatureComplete] =
     useState<boolean>(!!approverSignatureUrl);
-
   const [signing, setSigning] = useState<boolean>(false);
   const [newSigning, setNewSigning] = useState<boolean>(false);
 
@@ -113,7 +112,6 @@ export default function SignToApprove({
     try {
       const responseData = await sendSignApi(file);
       setYourSignatureUrl(responseData.data.url);
-      console.log("저장되었다리", responseData.data.url);
       disableSignaturePad(); // 서명 비활
       setIsignatureComplete(true);
       confirmApproval();
@@ -129,22 +127,18 @@ export default function SignToApprove({
     }
     try {
       const responseData = await bringSignApi();
-      if (responseData.code === 200 && responseData.data) {
-        setYourSignatureUrl(responseData.data.signatureUrl ?? "");
-        console.log("잘불러왔다리", responseData.data.signatureUrl);
 
-        if (signaturePad) {
-          // console.log(responseData.data.signatureUrl);
-          signaturePad.fromDataURL(responseData.data.signatureUrl);
-          disableSignaturePad(); // 비활
-        }
-        setIsignatureComplete(true);
-      } else {
-        console.log("못불러왔다리");
+      setYourSignatureUrl(responseData.data.signatureUrl ?? "");
+
+      if (signaturePad) {
+        signaturePad.fromDataURL(responseData.data.signatureUrl);
+        disableSignaturePad(); // 비활
       }
+      setIsignatureComplete(true);
+
       confirmApproval();
     } catch (error) {
-      console.log("서명 불러오는데 오류 발생", error);
+      console.error("서명 불러오는데 오류 발생", error);
     }
   };
 
@@ -187,6 +181,7 @@ export default function SignToApprove({
       const response = await getMeApi();
       // console.log(response.data.organizationType)
       if (response.data.organizationType === "DEVELOPER") {
+
         setIsignatureComplete(true);
         disableSignaturePad();
       }
