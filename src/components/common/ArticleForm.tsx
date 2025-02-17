@@ -214,17 +214,13 @@ export default function ArticleForm({
 
   const attachImageDeleteButtons = () => {
     if (!editorRef.current) return;
-
-    const imageBlocks = document.querySelectorAll(
-      ".ce-block__content .cdx-block",
-    );
-
-    imageBlocks.forEach((block) => {
+  
+    const blocks = document.querySelectorAll(".ce-block__content .cdx-block");
+  
+    blocks.forEach((block) => {
       const blockElement = block as HTMLElement;
-      const imgElement = blockElement.querySelector(
-        "img",
-      ) as HTMLImageElement | null;
-
+      const imgElement = blockElement.querySelector("img") as HTMLImageElement | null;
+  
       if (imgElement && !blockElement.querySelector(".image-delete-btn")) {
         const deleteButton = document.createElement("button");
         deleteButton.textContent = "❌ 삭제";
@@ -237,14 +233,21 @@ export default function ArticleForm({
         deleteButton.style.cursor = "pointer";
         deleteButton.style.padding = "4px 8px";
         deleteButton.style.borderRadius = "4px";
-
+  
         deleteButton.onclick = () => {
-          editorRef.current?.blocks.delete(
-            editorRef.current.blocks.getCurrentBlockIndex(),
-          );
-          removeEmptyImageBlocks(); // 삭제 후 빈 블록 제거
+          if (!editorRef.current) return;
+  
+          // ✅ 현재 클릭한 블록을 기준으로 EditorJS의 블록 인덱스 찾기
+          const blockIndex = editorRef.current.blocks.getCurrentBlockIndex();
+  
+          if (blockIndex !== -1) {
+            editorRef.current.blocks.delete(blockIndex);
+          } else {
+            return;
+          }
         };
-
+  
+  
         blockElement.style.position = "relative";
         blockElement.appendChild(deleteButton);
       }

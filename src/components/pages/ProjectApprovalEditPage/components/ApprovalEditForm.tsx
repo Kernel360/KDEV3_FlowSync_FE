@@ -211,44 +211,6 @@ export default function ApprovalEditForm() {
       }
     });
   };
-  
-  
-
-  const removeEmptyImageBlocks = () => {
-    if (!editorRef.current) return;
-
-    const editor = editorRef.current;
-
-    editor.save().then((savedData) => {
-      const blockElements = document.querySelectorAll(".ce-block"); // DOM에서 모든 블록 찾기
-
-      blockElements.forEach((blockElement, index) => {
-        const imgElement = blockElement.querySelector("img");
-        const blockData = savedData.blocks[index];
-        editor.blocks.delete(index);
-        // 이미지 블록인데 URL이 없거나 로딩 상태일 경우 삭제
-        if (
-          !imgElement &&
-          blockData.type === "image" &&
-          !blockData.data?.file?.url
-        ) {
-          console.log("🚨 빈 이미지 블록 발견 및 DOM에서 제거");
-          blockElement.remove(); // DOM에서 로딩 박스 제거
-        }
-      });
-
-      // EditorJS의 데이터 상태를 동기화 (빈 블록 필터링)
-      const newBlocks = savedData.blocks.filter(
-        (block) => block.type !== "image" || block.data?.file?.url,
-      );
-
-      // 데이터가 변경되었으면 에디터 재초기화
-      if (newBlocks.length !== savedData.blocks.length) {
-        console.log("🚨 빈 이미지 블록 제거 후 EditorJS 재초기화");
-        // initializeEditor(newBlocks);
-      }
-    });
-  };
 
   const handleEditorSave = async () => {
     if (editorRef.current) {

@@ -77,7 +77,7 @@ export default function QuestionEditForm() {
                         setTimeout(() => {
                           attachImageDeleteButtons();
                         }, 500);
-                        
+
                         return {
                           success: 1,
                           file: { url: responseData.data.url },
