@@ -24,11 +24,13 @@ export default function SignToApprove({
   };
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [signaturePad, setSignaturePad] = useState<SignaturePad | null>(null);
-  const [yourSignatureUrl, setYourSignatureUrl] = useState<string>(approverSignatureUrl ?? ""); // 결재자 사인 url
-  const [isSignatureComplete, setIsignatureComplete] = useState<boolean>(!!approverSignatureUrl);
+  const [yourSignatureUrl, setYourSignatureUrl] = useState<string>(
+    approverSignatureUrl ?? "",
+  ); // 결재자 사인 url
+  const [isSignatureComplete, setIsignatureComplete] =
+    useState<boolean>(!!approverSignatureUrl);
 
-
-
+  console.log(approverSignatureUrl);
   // 캔버스 초기화
   useEffect(() => {
     isMyOrg();
@@ -136,8 +138,8 @@ export default function SignToApprove({
       if (response.data.result === "SUCCESS") {
         disableSignaturePad();
         setIsignatureComplete(true);
+        setYourSignatureUrl("./public/reject.jpg");
       }
-      // return response.data.result;
     } catch (error) {
       console.error(error);
     }
@@ -169,9 +171,9 @@ export default function SignToApprove({
         disableSignaturePad();
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   return (
     <Flex direction={"column"} align="center">
@@ -219,6 +221,7 @@ export default function SignToApprove({
                 height={166.6}
                 src={yourSignatureUrl}
                 alt="서명"
+                objectFit="contain"
               />
             ) : (
               <Text
