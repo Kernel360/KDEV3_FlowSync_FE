@@ -7,11 +7,12 @@ interface SignUploadProps {
   setIsSignYes: (bool: boolean) => void;
 }
 
-export default function SignUpload({setIsSignYes}: SignUploadProps) {
+export default function SignUpload({ setIsSignYes }: SignUploadProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [signaturePad, setSignaturePad] = useState<SignaturePad | null>(null);
-
   const [signatureUrl, setSignatureUrl] = useState<string>("");
+  const [signing, setSigning] = useState<boolean>(false);
+  const [newSigning, setNewSigning] = useState<boolean>(false);
 
   // 캔버스 초기화
   useEffect(() => {
@@ -48,7 +49,7 @@ export default function SignUpload({setIsSignYes}: SignUploadProps) {
       const responseData = await sendSignApi(file);
       setSignatureUrl(responseData.data.url);
       console.log("저장되었다리", responseData.data.url);
-      setIsSignYes(true)
+      setIsSignYes(true);
     } catch (error) {
       console.error("서명 등록 실패", error);
     }
@@ -65,7 +66,7 @@ export default function SignUpload({setIsSignYes}: SignUploadProps) {
           // console.log(responseData.data.signatureUrl);
           signaturePad.fromDataURL(responseData.data.signatureUrl);
         }
-        setIsSignYes(true)
+        setIsSignYes(true);
       } else {
         console.log("못불러왔다리");
       }
@@ -108,7 +109,11 @@ export default function SignUpload({setIsSignYes}: SignUploadProps) {
               </Text>
             )}
           </Box>
-          <Box border={"2px solid black"} borderRadius={"10px"} backgroundColor={"gray.300"}>
+          <Box
+            border={"2px solid black"}
+            borderRadius={"10px"}
+            backgroundColor={"gray.300"}
+          >
             <Text
               display="flex"
               alignItems="center"
@@ -138,9 +143,46 @@ export default function SignUpload({setIsSignYes}: SignUploadProps) {
       </Box>
 
       <Flex justifyContent={"center"} gap={4}>
-        <Button onClick={bringSignature}>서명 불러오기</Button>
-        <Button onClick={clearSignature}>지우기</Button>
-        <Button onClick={saveSignature}>등록</Button>
+        {!signing ? (
+          <>
+            <Button
+              backgroundColor={"green.500"}
+              color="white"
+              _hover={{ backgroundColor: "green.600" }}
+              mr={2}
+              onClick={bringSignature}
+            >
+              서명 불러오기
+            </Button>
+            <Button
+              backgroundColor={"blue.500"}
+              color="white"
+              _hover={{ backgroundColor: "blue.600" }}
+              mr={2}
+              onClick={() => {
+                setSigning(true);
+              }}
+            >
+              서명 새로 등록하기
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button
+              backgroundColor={"blue.500"}
+              color="white"
+              _hover={{ backgroundColor: "blue.600" }}
+              mr={2}
+              onClick={saveSignature}
+            >
+              등록
+            </Button>
+            <Button backgroundColor={"red.500"}
+              color="white"
+              _hover={{ backgroundColor: "red.600" }}
+              mr={2} onClick={clearSignature}>지우기</Button>
+          </>
+        )}
       </Flex>
     </Flex>
   );
