@@ -17,9 +17,10 @@ import {
   ArticleFile,
   ContentBlock,
 } from "@/src/types";
+import { resolveQuestion } from "@/src/api/ReadArticle";
 import { formatDateWithTime } from "@/src/utils/formatDateUtil";
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useParams } from "next/navigation";
 
 interface ArticleContentProps<T extends QuestionArticle | ApprovalArticle> {
   article: T | null;
@@ -31,9 +32,15 @@ export default function ArticleContent<
   const pathname = usePathname();
   const [articleStatus, setArticleStatus] = useState<string>("");
   const [statusColor, setStatusColor] = useState<string>("");
+  const [resolved, setResolved] = useState<boolean>(false);
+  const { projectId, questionId } = useParams() as {
+    projectId: string;
+    questionId?: string;
+  };
+
   useEffect(() => {
     getStatus();
-  }, []);
+  }, [resolved]);
 
   if (!article) {
     return (
@@ -151,7 +158,18 @@ export default function ArticleContent<
     });
   };
 
-  console.log(article.fileList.length);
+  const handleResolve = async (projectId: number, questionId?: number) => {
+    try {
+      if (questionId) {
+        const responseData = await resolveQuestion(projectId, questionId);
+
+        setResolved(true);
+        article.status = "RESOLVED";
+      }
+    } catch (error) {
+      console.error("답변 완료 요청 실패 : ", error);
+    }
+  };
 
   return (
     <Box mb={4}>
@@ -177,14 +195,31 @@ export default function ArticleContent<
       </Flex>
 
       {/* 작성자, 작성 일시 (NoticeArticle인 경우 작성자 정보 숨김) */}
-      <Box mb={4}>
-        <Text pb={2} fontWeight={"bold"}>
-          작성자: {article.register.name} {`/ ${article.register.role}`}
-        </Text>
-        <Text color={"gray.400"}>
-          등록일: {formatDateWithTime(article.regAt)}
-        </Text>
-      </Box>
+      <Flex mb={4} justifyContent={"space-between"}>
+        <Box>
+          <Text pb={2} fontWeight={"bold"}>
+            작성자: {article.register.name} {`/ ${article.register.role}`}
+          </Text>
+          <Text color={"gray.400"}>
+            등록일: {formatDateWithTime(article.regAt)}
+          </Text>
+        </Box>
+        {pathname.includes("/questions") ? (
+          <Button
+            color={"white"}
+            backgroundColor={"#00a8ff"}
+            _hover={{ backgroundColor: "#0095ff" }}
+            onClick={() =>
+              handleResolve(
+                Number(projectId),
+                questionId ? Number(questionId) : undefined,
+              )
+            }
+          >
+            질문 해결
+          </Button>
+        ) : null}
+      </Flex>
       <Separator mb={6} size={"lg"} />
 
       {/* 본문 내용 */}
