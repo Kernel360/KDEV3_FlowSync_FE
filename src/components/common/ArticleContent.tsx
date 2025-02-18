@@ -151,6 +151,8 @@ export default function ArticleContent<
     });
   };
 
+  console.log(article.fileList.length);
+
   return (
     <Box mb={4}>
       {/* 제목 */}
@@ -189,23 +191,31 @@ export default function ArticleContent<
       <Box mb={4}>{renderContent(parsedContent)}</Box>
       <br />
       <br />
-      <Separator mb={6} />
       {/* 첨부 링크 */}
       <Box>
-        <Text fontWeight="bold" mb={2}>
-          첨부 링크
-          <VStack align="start">{renderLinks(article.linkList)}</VStack>
-        </Text>
+        {article.linkList.length !== 0 ? (
+          <Box>
+            <Separator mb={6} />
+            <Text fontWeight="bold" mb={2}>
+              첨부 링크
+              <VStack align="start">{renderLinks(article.linkList)}</VStack>
+            </Text>
+            <br />
+            <br />
+          </Box>
+        ) : null}
       </Box>
-      <br />
-      <br />
-      <Separator mb={6} />
       {/* 첨부 파일 */}
       <Box mb={4}>
-        <Text fontWeight="bold" mb={2}>
-          첨부 파일
-        </Text>
-        <VStack align="start">{renderFiles(article.fileList)}</VStack>
+        {article.fileList.length !== 0 ? (
+          <Box>
+            <Separator mb={6} />
+            <Text fontWeight="bold" mb={2}>
+              첨부 파일
+            </Text>
+            <VStack align="start">{renderFiles(article.fileList)}</VStack>
+          </Box>
+        ) : null}
         <Separator mb={6} size={"lg"} />
       </Box>
     </Box>
