@@ -415,6 +415,7 @@ export interface QuestionArticle {
   register: {
     name: string;
     role: string;
+    organizationId: number;
   }
   fileList: ArticleFile[];
   linkList: ArticleLink[];

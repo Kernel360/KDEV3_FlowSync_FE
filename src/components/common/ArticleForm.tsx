@@ -12,6 +12,7 @@ import FileAddSection from "@/src/components/common/FileAddSection";
 import LinkAddSection from "@/src/components/common/LinkAddSection";
 import DropDownInfoBottom from "@/src/components/common/DropDownInfoBottom";
 import SignUpload from "@/src/components/pages/ProjectApprovalsNewPage/components/SignUpload";
+import { showToast } from "@/src/utils/showToast";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -108,9 +109,17 @@ export default function ArticleForm({
 
                   setTimeout(() => attachImageDeleteButtons(), 500); // 이미지 업로드 후 삭제 버튼 추가
                   return { success: 1, file: { url: responseData.data.url } };
-                } catch (error) {
+                } catch (error: any) {
                   console.error("파일 업로드 중 오류 발생:", error);
-                  alert("이미지 파일 크기는 10mb 를 초과할 수 없습니다.");
+                  // alert("이미지 파일 크기는 10mb 를 초과할 수 없습니다.");
+                  const errorMessage = "이미지 크기는 10MB 를 초과할 수 없습니다.";
+                  showToast({
+                    title: "요청 실패",
+                    description: errorMessage,
+                    type: "error",
+                    duration: 3000,
+                    error: errorMessage,
+                  });
                   removeEmptyImageBlocks(); // 업로드 실패 시 빈 블록 제거
                   return { success: 0 };
                 }
@@ -203,6 +212,7 @@ export default function ArticleForm({
         }
 
         handleSave(requestData as BaseArticleRequestData);
+        
       } catch (error) {
         console.error("저장 실패:", error);
         alert("저장 중 문제가 발생했습니다.");
@@ -212,13 +222,15 @@ export default function ArticleForm({
 
   const attachImageDeleteButtons = () => {
     if (!editorRef.current) return;
-  
+
     const blocks = document.querySelectorAll(".ce-block__content .cdx-block");
-  
+
     blocks.forEach((block) => {
       const blockElement = block as HTMLElement;
-      const imgElement = blockElement.querySelector("img") as HTMLImageElement | null;
-  
+      const imgElement = blockElement.querySelector(
+        "img",
+      ) as HTMLImageElement | null;
+
       if (imgElement && !blockElement.querySelector(".image-delete-btn")) {
         const deleteButton = document.createElement("button");
         deleteButton.textContent = "❌ 삭제";
@@ -231,21 +243,20 @@ export default function ArticleForm({
         deleteButton.style.cursor = "pointer";
         deleteButton.style.padding = "4px 8px";
         deleteButton.style.borderRadius = "4px";
-  
+
         deleteButton.onclick = () => {
           if (!editorRef.current) return;
-  
+
           // ✅ 현재 클릭한 블록을 기준으로 EditorJS의 블록 인덱스 찾기
           const blockIndex = editorRef.current.blocks.getCurrentBlockIndex();
-  
+
           if (blockIndex !== -1) {
             editorRef.current.blocks.delete(blockIndex);
           } else {
             return;
           }
         };
-  
-  
+
         blockElement.style.position = "relative";
         blockElement.appendChild(deleteButton);
       }
@@ -295,7 +306,9 @@ export default function ArticleForm({
         <Box flex={2}>
           <Flex direction={"row"} alignItems={"center"}>
             <Text pb={2}>제목</Text>
-            <Text pb={2} pl={2}>{title.length} / 80 </Text>
+            <Text pb={2} pl={2}>
+              {title.length} / 80{" "}
+            </Text>
           </Flex>
           <Input
             type="text"

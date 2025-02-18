@@ -12,6 +12,7 @@ import { uploadFileApi } from "@/src/api/RegisterArticle";
 import { editApprovalAPI } from "@/src/api/RegisterArticle";
 import { ApprovalRequestData } from "@/src/types";
 import EditSignUpload from "./EditSignUpload";
+import { showToast } from "@/src/utils/showToast";
 
 // 수정 api 만들고 가져와야함
 
@@ -85,7 +86,19 @@ export default function ApprovalEditForm() {
                       try {
                         const responseData = await uploadFileApi(file);
                         if (responseData.result !== "SUCCESS") {
-                          console.error("파일 업로드 실패");
+                          const errorMessage = "이미지 업로드 중 오류 발생";
+                          showToast({
+                            title: "요청 실패",
+                            description: errorMessage,
+                            type: "error",
+                            duration: 3000,
+                            error: errorMessage,
+                          });
+                          const blockIndex =
+                            editorRef.current?.blocks.getCurrentBlockIndex();
+                          if (blockIndex !== undefined && blockIndex !== -1) {
+                            editorRef.current?.blocks.delete(blockIndex);
+                          }
                           return { success: 0 };
                         }
 
@@ -98,7 +111,21 @@ export default function ApprovalEditForm() {
                           file: { url: responseData.data.url },
                         };
                       } catch (error) {
-                        console.error("파일 업로드 중 오류 발생:", error);
+                        const blockIndex =
+                          editorRef.current?.blocks.getCurrentBlockIndex();
+                        if (blockIndex !== undefined && blockIndex !== -1) {
+                          editorRef.current?.blocks.delete(blockIndex);
+                        }
+                        const errorMessage =
+                          "이미지 크기는 10MB 를 초과할 수 없습니다.";
+                        showToast({
+                          title: "요청 실패",
+                          description: errorMessage,
+                          type: "error",
+                          duration: 3000,
+                          error: errorMessage,
+                        });
+
                         return { success: 0 };
                       }
                     },
@@ -162,22 +189,44 @@ export default function ApprovalEditForm() {
             : {}),
         },
       );
-      router.push(`/projects/${projectId}/approvals`);
-    } catch (error) {
-      console.error("저장 실패:", error);
+      if (response.message) {
+        showToast({
+          title: "요청 성공",
+          description: response.message,
+          type: "success",
+          duration: 3000,
+        });
+      }
+    } catch (error: any) {
+      const errorMessage =
+              error.response?.data?.message ||
+              error.message ||
+              "질문 등록 중 중 오류가 발생했습니다.";
+      
+            // ✅ 토스트로 사용자에게 알림
+            showToast({
+              title: "요청 실패",
+              description: errorMessage,
+              type: "error",
+              duration: 3000,
+              error: errorMessage,
+            });
+
       alert("저장 중 문제가 발생했습니다.");
     }
   };
 
   const attachImageDeleteButtons = () => {
     if (!editorRef.current) return;
-  
+
     const blocks = document.querySelectorAll(".ce-block__content .cdx-block");
-  
+
     blocks.forEach((block) => {
       const blockElement = block as HTMLElement;
-      const imgElement = blockElement.querySelector("img") as HTMLImageElement | null;
-  
+      const imgElement = blockElement.querySelector(
+        "img",
+      ) as HTMLImageElement | null;
+
       if (imgElement && !blockElement.querySelector(".image-delete-btn")) {
         const deleteButton = document.createElement("button");
         deleteButton.textContent = "❌ 삭제";
@@ -190,21 +239,20 @@ export default function ApprovalEditForm() {
         deleteButton.style.cursor = "pointer";
         deleteButton.style.padding = "4px 8px";
         deleteButton.style.borderRadius = "4px";
-  
+
         deleteButton.onclick = () => {
           if (!editorRef.current) return;
-  
+
           // ✅ 현재 클릭한 블록을 기준으로 EditorJS의 블록 인덱스 찾기
           const blockIndex = editorRef.current.blocks.getCurrentBlockIndex();
-  
+
           if (blockIndex !== -1) {
             editorRef.current.blocks.delete(blockIndex);
           } else {
             return;
           }
         };
-  
-  
+
         blockElement.style.position = "relative";
         blockElement.appendChild(deleteButton);
       }

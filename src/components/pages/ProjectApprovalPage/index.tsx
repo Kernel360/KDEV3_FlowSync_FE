@@ -15,8 +15,10 @@ import { readApprovalApi } from "@/src/api/ReadArticle";
 import SignToApprove from "@/src/components/pages/ProjectApprovalPage/components/SignToApprove";
 import { ArticleComment, ApprovalArticle } from "@/src/types";
 import { deleteApprovalApi } from "@/src/api/RegisterArticle";
+import { getMeApi } from "@/src/api/getMembersApi";
 import DropDownMenu from "@/src/components/common/DropDownMenu";
 import DropDownInfoBottom from "../../common/DropDownInfoBottom";
+import { showToast } from "@/src/utils/showToast";
 
 export default function ProjectApprovalPage() {
   const { projectId, approvalId } = useParams() as {
@@ -34,10 +36,17 @@ export default function ProjectApprovalPage() {
   const [registerSignatureUrl, setRegisterSignatureUrl] = useState<string>();
   const [approverSignatureUrl, setApproverSignatureUrl] = useState<string>();
   const [registerOrgId, setRegisterOrgId] = useState<number>(); // 자기 업체 글인지 확인
+  const [registerName, setRegisterName] = useState<string>("");
+  const [myOrgId, setMyOrgId] = useState<number>();
+  const [myName, setMyName] = useState<string>("");
 
   useEffect(() => {
     const loadApproval = async () => {
       try {
+        const myData = await getMeApi();
+        setMyOrgId(myData.data.organizationId);
+        setMyName(myData.data.name);
+
         const responseData = await readApprovalApi(
           Number(projectId),
           Number(approvalId),
@@ -46,10 +55,12 @@ export default function ProjectApprovalPage() {
         setCategory(responseData.category);
         setCommentList(responseData.commentList ?? []);
         setRegisterSignatureUrl(responseData.register.signatureUrl);
+        setRegisterName(responseData.register.name); // 글 작성자 이름 저장
+        setRegisterOrgId(responseData.register.organizationId); // 글 작성자 소속업체 id
         if (responseData.status === "APPROVED") {
           setApproverSignatureUrl(responseData.approver?.signatureUrl);
         } else if (responseData.status === "REJECTED") {
-          setApproverSignatureUrl("/비추_고화질.png")
+          setApproverSignatureUrl("/비추_고화질.png");
         } else {
           setApproverSignatureUrl(responseData.approver?.signatureUrl);
         }
@@ -74,17 +85,58 @@ export default function ProjectApprovalPage() {
     return <Box>로딩 중...</Box>;
   }
 
+  console.log(myName)
+  console.log(myOrgId)
+
   const handleEdit = () => {
+    if (registerName !== myName && registerOrgId !== myOrgId) {
+      const errorMessage = "수정 권한이 없습니다.";
+      showToast({
+        title: "요청 실패",
+        description: errorMessage,
+        type: "error",
+        duration: 3000,
+        error: errorMessage,
+      });
+      return;
+    }
+
     if (approverSignatureUrl !== undefined) {
-      alert("결재가 완료된 글은 수정할 수 없습니다.");
+      const errorMessage = "결재가 완료된 글은 수정할 수 없습니다.";
+      showToast({
+        title: "요청 실패",
+        description: errorMessage,
+        type: "error",
+        duration: 3000,
+        error: errorMessage,
+      });
       return;
     }
     router.push(`/projects/${projectId}/approvals/${approvalId}/edit`);
   };
 
   const handleDelete = async () => {
+    if (registerName !== myName && registerOrgId !== myOrgId) {
+      const errorMessage = "삭제 권한이 없습니다.";
+      showToast({
+        title: "요청 실패",
+        description: errorMessage,
+        type: "error",
+        duration: 3000,
+        error: errorMessage,
+      });
+      return;
+    }
+
     if (approverSignatureUrl !== undefined) {
-      alert("결재가 완료된 글은 삭제할 수 없습니다.");
+      const errorMessage = "결재가 완료된 글은 삭제할 수 없습니다.";
+      showToast({
+        title: "요청 실패",
+        description: errorMessage,
+        type: "error",
+        duration: 3000,
+        error: errorMessage,
+      });
       return;
     }
 

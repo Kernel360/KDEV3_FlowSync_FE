@@ -15,6 +15,8 @@ import { readQuestionApi } from "@/src/api/ReadArticle";
 import DropDownMenu from "@/src/components/common/DropDownMenu";
 import { QuestionArticle, ArticleComment } from "@/src/types";
 import { deleteQuestionApi } from "@/src/api/RegisterArticle";
+import { showToast } from "@/src/utils/showToast";
+import { getMeApi } from "@/src/api/getMembersApi";
 
 export default function ProjectQuestionPage() {
   const { projectId, questionId } = useParams() as {
@@ -28,11 +30,19 @@ export default function ProjectQuestionPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [commentList, setCommentList] = useState<ArticleComment[]>([]);
   const [commentIsWritten, setCommentIsWritten] = useState<boolean>(false);
+  const [registerOrgId, setRegisterOrgId] = useState<number>(); // 자기 업체 글인지 확인
+  const [registerName, setRegisterName] = useState<string>("");
+  const [myOrgId, setMyOrgId] = useState<number>();
+  const [myName, setMyName] = useState<string>("");
 
   // 글 렌더링
   useEffect(() => {
     const loadTask = async () => {
       try {
+        const myData = await getMeApi();
+        setMyOrgId(myData.data.organizationId);
+        setMyName(myData.data.name);
+
         const responseData = await readQuestionApi(
           Number(projectId),
           Number(questionId),
@@ -40,6 +50,8 @@ export default function ProjectQuestionPage() {
 
         setArticle(responseData);
         setCommentList(responseData.commentList ?? []);
+        setRegisterName(responseData.register.name);
+        setRegisterOrgId(responseData.register.organizationId);
       } catch (err) {
         setError(
           err instanceof Error
@@ -62,10 +74,32 @@ export default function ProjectQuestionPage() {
   }
 
   const handleEdit = () => {
+    if (registerName !== myName && registerOrgId !== myOrgId) {
+      const errorMessage = "수정 권한이 없습니다.";
+      showToast({
+        title: "요청 실패",
+        description: errorMessage,
+        type: "error",
+        duration: 3000,
+        error: errorMessage,
+      });
+      return;
+    }
     router.push(`/projects/${projectId}/questions/${questionId}/edit`);
   };
 
   const handleDelete = async () => {
+    if (registerName !== myName && registerOrgId !== myOrgId) {
+      const errorMessage = "삭제 권한이 없습니다.";
+      showToast({
+        title: "요청 실패",
+        description: errorMessage,
+        type: "error",
+        duration: 3000,
+        error: errorMessage,
+      });
+      return;
+    }
     const confirmDelete = window.confirm("정말로 삭제하시겠습니까?");
     if (!confirmDelete) return;
     try {
