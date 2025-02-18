@@ -67,6 +67,20 @@ export default function ArticleForm({
   const pathname = usePathname();
 
   useEffect(() => {
+    const disableUndo = (event: KeyboardEvent) => {
+      if (event.metaKey && event.key === "z") {
+        event.preventDefault(); // 기본 동작 차단
+      }
+    };
+  
+    document.addEventListener("keydown", disableUndo);
+    return () => {
+      document.removeEventListener("keydown", disableUndo);
+    };
+  }, []);
+
+
+  useEffect(() => {
     setTitle(initialTitle);
     setLinkList(initialLinkList);
     setUploadedFiles(initialUploadedFiles);
