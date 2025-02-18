@@ -1,9 +1,10 @@
 // 질문 글 수정
 
-import React, { useEffect, useState, useRef } from "react";
+import { debounce } from "lodash";
+import React, { useEffect, useState, useRef, useCallback } from "react";
+import { useParams, useRouter } from "next/navigation";
 import EditorJS from "@editorjs/editorjs";
 import ImageTool from "@editorjs/image";
-import { useParams, useRouter } from "next/navigation";
 import { Box, Input, Text, Flex, Button } from "@chakra-ui/react";
 import FileAddSection from "@/src/components/common/FileAddSection";
 import LinkAddSection from "@/src/components/common/LinkAddSection";
@@ -38,6 +39,7 @@ export default function QuestionEditForm() {
   const [linkList, setLinkList] = useState<linkListProps[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFilesProps[]>([]);
   const [uploadedFileSize, setUploadedFileSize] = useState<number[]>([]);
+  const [isSaving, setIsSaving] = useState<boolean>(false);
 
   useEffect(() => {
     const loadTask = async () => {
@@ -196,10 +198,14 @@ export default function QuestionEditForm() {
     }
   };
 
-  const handleEditorSave = async () => {
-    if (editorRef.current) {
+  const handleEditorSave = useCallback(
+    debounce(async () => {
+      if (isSaving) return;
+      setIsSaving(true);
       try {
+        if (!editorRef.current) return;
         const savedData = await editorRef.current.save();
+
         const content = savedData.blocks.map((block) => ({
           type: block.type,
           data:
@@ -209,18 +215,18 @@ export default function QuestionEditForm() {
         }));
 
         if (!title.trim()) {
-          window.alert("제목을 입력하세요.");
+          alert("제목을 입력하세요.");
           return;
         }
         if (content.length === 0) {
-          window.alert("내용을 입력하세요.");
+          alert("내용을 입력하세요.");
           return;
         }
 
         await handleSave({
-          title: title,
-          content: content,
-          linkList: linkList,
+          title,
+          content,
+          linkList,
           fileInfoList: uploadedFiles,
         });
 
@@ -228,21 +234,20 @@ export default function QuestionEditForm() {
       } catch (error) {
         console.error("저장 실패:", error);
         alert("저장 중 문제가 발생했습니다.");
+      } finally {
+        setIsSaving(false);
       }
-    }
-  };
+    }, 1000),
+    [title, linkList, uploadedFiles, handleSave],
+  );
 
   const attachImageDeleteButtons = () => {
     if (!editorRef.current) return;
-
     const blocks = document.querySelectorAll(".ce-block__content .cdx-block");
-
     blocks.forEach((block) => {
       const blockElement = block as HTMLElement;
-      const imgElement = blockElement.querySelector(
-        "img",
-      ) as HTMLImageElement | null;
-
+      const imgElement = blockElement.querySelector("img") as HTMLImageElement | null;
+  
       if (imgElement && !blockElement.querySelector(".image-delete-btn")) {
         const deleteButton = document.createElement("button");
         deleteButton.textContent = "❌ 삭제";
@@ -255,20 +260,19 @@ export default function QuestionEditForm() {
         deleteButton.style.cursor = "pointer";
         deleteButton.style.padding = "4px 8px";
         deleteButton.style.borderRadius = "4px";
-
+  
         deleteButton.onclick = () => {
           if (!editorRef.current) return;
-
           // ✅ 현재 클릭한 블록을 기준으로 EditorJS의 블록 인덱스 찾기
           const blockIndex = editorRef.current.blocks.getCurrentBlockIndex();
-
           if (blockIndex !== -1) {
             editorRef.current.blocks.delete(blockIndex);
           } else {
             return;
           }
         };
-
+  
+  
         blockElement.style.position = "relative";
         blockElement.appendChild(deleteButton);
       }
@@ -312,6 +316,8 @@ export default function QuestionEditForm() {
       <Button
         bg={"red.500"}
         colorScheme={"red"}
+        loading={isSaving}
+        loadingText="저장 중..."
         width={"auto"}
         px={6}
         py={4}
@@ -321,6 +327,7 @@ export default function QuestionEditForm() {
         boxShadow={"md"}
         _hover={{ bg: "red.600" }}
         onClick={handleEditorSave}
+        disabled={isSaving}
       >
         수정
       </Button>

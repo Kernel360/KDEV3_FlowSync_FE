@@ -181,7 +181,9 @@ export default function SignUpload({ setIsSignYes }: SignUploadProps) {
               _hover={{ backgroundColor: "blue.600" }}
               mr={2}
               onClick={() => {
-                const isConfirmed = window.confirm(`서명을 새로 등록하면 기존의 서명이 덮어씌워집니다. \n 새로 등록하시겠습니까?`)
+                const isConfirmed = window.confirm(
+                  `서명을 새로 등록하면 기존의 서명이 덮어씌워집니다. \n 새로 등록하시겠습니까?`,
+                );
                 if (isConfirmed) {
                   setSigning(true);
                 }

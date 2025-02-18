@@ -10,13 +10,13 @@ import { useState, useEffect } from "react";
 import ArticleContent from "@/src/components/common/ArticleContent";
 import ArticleComments from "@/src/components/common/ArticleComments";
 import CommentBox from "@/src/components/common/CommentBox";
-import BackButton from "@/src/components/common/BackButton";
 import { readApprovalApi } from "@/src/api/ReadArticle";
 import SignToApprove from "@/src/components/pages/ProjectApprovalPage/components/SignToApprove";
 import { ArticleComment, ApprovalArticle } from "@/src/types";
 import { deleteApprovalApi } from "@/src/api/RegisterArticle";
 import { getMeApi } from "@/src/api/getMembersApi";
 import DropDownMenu from "@/src/components/common/DropDownMenu";
+import BackButton from "@/src/components/common/BackButton";
 import DropDownInfoBottom from "../../common/DropDownInfoBottom";
 import { showToast } from "@/src/utils/showToast";
 
@@ -122,7 +122,10 @@ export default function ProjectApprovalPage() {
     const confirmDelete = window.confirm("정말로 삭제하시겠습니까?");
     if (!confirmDelete) return;
     try {
-      const response = await deleteApprovalApi(Number(projectId), Number(approvalId));
+      const response = await deleteApprovalApi(
+        Number(projectId),
+        Number(approvalId),
+      );
       if (response.message) {
         showToast({
           title: "요청 성공",
@@ -166,7 +169,7 @@ export default function ProjectApprovalPage() {
         alignItems="center"
       >
         <BackButton />
-        {(myName === registerName && myOrgId === registerOrgId) ? (
+        {myName === registerName && myOrgId === registerOrgId ? (
           <DropDownMenu onEdit={handleEdit} onDelete={handleDelete} />
         ) : null}
       </Flex>

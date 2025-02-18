@@ -13,7 +13,6 @@ import {
   Wrench,
 } from "lucide-react";
 import ProjectsManagementStepCard from "@/src/components/pages/ProjectsPage/components/ProjectsManagementStepCard";
-import { useColorModeValue } from "@/src/components/ui/color-mode";
 import { ProjectManagementSteps } from "@/src/constants/projectManagementSteps";
 import { useManagementStepsCount } from "@/src/hook/useFetchData";
 import { ManagementStepCountMap } from "@/src/types";
@@ -163,7 +162,7 @@ export default function ProjectsManagementStepCards({
         alignItems="center"
         gap={gap}
         p={4}
-        border="1px solid"
+        border="1px solid #e4e4e7"
         borderRadius="lg"
         boxShadow="md"
         overflow="hidden" // 가로 스크롤 방지

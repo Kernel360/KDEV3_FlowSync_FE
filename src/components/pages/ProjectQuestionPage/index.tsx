@@ -10,13 +10,13 @@ import { useState, useEffect } from "react";
 import ArticleContent from "@/src/components/common/ArticleContent";
 import ArticleComments from "@/src/components/common/ArticleComments";
 import CommentBox from "@/src/components/common/CommentBox";
-import BackButton from "@/src/components/common/BackButton";
 import { readQuestionApi } from "@/src/api/ReadArticle";
 import DropDownMenu from "@/src/components/common/DropDownMenu";
 import { QuestionArticle, ArticleComment } from "@/src/types";
 import { deleteQuestionApi } from "@/src/api/RegisterArticle";
 import { showToast } from "@/src/utils/showToast";
 import { getMeApi } from "@/src/api/getMembersApi";
+import BackButton from "@/src/components/common/BackButton";
 
 export default function ProjectQuestionPage() {
   const { projectId, questionId } = useParams() as {

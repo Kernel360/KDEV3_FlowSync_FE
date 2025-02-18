@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Box } from "@chakra-ui/react";
-import BackButton from "@/src/components/common/BackButton";
 import { NoticeRequestData } from "@/src/types";
 import SelectInput from "@/src/components/common/FormSelectInput";
 import { useCreateNotice } from "@/src/hook/useMutationData";
@@ -34,16 +33,23 @@ export default function NoticesNewPage() {
   const [category, setCategory] = useState<string>("");
   const [priority, setPriority] = useState<string>("");
   const router = useRouter();
+
   const { mutate: createNotice, error: noticeRegisterError } =
     useCreateNotice();
 
   const handleSave = async (requestData: NoticeRequestData) => {
     try {
-      await createNotice({
+      const response = await createNotice({
         ...requestData,
         category: category || requestData.category,
         priority: priority || requestData.priority,
       });
+
+      // 요청 실패 시 즉시 리턴
+      if (response === null) {
+        return;
+      }
+
       router.push(`/notices`);
     } catch (error) {
       console.error("저장 실패:", error);
@@ -52,7 +58,7 @@ export default function NoticesNewPage() {
 
   return (
     <Box
-      maxW="1000px"
+      maxWidth="1000px"
       w={"100%"}
       mx="auto"
       mt={10}
@@ -61,18 +67,11 @@ export default function NoticesNewPage() {
       borderRadius="lg"
       boxShadow="md"
     >
-      <BackButton />
-
       {noticeRegisterError && (
         <ErrorAlert message="공지사항 저장에 실패했습니다. 다시 시도해주세요." />
       )}
       {/* progressStepId 임시 */}
-      <ArticleForm
-        progressStepId={1}
-        title={title}
-        setTitle={setTitle}
-        handleSave={handleSave}
-      >
+      <ArticleForm title={title} setTitle={setTitle} handleSave={handleSave}>
         {/* 우선순위 선택 */}
         <SelectInput
           label="우선순위"

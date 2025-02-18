@@ -175,6 +175,7 @@ export default function CommentItem({
       <Text fontWeight={"bold"} pb={2}>
         {comment.register.name} {` / ${comment.register.role}`}
       </Text>
+
       {/* 댓글 본문 */}
       <Flex justifyContent="space-between">
         {isEditing ? (

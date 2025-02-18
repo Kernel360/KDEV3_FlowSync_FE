@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+
+import AddressModal from "@/src/components/common/AddressModal";
 import { Flex, Text } from "@chakra-ui/react";
-import AddressAPI from "@/src/components/common/AddressAPI";
+
 import { InputFormData } from "@/src/types";
 import styles from "@/src/components/common/InputForm.module.css";
 
@@ -19,6 +21,7 @@ export default function InputForm({
   isChanged,
   maxLength,
   onKeyDown,
+  isRequired = true,
 }: InputFormData) {
   const [originalValue, setOriginalValue] = useState(value); // 초기값 저장
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -91,14 +94,19 @@ export default function InputForm({
       <Flex direction={"row"} justifyContent={"space-between"}>
         <label className={styles.label}>
           {label}
-          {!disabled && <span className={styles.required}>*</span>}
+
+          {isRequired && !disabled && (
+            <span className={styles.required}>*</span>
+          )}
         </label>
-        {!["연락처", "로그인 Password", "로그인 Email"].includes(label) && (
+        {/* {!["연락처", "로그인 Password", "로그인 Email"].includes(label) && (
+>>>>>>> main
           <Text pl={4}>
             {`${value.length} / `}
             {maxLength}
           </Text>
-        )}
+
+        )} */}
       </Flex>
       {/* 주소 입력 필드 - 클릭 시 검색 모달 오픈 */}
       {type === "address" ? (
@@ -115,7 +123,7 @@ export default function InputForm({
           />
           {/* 주소 검색 모달 (isModalOpen 상태가 true일 때만 렌더링) */}
           {isModalOpen && (
-            <AddressAPI
+            <AddressModal
               isOpen={isModalOpen}
               onClose={() => setModalOpen(false)}
               onComplete={(selectedAddress) => {

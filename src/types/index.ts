@@ -417,7 +417,8 @@ export interface QuestionArticle {
     name: string;
     role: string;
     organizationId: number;
-  }
+  };
+
   fileList: ArticleFile[];
   linkList: ArticleLink[];
   commentList: ArticleComment[];
@@ -491,7 +492,8 @@ export interface ArticleComment {
     id: number;
     name: string;
     role: string;
-  }
+  };
+
   content: string;
   regAt: string;
   editAt: string;
@@ -521,6 +523,7 @@ export interface InputFormData {
   isChanged?: boolean;
   maxLength?: number;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  isRequired?: boolean;
 }
 
 // 공지사항
@@ -548,20 +551,14 @@ export interface ProjectProgressStepProps {
   count?: number;
   status?: string;
 }
-
 export interface UserInfoResponse {
   id: string;
-  organizationId: string;
   role: string;
-  status: string;
-  email: string;
   name: string;
-  phoneNum: string;
-  jobRole: string;
-  jobTitle: string;
-  regAt: string;
-  introduction: string;
-  remark: string;
+  organizationId: string;
+  organizationName: string;
+  organizationType: string;
+  projectIdList: number[];
 }
 
 export interface BaseArticleRequestData {
@@ -625,6 +622,7 @@ export interface Actor {
 }
 
 export interface ProgressStepOrder {
-  id: string; 
+  id: string;
   order: number;
+  title?: string;
 }

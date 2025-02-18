@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams, useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Box } from "@chakra-ui/react";
-import BackButton from "@/src/components/common/BackButton";
 import { NoticeArticle, NoticeRequestData } from "@/src/types";
 import SelectInput from "@/src/components/common/FormSelectInput";
 import { useEditNotice } from "@/src/hook/useMutationData";
@@ -60,11 +59,17 @@ export default function NoticeEditPage() {
   const handleSave = async (requestData: NoticeRequestData) => {
     if (!notice) return;
     try {
-      await editNotice(noticeId, {
+      const response = await editNotice(noticeId, {
         ...requestData,
         category: notice.category || requestData.category,
         priority: notice.priority || requestData.priority,
       });
+
+      // 요청 실패 시 즉시 리턴
+      if (response === null) {
+        return;
+      }
+
       // 수정 성공 후 이동 여부를 묻는 모달 열기
       setIsConfirmDialogOpen(true);
     } catch (error) {
@@ -91,8 +96,6 @@ export default function NoticeEditPage() {
       borderRadius="lg"
       boxShadow="md"
     >
-      <BackButton />
-
       {noticeError && (
         <ErrorAlert message="공지사항 조회에 실패했습니다. 다시 시도해주세요." />
       )}
