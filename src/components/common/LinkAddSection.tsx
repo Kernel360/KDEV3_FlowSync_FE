@@ -94,7 +94,9 @@ export default function LinkAddSection({
           </Text>
           <Button
             ml={4}
-            colorScheme={"red"}
+            backgroundColor={"red.400"}
+            _hover={{ backgroundColor: "red.500" }}
+            color={"white"}
             size={"sm"}
             onClick={() => handleRemoveLink(index)}
           >
@@ -115,7 +117,9 @@ export default function LinkAddSection({
           onChange={(e) => setNewLinkName(e.target.value)}
         />
         <Button
-          colorScheme={"blue"}
+          backgroundColor={"#00a8ff"}
+          _hover={{ backgroundColor: "#0095ff" }}
+          color={"white"}
           loading={isChecking}
           onClick={handleAddLink}
         >

@@ -39,7 +39,7 @@ export default function CommentItem({
   const pathname = usePathname();
 
   //
-  console.log(comment)
+  console.log(comment);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -163,7 +163,9 @@ export default function CommentItem({
       py={4}
       borderBottom="1px solid #E2E8F0"
     >
-      <Text fontWeight={"bold"} pb={2}>{comment.register.name} {` / ${comment.register.role}`}</Text>
+      <Text fontWeight={"bold"} pb={2}>
+        {comment.register.name} {` / ${comment.register.role}`}
+      </Text>
       {/* 댓글 본문 */}
       <Flex justifyContent="space-between">
         {isEditing ? (
@@ -183,12 +185,13 @@ export default function CommentItem({
               wordBreak: "break-word",
               overflowWrap: "break-word",
               whiteSpace: "pre-wrap",
+              minWidth: "0",
             }}
           >
             {comment.content}
           </Text>
         )}
-        <Box ref={dropdownRef}>
+        <Box ref={dropdownRef} flexShrink={0}>
           {/* 옵션 버튼 */}
           <Button
             size="xs"
@@ -210,11 +213,23 @@ export default function CommentItem({
               {isEditing ? (
                 ""
               ) : (
-                <Button size="xs" mr={2} onClick={() => handleEdit(comment.id)}>
+                <Button
+                  size="xs"
+                  backgroundColor={"gray.200"}
+                  _hover={{ backgroundColor: "gray.300" }}
+                  mr={2}
+                  onClick={() => handleEdit(comment.id)}
+                >
                   수정
                 </Button>
               )}
-              <Button size="xs" onClick={() => handleDelete(comment.id)}>
+              <Button
+                size="xs"
+                backgroundColor={"red.300"}
+                _hover={{ backgroundColor: "red.400" }}
+                color={"white"}
+                onClick={() => handleDelete(comment.id)}
+              >
                 삭제
               </Button>
             </Box>
@@ -228,12 +243,20 @@ export default function CommentItem({
             mt={2}
             mr={2}
             size="xs"
-            colorScheme="blue"
+            backgroundColor={"#00a8ff"}
+            _hover={{ backgroundColor: "#0095ff" }}
+            color={"white"}
             onClick={handleUpdate}
           >
             저장
           </Button>
-          <Button mt={2} size="xs" colorScheme="blue" onClick={handleCancel}>
+          <Button
+            mt={2}
+            size="xs"
+            backgroundColor={"gray.200"}
+            _hover={{ backgroundColor: "gray.300" }}
+            onClick={handleCancel}
+          >
             취소
           </Button>
         </Box>

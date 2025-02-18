@@ -378,7 +378,7 @@ export default function ArticleForm({
       {/* 작성 버튼 */}
       <Button
         bg={"red.500"}
-        colorScheme={"red"}
+        color={"white"}
         width={"auto"}
         px={6}
         py={4}

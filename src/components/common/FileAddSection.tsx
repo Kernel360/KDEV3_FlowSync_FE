@@ -87,7 +87,12 @@ export default function FileAddSection({
     <Box mt={6}>
       <Text mb={2}>첨부 파일</Text>
 
-      <Button onClick={handleAddFile} colorScheme={"blue"}>
+      <Button
+        backgroundColor={"#00a8ff"}
+        _hover={{ backgroundColor: "#0095ff" }}
+        color={"white"}
+        onClick={handleAddFile}
+      >
         파일 추가
       </Button>
       <Box mt={4}>
@@ -110,7 +115,9 @@ export default function FileAddSection({
             <Button
               onClick={() => handleRemoveFile(index)}
               size="sm"
-              colorScheme="red"
+              backgroundColor={"red.400"}
+              _hover={{ backgroundColor: "red.500" }}
+              color={"white"}
             >
               삭제
             </Button>
