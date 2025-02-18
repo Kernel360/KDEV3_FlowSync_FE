@@ -14,6 +14,7 @@ import LinkAddSection from "@/src/components/common/LinkAddSection";
 import DropDownInfoBottom from "@/src/components/common/DropDownInfoBottom";
 import SignUpload from "@/src/components/pages/ProjectApprovalsNewPage/components/SignUpload";
 import { showToast } from "@/src/utils/showToast";
+import { isToday } from "date-fns";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -72,13 +73,12 @@ export default function ArticleForm({
         event.preventDefault(); // 기본 동작 차단
       }
     };
-  
+
     document.addEventListener("keydown", disableUndo);
     return () => {
       document.removeEventListener("keydown", disableUndo);
     };
   }, []);
-
 
   useEffect(() => {
     setTitle(initialTitle);

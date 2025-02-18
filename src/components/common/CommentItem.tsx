@@ -38,6 +38,7 @@ export default function CommentItem({
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedContent, setEditedContent] = useState<string>(comment.content);
   const [myId, setMyId] = useState<number>();
+  const [isDeleted, setIsDeleted] = useState<boolean>();
   const pathname = usePathname();
 
   const fetchMyData = async () => {
@@ -51,7 +52,6 @@ export default function CommentItem({
 
   useEffect(() => {
     fetchMyData();
-
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
