@@ -413,6 +413,7 @@ export interface QuestionArticle {
   status: string;
   deletedYn: string;
   register: {
+    id: number;
     name: string;
     role: string;
     organizationId: number;
@@ -435,6 +436,7 @@ export interface ApprovalArticle {
   deletedYn: string;
   author: string;
   register: {
+    id: number;
     role: string;
     name: string;
     organizationId: number;
@@ -486,6 +488,7 @@ export interface ArticleFile {
 export interface ArticleComment {
   id: number;
   register: {
+    id: number;
     name: string;
     role: string;
   }

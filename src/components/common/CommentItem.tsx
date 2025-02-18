@@ -14,6 +14,7 @@ import {
 import CommentBox from "@/src/components/common/CommentBox";
 import { formattedDate } from "@/src/utils/formatDateUtil";
 import { readQuestionApi, readApprovalApi } from "@/src/api/ReadArticle";
+import { getMeApi } from "@/src/api/getMembersApi";
 
 interface CommentProps {
   comment: ArticleComment;
@@ -36,12 +37,21 @@ export default function CommentItem({
   const [isReplying, setIsReplying] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedContent, setEditedContent] = useState<string>(comment.content);
+  const [myId, setMyId] = useState<number>();
   const pathname = usePathname();
 
-  //
-  console.log(comment);
+  const fetchMyData = async () => {
+    try {
+      const myData = await getMeApi();
+      setMyId(myData.data.id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
+    fetchMyData();
+
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
@@ -71,7 +81,6 @@ export default function CommentItem({
         const filteredComment = responseData.commentList.find(
           (comment: { id: number }) => comment.id === commentId,
         );
-
         return filteredComment?.content;
       } else if (pathname.includes("/approvals") && approvalId) {
         const responseData = await readApprovalApi(
@@ -193,15 +202,22 @@ export default function CommentItem({
         )}
         <Box ref={dropdownRef} flexShrink={0}>
           {/* 옵션 버튼 */}
-          <Button
-            size="xs"
-            aria-label="댓글 옵션"
-            bg="transparent"
-            _hover={{ bg: "gray.100" }}
-            onClick={() => toggleOption(comment.id)}
-          >
-            <Image src="/아이콘.png" alt="옵션 아이콘" width={16} height={16} />
-          </Button>
+          {myId === comment.register.id ? (
+            <Button
+              size="xs"
+              aria-label="댓글 옵션"
+              bg="transparent"
+              _hover={{ bg: "gray.100" }}
+              onClick={() => toggleOption(comment.id)}
+            >
+              <Image
+                src="/아이콘.png"
+                alt="옵션 아이콘"
+                width={16}
+                height={16}
+              />
+            </Button>
+          ) : null}
           {openOptionId === comment.id && (
             <Box
               position="absolute"
