@@ -65,7 +65,7 @@ export default function Comments({
           <Box key={comment.id}>
             {comment.deleted ? (
               // 삭제된 댓글이고, 답글이 있으면 "삭제된 댓글입니다" 표시
-              <Box color="gray.500" fontStyle="italic" mb={2}>
+              <Box color="gray.500" fontStyle="italic" pb={2} pt={5}>
                 삭제된 댓글입니다.
               </Box>
             ) : (

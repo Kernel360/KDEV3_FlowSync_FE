@@ -175,7 +175,7 @@ export default function CommentItem({
       borderBottom="1px solid #E2E8F0"
     >
       <Text fontWeight={"bold"} pb={2}>
-        {comment.register.name} {` / ${comment.register.role}`}
+          {`${comment.register.name} (${comment.register.jobTitle}) / ${comment.register.jobRole}`}
       </Text>
 
       {/* 댓글 본문 */}

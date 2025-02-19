@@ -187,7 +187,7 @@ export default function ArticleContent<
   return (
     <Box mb={4}>
       {/* 제목 */}
-      <Flex direction={"row"} pb={4} alignItems={"center"} pt={3}>
+      <Flex direction={"row"} pb={4} pt={3}>
         <Button
           fontSize="md"
           fontWeight="bold"
@@ -197,7 +197,6 @@ export default function ArticleContent<
           mr={4}
           height={"2.2rem"}
           width={"5rem"}
-          lineHeight={"0.1rem"}
         >
           {articleStatus}
         </Button>
@@ -210,13 +209,13 @@ export default function ArticleContent<
       <Flex mb={4} justifyContent={"space-between"}>
         <Box>
           <Text pb={2} fontWeight={"bold"}>
-            작성자: {article.register.name} {`/ ${article.register.role}`}
+            {`작성자 : ${article.register.name} (${article.register.jobTitle}) / ${article.register.jobRole}`}
           </Text>
           <Text color={"gray.400"}>
             등록일: {formatDateWithTime(article.regAt)}
           </Text>
         </Box>
-        {(pathname.includes("/questions") && myId === registerId) ? (
+        {pathname.includes("/questions") && myId === registerId ? (
           <Button
             color={"white"}
             backgroundColor={"#00a8ff"}

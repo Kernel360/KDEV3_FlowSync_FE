@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { Box, Input, Text, Flex, Button } from "@chakra-ui/react";
 import EditorJS from "@editorjs/editorjs";
 import ImageTool from "@editorjs/image";
-import { uploadFileApi } from "@/src/api/RegisterArticle";
+import { uploadContentFileApi } from "@/src/api/RegisterArticle";
 import { BaseArticleRequestData } from "@/src/types";
 import FileAddSection from "@/src/components/common/FileAddSection";
 import LinkAddSection from "@/src/components/common/LinkAddSection";
@@ -120,7 +120,7 @@ export default function ArticleForm({
                 }
 
                 try {
-                  const responseData = await uploadFileApi(file);
+                  const responseData = await uploadContentFileApi(file);
                   if (responseData.result !== "SUCCESS") {
                     throw new Error("파일 업로드 실패");
                   }
