@@ -155,7 +155,7 @@ export default function ProjectApprovalPage() {
       });
     }
   };
-
+  // test
   return (
     <Box
       maxW="1000px"
@@ -205,7 +205,7 @@ export default function ProjectApprovalPage() {
           registerOrgId={registerOrgId}
         />
       </Box>
-
+      
       {/* 댓글 섹션 */}
       <VStack align="stretch" gap={8} mt={10}>
         <ArticleComments
