@@ -187,7 +187,7 @@ export default function SignToApprove({
         disableSignaturePad();
         setIsignatureComplete(true);
       }
-      // return response.data.result;
+      // return response.data.result;g
     } catch (error) {
       console.error(error);
     }
