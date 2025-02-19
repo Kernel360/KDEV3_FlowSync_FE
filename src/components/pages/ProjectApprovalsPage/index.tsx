@@ -7,7 +7,6 @@ import { Box, Flex, Table, createListCollection } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import CommonTable from "@/src/components/common/CommonTable";
 import Pagination from "@/src/components/common/Pagination";
-import StatusTag from "@/src/components/common/StatusTag";
 import { ProjectLayout } from "@/src/components/layouts/ProjectLayout";
 import SearchSection from "@/src/components/common/SearchSection";
 import StatusSelectBox from "@/src/components/common/FilterSelectBox";
@@ -17,7 +16,6 @@ import ErrorAlert from "@/src/components/common/ErrorAlert";
 import { getMeApi } from "@/src/api/getMembersApi";
 import { useProjectApprovalProgressStepData } from "@/src/hook/useFetchData";
 import { useProjectApprovalList } from "@/src/hook/useFetchBoardList";
-import { formatDynamicDate } from "@/src/utils/formatDateUtil";
 
 const approvalStatusFramework = createListCollection<{
   id: string;
@@ -193,24 +191,22 @@ export default function ProjectApprovalsPage() {
                 },
               }}
             >
-              <Table.Cell>{approval.progressStep.name}</Table.Cell>
+              <Table.Cell style={{ color: approval.progressStep.color }}>
+                {approval.progressStep.name}
+              </Table.Cell>
               <Table.Cell>
-                <StatusTag>
-                  {CATEGORY_LABELS[approval.category] || "알 수 없음"}
-                </StatusTag>
+                {CATEGORY_LABELS[approval.category] || "알 수 없음"}
               </Table.Cell>
               <Table.Cell>{approval.title}</Table.Cell>
               <Table.Cell>{approval.register.name}</Table.Cell>
               <Table.Cell>
-                <StatusTag>
-                  {STATUS_LABELS[approval.status] || "알 수 없음"}
-                </StatusTag>
+                {STATUS_LABELS[approval.status] || "알 수 없음"}
               </Table.Cell>
               <Table.Cell>{approval.approver?.name || "-"}</Table.Cell>
               <Table.Cell>
-                {formatDynamicDate(approval.approvedAt) || "-"}
+                {(approval.approvedAt ?? "-").split(" ")[0] || "-"}
               </Table.Cell>
-              <Table.Cell>{formatDynamicDate(approval.regAt)}</Table.Cell>
+              <Table.Cell>{approval.regAt.split(" ")[0]}</Table.Cell>
             </Table.Row>
           )}
         />

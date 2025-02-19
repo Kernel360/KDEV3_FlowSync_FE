@@ -1,3 +1,4 @@
+
 // 외부 라이브러리
 import {
   Box,
@@ -18,7 +19,6 @@ import {
   ContentBlock,
 } from "@/src/types";
 import { resolveQuestion } from "@/src/api/ReadArticle";
-import { formatDateWithTime } from "@/src/utils/formatDateUtil";
 import { useEffect, useState } from "react";
 import { usePathname, useParams } from "next/navigation";
 import { getMeApi } from "@/src/api/getMembersApi";
@@ -187,6 +187,7 @@ export default function ArticleContent<
   return (
     <Box mb={4}>
       {/* 제목 */}
+
       <Flex direction={"row"} pb={4} pt={3}>
         <Button
           fontSize="md"
@@ -206,13 +207,14 @@ export default function ArticleContent<
       </Flex>
 
       {/* 작성자, 작성 일시 (NoticeArticle인 경우 작성자 정보 숨김) */}
+
       <Flex mb={4} justifyContent={"space-between"}>
         <Box>
           <Text pb={2} fontWeight={"bold"}>
             {`작성자 : ${article.register.name} (${article.register.jobTitle}) / ${article.register.jobRole}`}
           </Text>
           <Text color={"gray.400"}>
-            등록일: {formatDateWithTime(article.regAt)}
+            등록일: {article.regAt}
           </Text>
         </Box>
         {pathname.includes("/questions") && myId === registerId ? (
@@ -231,6 +233,7 @@ export default function ArticleContent<
           </Button>
         ) : null}
       </Flex>
+
       <Separator mb={6} size={"lg"} />
 
       {/* 본문 내용 */}
@@ -260,6 +263,7 @@ export default function ArticleContent<
               첨부 파일
             </Text>
             <VStack align="start">{renderFiles(article.fileList)}</VStack>
+
             <Separator mb={6} size={"lg"} />
           </Box>
         ) : null}

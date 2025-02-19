@@ -1,22 +1,14 @@
 "use client";
 
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import {
-  Box,
-  Button,
-  createListCollection,
-  Flex,
-  Table,
-} from "@chakra-ui/react";
+import { Box, createListCollection, Flex, Table } from "@chakra-ui/react";
 import CommonTable from "@/src/components/common/CommonTable";
-import StatusTag from "@/src/components/common/StatusTag";
 import { ProjectLayout } from "@/src/components/layouts/ProjectLayout";
 import SearchSection from "@/src/components/common/SearchSection";
 import FilterSelectBox from "@/src/components/common/FilterSelectBox";
 import Pagination from "@/src/components/common/Pagination";
 import ProgressStepSection from "@/src/components/common/ProgressStepSection";
 import CreateButton from "@/src/components/common/CreateButton";
-import { formatDynamicDate } from "@/src/utils/formatDateUtil";
 import { useProjectQuestionList } from "@/src/hook/useFetchBoardList";
 import { useProjectQuestionProgressStepData } from "@/src/hook/useFetchData";
 import ErrorAlert from "@/src/components/common/ErrorAlert";
@@ -174,20 +166,18 @@ export default function ProjectQuestionsPage() {
                 },
               }}
             >
-              <Table.Cell>{question.progressStep.name}</Table.Cell>
+              <Table.Cell style={{ color: question.progressStep.color }}>
+                {question.progressStep.name}
+              </Table.Cell>
               <Table.Cell>
-                <StatusTag>
-                  {CATEGORY_LABELS[question.category] || "알 수 없음"}
-                </StatusTag>
+                {CATEGORY_LABELS[question.category] || "알 수 없음"}
               </Table.Cell>
               <Table.Cell>{question.title}</Table.Cell>
               <Table.Cell>{question.register.name}</Table.Cell>
               <Table.Cell>
-                <StatusTag>
-                  {STATUS_LABELS[question.status] || "알 수 없음"}
-                </StatusTag>
+                {STATUS_LABELS[question.status] || "알 수 없음"}
               </Table.Cell>
-              <Table.Cell>{formatDynamicDate(question.createdDate)}</Table.Cell>
+              <Table.Cell>{question.createdDate.split(" ")[0]}</Table.Cell>
             </Table.Row>
           )}
         />
