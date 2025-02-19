@@ -21,18 +21,21 @@ import { resolveQuestion } from "@/src/api/ReadArticle";
 import { formatDateWithTime } from "@/src/utils/formatDateUtil";
 import { useEffect, useState } from "react";
 import { usePathname, useParams } from "next/navigation";
+import { getMeApi } from "@/src/api/getMembersApi";
 
 interface ArticleContentProps<T extends QuestionArticle | ApprovalArticle> {
   article: T | null;
+  registerId?: number;
 }
 
 export default function ArticleContent<
   T extends QuestionArticle | ApprovalArticle,
->({ article }: ArticleContentProps<T>) {
+>({ article, registerId }: ArticleContentProps<T>) {
   const pathname = usePathname();
   const [articleStatus, setArticleStatus] = useState<string>("");
   const [statusColor, setStatusColor] = useState<string>("");
   const [resolved, setResolved] = useState<boolean>(false);
+  const [myId, setMyId] = useState<number>();
   const { projectId, questionId } = useParams() as {
     projectId: string;
     questionId?: string;
@@ -40,6 +43,7 @@ export default function ArticleContent<
 
   useEffect(() => {
     getStatus();
+    fetchMyData();
   }, [resolved]);
 
   if (!article) {
@@ -49,6 +53,15 @@ export default function ArticleContent<
       </Box>
     );
   }
+
+  const fetchMyData = async () => {
+    try {
+      const myData = await getMeApi();
+      setMyId(myData.data.id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getStatus = () => {
     if (pathname.includes("/approvals")) {
@@ -204,7 +217,7 @@ export default function ArticleContent<
             등록일: {formatDateWithTime(article.regAt)}
           </Text>
         </Box>
-        {pathname.includes("/questions") ? (
+        {(pathname.includes("/questions") && myId === registerId) ? (
           <Button
             color={"white"}
             backgroundColor={"#00a8ff"}
