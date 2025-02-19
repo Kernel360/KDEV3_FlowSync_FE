@@ -86,8 +86,16 @@ export default function ProjectForm({
       return;
     }
     try {
-      const data = await fetchMembersWithinOrgApi(organizationId);
-      setMembers(data.data?.members || []);
+      const response = await fetchMembersWithinOrgApi(organizationId);
+      const allMembers = response.data.members.map(
+        (member: { id: string }) => member.id,
+      );
+      const participants = projectData?.members || [];
+      const commonMembers = allMembers.filter((id: string) =>
+        participants.includes(id as string),
+      );
+
+      setMembers(commonMembers || []);
     } catch (error) {
       setMembers([]);
     }
