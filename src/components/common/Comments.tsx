@@ -1,12 +1,11 @@
 // 댓글 목록을 렌더링하는 중간 레이어 컴포넌트
 
 // 외부 라이브러리
-import { Box } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 
 // 절대 경로 파일
 import CommentItem from "@/src/components/common/CommentItem";
 import { ArticleComment } from "@/src/types";
-
 
 interface ArticleCommentsProps {
   comments: ArticleComment[];
@@ -70,21 +69,40 @@ export default function Comments({
                 삭제된 댓글입니다.
               </Box>
             ) : (
-              <CommentItem comment={comment} setCommentIsWritten={setCommentIsWritten} />
+              <CommentItem
+                comment={comment}
+                setCommentIsWritten={setCommentIsWritten}
+              />
             )}
 
             {hasVisibleReplies && (
               <Box ml={4}>
                 {replies.map((reply) =>
-                  reply.deleted ? (
-                    // 삭제된 대댓글은 표시하지 않음
-                    null
-                  ) : (
-                    <CommentItem
+                  reply.deleted ? null : ( // 삭제된 대댓글은 표시하지 않음
+                    <Box
                       key={reply.id}
-                      comment={reply}
-                      setCommentIsWritten={setCommentIsWritten}
-                    />
+                      display="flex"
+                      alignItems="center"
+                      flexDirection="row"
+                    >
+                      <Box
+                        width="1.5rem"
+                        display="flex"
+                        justifyContent="center"
+                      >
+                        <Text fontWeight={"light"} fontSize={"1.9rem"} pb={6} pl={5}>
+                          ㄴ
+                        </Text>
+                      </Box>
+
+                      <Box flex={"1"}>
+                        <CommentItem
+                          key={reply.id}
+                          comment={reply}
+                          setCommentIsWritten={setCommentIsWritten}
+                        />
+                      </Box>
+                    </Box>
                   ),
                 )}
               </Box>

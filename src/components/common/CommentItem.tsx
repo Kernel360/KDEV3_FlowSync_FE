@@ -289,7 +289,7 @@ export default function CommentItem({
           {!(comment.parentId !== null && !comment.isParent) && (
             <Button
               size={"2xs"}
-              fontSize={15}
+              fontSize={"1rem"}
               bg="transparent"
               color={"gray.400"}
               onClick={() => setIsReplying((prev) => !prev)}

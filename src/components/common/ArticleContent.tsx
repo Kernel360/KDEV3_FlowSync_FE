@@ -194,7 +194,6 @@ export default function ArticleContent<
           backgroundColor={statusColor}
           borderRadius="xl"
           color={"white"}
-          cursor="default"
           mr={4}
           height={"2.2rem"}
           width={"5rem"}
@@ -262,9 +261,9 @@ export default function ArticleContent<
               첨부 파일
             </Text>
             <VStack align="start">{renderFiles(article.fileList)}</VStack>
+            <Separator mb={6} size={"lg"} />
           </Box>
         ) : null}
-        <Separator mb={6} size={"lg"} />
       </Box>
     </Box>
   );

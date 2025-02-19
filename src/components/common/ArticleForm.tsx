@@ -310,6 +310,7 @@ export default function ArticleForm({
       const newBlocks = savedData.blocks.filter(
         (block) => block.type !== "image" || block.data?.file?.url,
       );
+    
 
       // 데이터가 변경되었으면 에디터 재초기화
       if (newBlocks.length !== savedData.blocks.length) {
@@ -409,7 +410,7 @@ export default function ArticleForm({
         boxShadow={"md"}
         onClick={handleEditorSave}
         disabled={isSaving}
-        _hover={{ bg: "blue.500" }}
+        _hover={{ bg: "red.600" }}
         loading={isSaving}
         loadingText={`${submitButtonLabel} 중...`}
       >
