@@ -342,6 +342,7 @@ export default function ArticleForm({
       const newBlocks = savedData.blocks.filter(
         (block) => block.type !== "image" || block.data?.file?.url,
       );
+    
 
       // 데이터가 변경되었으면 에디터 재초기화
       if (newBlocks.length !== savedData.blocks.length) {

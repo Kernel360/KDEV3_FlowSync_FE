@@ -181,6 +181,19 @@ export default function ProjectApprovalPage() {
           <DropDownMenu onEdit={handleEdit} onDelete={handleDelete} />
         ) : null}
       </Flex>
+      {/* 게시글 내용 */}
+
+      <Button
+        borderRadius={"xl"}
+        fontSize={"xl"}
+        fontWeight={"bold"}
+        color={"#7e6551"}
+        backgroundColor={"#f9f9f9"}
+        mb={2}
+        cursor="default"
+      >
+        {category === "NORMAL_REQUEST" ? "일반 결재" : "진행단계 완료 결재"}
+      </Button>
 
       <ArticleContent article={article} />
 

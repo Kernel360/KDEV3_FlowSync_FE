@@ -137,6 +137,7 @@ export default function ProjectQuestionPage() {
 
       {/* 게시글 내용 */}
       <ArticleContent article={article} registerId={registerId} />
+
       {/* 댓글 섹션 */}
       <VStack align="stretch" gap={8} mt={10}>
         <ArticleComments
