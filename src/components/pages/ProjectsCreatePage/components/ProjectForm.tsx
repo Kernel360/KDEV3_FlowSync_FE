@@ -18,7 +18,7 @@ import {
   useUpdateProject,
 } from "@/src/hook/useMutationData";
 import DateSection from "@/src/components/pages/ProjectsCreatePage/components/DateSection";
-import { showToast } from "@/src/utils/showToast";
+import { validateForm } from "@/src/hook/useValidation";
 
 interface ProjectFormProps {
   projectData?: ProjectDetailProps; // projectData가 있을 경우 수정 모드
@@ -36,7 +36,7 @@ export default function ProjectForm({
   const { mutate: createProject } = useCreateProject();
   const { mutate: updateProject } = useUpdateProject();
   const { mutate: deleteProject } = useDeleteProject();
-  // 📌 프로젝트 상태 관리
+  // 프로젝트 상태 관리
   const [formData, setFormData] = useState<ProjectDetailProps>({
     id: projectData?.id || "",
     name: projectData?.name || "",
@@ -52,12 +52,6 @@ export default function ProjectForm({
     members: projectData?.members || [],
   });
 
-  const [customerOwnerId, setCustomerOwnerId] = useState<string>(
-    formData.customerOwnerId,
-  );
-  const [developerOwnerId, setDeveloperOwnerId] = useState<string>(
-    formData.devOwnerId,
-  );
   const [selectedCustomerOrgName, setSelectedCustomerOrgName] = useState("");
 
   const [selectedDeveloperOrgName, setSelectedDeveloperOrgName] = useState("");
@@ -82,14 +76,19 @@ export default function ProjectForm({
       return;
     }
     try {
-      const data = await fetchMembersWithinOrgApi(organizationId);
-      setMembers(data.data?.members || []);
+      const response = await fetchMembersWithinOrgApi(organizationId);
+      const allMembers = response.data.members;
+      const participants = projectData?.members.map((id: string) => id);
+      const commonMembers = allMembers.filter((member: MemberProps) =>
+        participants?.includes(member.id),
+      );
+      setMembers(commonMembers);
     } catch (error) {
-      setMembers([]);
+      // setMembers([]);
     }
   };
 
-  // ✅ 프로젝트 생성 시, 멤버 자동 선택 방지 (수정 시 기존 데이터 유지)
+  // 프로젝트 생성 시, 멤버 자동 선택 방지 (수정 시 기존 데이터 유지)
   useEffect(() => {
     if (projectId) {
       if (formData.customerOrgId) {
@@ -105,9 +104,9 @@ export default function ProjectForm({
         );
       }
     }
-  }, [formData.customerOrgId, formData.developerOrgId, projectId]);
+  }, []);
 
-  // 🔹 프로젝트 수정 시 기존 데이터 반영 (멤버 & Owner)
+  // 프로젝트 수정 시 기존 데이터 반영 (멤버 & Owner)
   useEffect(() => {
     async function fetchOrgDetails() {
       if (projectData) {
@@ -122,7 +121,7 @@ export default function ProjectForm({
       }
     }
     fetchOrgDetails();
-  }, [formData.customerOrgId, formData.developerOrgId, projectId]);
+  }, []);
 
   // 프로젝트에 배정된 전체 멤버 업데이트
   useEffect(() => {
@@ -132,95 +131,14 @@ export default function ProjectForm({
     ]);
   }, [selectedCustomerMembers, selectedDeveloperMembers]);
 
-  // 📌 **프로젝트 생성/수정 API 호출**
+  // **프로젝트 생성/수정 API 호출**
   const handleSubmit = async (event: React.FormEvent) => {
     event?.preventDefault();
 
     formData.name = formData.name.trim().replace(/\s{2,}/g, " ");
     formData.description = formData.description.trim().replace(/\s{2,}/g, " ");
 
-    // 필수 정보
-    if (formData.name.length < 2) {
-      const errorMessage = "프로젝트명을 2글자 이상 입력해주세요.";
-      showToast({
-        title: "필수 입력정보 ",
-        description: errorMessage,
-        duration: 2000,
-      });
-      return;
-    } else if (formData.description.length < 2) {
-      const errorMessage = "프로젝트 개요를 2글자 이상 입력해주세요.";
-      showToast({
-        title: "필수 입력정보 ",
-        description: errorMessage,
-        duration: 2000,
-      });
-      return;
-    } else if (!formData.startAt) {
-      const errorMessage = "프로젝트 시작일을 선택해주세요.";
-      showToast({
-        title: "필수 입력정보 ",
-        description: errorMessage,
-        duration: 2000,
-      });
-      return;
-    } else if (!formData.deadlineAt) {
-      const errorMessage = "프로젝트 예정 마감일을 선택해주세요.";
-      showToast({
-        title: "필수 입력정보 ",
-        description: errorMessage,
-        duration: 2000,
-      });
-      return;
-    } else if (!formData.customerOrgId) {
-      const errorMessage = "고객사를 지정해주세요.";
-      showToast({
-        title: "필수 입력정보 ",
-        description: errorMessage,
-        duration: 2000,
-      });
-      return;
-    } else if (!formData.developerOrgId) {
-      const errorMessage = "개발사를 지정해주세요.";
-      showToast({
-        title: "필수 입력정보 ",
-        description: errorMessage,
-        duration: 2000,
-      });
-      return;
-    } else if (selectedCustomerMembers.length === 0) {
-      const errorMessage = "고객사 담당자 회원을 배정해주세요.";
-      showToast({
-        title: "필수 입력정보 ",
-        description: errorMessage,
-        duration: 2000,
-      });
-      return;
-    } else if (selectedDeveloperMembers.length === 0) {
-      const errorMessage = "개발사 담당자 회원을 배정해주세요.";
-      showToast({
-        title: "필수 입력정보 ",
-        description: errorMessage,
-        duration: 2000,
-      });
-      return;
-    } else if (!formData.customerOwnerId) {
-      const errorMessage = "고객사 Owner을 지정해주세요.";
-      showToast({
-        title: "필수 입력정보 ",
-        description: errorMessage,
-        duration: 2000,
-      });
-      return;
-    } else if (!formData.devOwnerId) {
-      const errorMessage = "개발사 Owner을 지정해주세요.";
-      showToast({
-        title: "필수 입력정보 ",
-        description: errorMessage,
-        duration: 2000,
-      });
-      return;
-    }
+    if (!validateForm(formData)) return; // 유효성 검사 실패 시 종료
 
     const requestBody = {
       ...formData,
@@ -242,7 +160,7 @@ export default function ProjectForm({
     }
   };
 
-  // 📌 **프로젝트 삭제 API 호출**
+  // **프로젝트 삭제 API 호출**
   const handleDelete = async () => {
     if (projectId) {
       const response = await deleteProject(projectId);
@@ -261,7 +179,7 @@ export default function ProjectForm({
   return (
     <Flex width="100%" justifyContent="center">
       <InputFormLayout
-        title={isEditMode ? "프로젝트 상세 조회" : "프로젝트 생성"}
+        title={isEditMode ? "프로젝트 수정" : "프로젝트 생성"}
         onSubmit={(event) => handleSubmit(event)}
         isLoading={isSubmitting}
         isDisabled={false} // 버튼 비활성화 조건 추가
@@ -290,7 +208,7 @@ export default function ProjectForm({
           <Box flex="1">
             <DateSection
               startAt={formData.startAt}
-              deadlineAt={formData.deadlineAt} // ✅ 기존 closeAt → deadlineAt 사용
+              deadlineAt={formData.deadlineAt} // 기존 closeAt → deadlineAt 사용
               setStartAt={(date) =>
                 setFormData((prev) => ({ ...prev, startAt: date }))
               }
