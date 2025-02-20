@@ -25,13 +25,8 @@ import {
 export async function createProjectApi(
   requestData: any,
 ): Promise<CommonResponseType<CreateProjectResponse>> {
-  try {
-    const response = await axiosInstance.post("/admins/projects", requestData);
-    return response.data;
-  } catch (error) {
-    console.error("프로젝트 생성 실패", error);
-    throw error;
-  }
+  const response = await axiosInstance.post("/admins/projects", requestData);
+  return response.data;
 }
 
 /**
@@ -44,16 +39,11 @@ export async function updateProjectApi(
   projectId: string,
   requestData: any,
 ): Promise<CommonResponseType<CreateProjectResponse>> {
-  try {
-    const response = await axiosInstance.patch(
-      `/admins/projects/${projectId}`,
-      requestData,
-    );
-    return response.data;
-  } catch (error) {
-    console.error("프로젝트 수정 실패", error);
-    throw error;
-  }
+  const response = await axiosInstance.patch(
+    `/admins/projects/${projectId}`,
+    requestData,
+  );
+  return response.data;
 }
 
 /**
@@ -297,7 +287,7 @@ export async function fetchProjectQuestionListApi(
 export async function fetchProjectApprovalListApi(
   projectId: string,
   keyword: string = "",
-  progressStep: string = "",
+  progressId: string = "",
   status: string = "",
   currentPage: number,
   pageSize: number,
@@ -305,7 +295,7 @@ export async function fetchProjectApprovalListApi(
   const response = await axiosInstance.get(`/projects/${projectId}/approvals`, {
     params: {
       keyword,
-      progressStep,
+      progressId,
       status,
       currentPage,
       pageSize,

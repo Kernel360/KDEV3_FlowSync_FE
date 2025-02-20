@@ -9,21 +9,22 @@ import {
   DropResult,
 } from "@hello-pangea/dnd";
 import { Edit, Plus, Trash2 } from "lucide-react";
-import { useProjectProgressStepData } from "@/src/hook/useFetchData";
 
 import {
   useDeleteProjectProgressStep,
   useUpdateProjectProgressStepOrder,
 } from "@/src/hook/useMutationData";
 import ErrorAlert from "@/src/components/common/ErrorAlert";
-import { Loading } from "@/src/components/common/Loading";
-import { ProgressStepOrder } from "@/src/types";
+import { ProgressStep, ProgressStepOrder } from "@/src/types";
 import ConfirmDialog from "@/src/components/common/ConfirmDialog";
 import AddProgressStepModal from "@/src/components/pages/ProjectWorkFlowPage/components/AddProgressStepModal";
 import EditProgressStepModal from "@/src/components/pages/ProjectWorkFlowPage/components/EditProgressStepModal";
 
 interface DraggableProgressStepsProps {
   projectId: string;
+  progressStepList: ProgressStep[];
+  progressStepError: string;
+  refetchProgressStepList: () => void;
 }
 
 /**
@@ -31,15 +32,10 @@ interface DraggableProgressStepsProps {
  */
 export default function DraggableProgressSteps({
   projectId,
+  progressStepList,
+  progressStepError,
+  refetchProgressStepList,
 }: DraggableProgressStepsProps) {
-  // 진행 단계 데이터 가져오기
-  const {
-    data: progressSteps = [],
-    loading: progressStepLoading,
-    error: progressStepError,
-    refetch,
-  } = useProjectProgressStepData(projectId);
-
   // 백엔드 순서 업데이트 요청 훅
   const { mutate: updateProgressStepOrder } =
     useUpdateProjectProgressStepOrder();
@@ -59,9 +55,9 @@ export default function DraggableProgressSteps({
   const [editingStepId, setEditingStepId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!progressSteps) return;
+    if (!progressStepList) return;
     setSteps(
-      progressSteps
+      progressStepList
         .filter((step) => Number(step.id) !== 0)
         .map((step, index) => ({
           id: step.id,
@@ -69,7 +65,7 @@ export default function DraggableProgressSteps({
           title: step.name,
         })),
     );
-  }, [progressSteps]);
+  }, [progressStepList]);
 
   /**
    * 드래그 종료 시 실행되는 함수
@@ -93,7 +89,7 @@ export default function DraggableProgressSteps({
     );
 
     await updateProgressStepOrder(projectId, reorderedSteps);
-    await refetch();
+    await refetchProgressStepList();
   };
 
   /**
@@ -115,7 +111,7 @@ export default function DraggableProgressSteps({
     setIsDeleting(false);
     setIsDeleteDialogOpen(false);
 
-    await refetch();
+    await refetchProgressStepList();
   };
 
   return (
@@ -145,7 +141,6 @@ export default function DraggableProgressSteps({
         overflowX="auto"
         whiteSpace="nowrap"
       >
-        {progressStepLoading && <Loading />}
         {progressStepError && (
           <ErrorAlert message="진행 단계를 불러오지 못했습니다." />
         )}
@@ -230,7 +225,7 @@ export default function DraggableProgressSteps({
         projectId={projectId}
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        onStepAdded={refetch}
+        onStepAdded={refetchProgressStepList}
       />
 
       {/* 수정 모달 */}
@@ -240,7 +235,7 @@ export default function DraggableProgressSteps({
           progressStepId={editingStepId}
           isOpen={!!editingStepId}
           onClose={() => setEditingStepId(null)}
-          onStepUpdated={refetch}
+          onStepUpdated={refetchProgressStepList}
         />
       )}
 

@@ -2,7 +2,13 @@
 
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 
-import { Box, Flex, Table, createListCollection } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Separator,
+  Table,
+  createListCollection,
+} from "@chakra-ui/react";
 
 import { useEffect, useState } from "react";
 import CommonTable from "@/src/components/common/CommonTable";
@@ -16,6 +22,8 @@ import ErrorAlert from "@/src/components/common/ErrorAlert";
 import { getMeApi } from "@/src/api/getMembersApi";
 import { useProjectApprovalProgressStepData } from "@/src/hook/useFetchData";
 import { useProjectApprovalList } from "@/src/hook/useFetchBoardList";
+import { showToast } from "@/src/utils/showToast";
+import ProgressStepTag from "@/src/components/common/ProgressStepTag";
 
 const approvalStatusFramework = createListCollection<{
   id: string;
@@ -91,7 +99,14 @@ export default function ProjectApprovalsPage() {
 
   const handleProjectApprovalCreateButton = () => {
     if (myOrgType === "CUSTOMER") {
-      alert("결재 글은 개발사만 작성이 가능합니다.");
+      const errorMessage = "결재 글은 개발사만 작성이 가능합니다.";
+      showToast({
+        title: "요청 실패",
+        description: errorMessage,
+        type: "error",
+        duration: 3000,
+        error: errorMessage,
+      });
       return;
     }
     router.push(`/projects/${projectId}/approvals/new`);
@@ -119,6 +134,7 @@ export default function ProjectApprovalsPage() {
         progressStep={approvalProgressStepData || []}
         loading={approvalProgressStepLoading}
       />
+
       <Box direction="column" paddingX="1rem" gap="8px" mb="30px">
         <Flex justifyContent={"space-between"} paddingX="0.3rem">
           <CreateButton handleButton={handleProjectApprovalCreateButton} />
@@ -145,6 +161,8 @@ export default function ProjectApprovalsPage() {
           - handleRowClick: 행 클릭 시 동작
         */}
         <CommonTable
+          skeletonCount={4}
+          colspan={8}
           columnsWidth={
             <>
               <Table.Column htmlWidth="15%" />
@@ -192,7 +210,7 @@ export default function ProjectApprovalsPage() {
               }}
             >
               <Table.Cell style={{ color: approval.progressStep.color }}>
-                {approval.progressStep.name}
+                <ProgressStepTag>{approval.progressStep.name}</ProgressStepTag>
               </Table.Cell>
               <Table.Cell>
                 {CATEGORY_LABELS[approval.category] || "알 수 없음"}
@@ -206,7 +224,7 @@ export default function ProjectApprovalsPage() {
               <Table.Cell>
                 {(approval.approvedAt ?? "-").split(" ")[0] || "-"}
               </Table.Cell>
-              <Table.Cell>{approval.regAt.split(" ")[0]}</Table.Cell>
+              <Table.Cell>{(approval.regAt ?? "-").split(" ")[0]}</Table.Cell>
             </Table.Row>
           )}
         />

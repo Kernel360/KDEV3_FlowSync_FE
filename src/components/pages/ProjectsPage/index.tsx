@@ -84,6 +84,8 @@ function ProjectsPageContent() {
   const userRole = loggedInUserInfo?.role; // 기본값 설정
   const { mutate: deleteProject } = useDeleteProject();
 
+  const colspan = userRole === "ADMIN" ? 9 : 7;
+
   /**
    * 페이지 변경 시 호출되는 콜백 함수
    * - 쿼리 파라미터를 갱신하고, fetchProjectList를 다시 호출합니다.
@@ -181,6 +183,8 @@ function ProjectsPageContent() {
           <ErrorAlert message="프로젝트 목록을 불러오지 못했습니다. 다시 시도해주세요." />
         )}
         <CommonTable
+          colspan={colspan}
+          skeletonCount={7}
           columnsWidth={
             <>
               <Table.Column htmlWidth="15%" />
@@ -259,7 +263,9 @@ function ProjectsPageContent() {
                     {STATUS_LABELS[project.managementStep] || "알 수 없음"}
                   </ManagementStepTag>
                 </Table.Cell>
-                <Table.Cell>{project.startAt.split(" ")[0]}</Table.Cell>
+                <Table.Cell>
+                  {(project.startAt ?? "-").split(" ")[0]}
+                </Table.Cell>
                 <Table.Cell>
                   {(project.deadlineAt ?? "-").split(" ")[0]}
                 </Table.Cell>

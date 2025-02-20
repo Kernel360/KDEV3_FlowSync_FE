@@ -18,6 +18,7 @@ import {
   useUpdateProject,
 } from "@/src/hook/useMutationData";
 import DateSection from "@/src/components/pages/ProjectsCreatePage/components/DateSection";
+import { showToast } from "@/src/utils/showToast";
 
 interface ProjectFormProps {
   projectData?: ProjectDetailProps; // projectData가 있을 경우 수정 모드
@@ -32,12 +33,9 @@ export default function ProjectForm({
   const isEditMode = !!projectId; // projectId가 있으면 수정 모드
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   // 업체 상태 변경 훅
-  const { mutate: createProject, error: ProjectCreateError } =
-    useCreateProject();
-  const { mutate: updateProject, error: ProjectUpdateError } =
-    useUpdateProject();
-  const { mutate: deleteProject, error: ProjectDeleteError } =
-    useDeleteProject();
+  const { mutate: createProject } = useCreateProject();
+  const { mutate: updateProject } = useUpdateProject();
+  const { mutate: deleteProject } = useDeleteProject();
   // 📌 프로젝트 상태 관리
   const [formData, setFormData] = useState<ProjectDetailProps>({
     id: projectData?.id || "",
@@ -87,7 +85,6 @@ export default function ProjectForm({
       const data = await fetchMembersWithinOrgApi(organizationId);
       setMembers(data.data?.members || []);
     } catch (error) {
-      console.error(error);
       setMembers([]);
     }
   };
@@ -144,34 +141,84 @@ export default function ProjectForm({
 
     // 필수 정보
     if (formData.name.length < 2) {
-      alert("프로젝트명을 2글자 이상 입력해주세요.");
+      const errorMessage = "프로젝트명을 2글자 이상 입력해주세요.";
+      showToast({
+        title: "필수 입력정보 ",
+        description: errorMessage,
+        duration: 2000,
+      });
       return;
     } else if (formData.description.length < 2) {
-      alert("프로젝트 개요를 2글자 이상 입력해주세요.");
+      const errorMessage = "프로젝트 개요를 2글자 이상 입력해주세요.";
+      showToast({
+        title: "필수 입력정보 ",
+        description: errorMessage,
+        duration: 2000,
+      });
       return;
     } else if (!formData.startAt) {
-      alert("프로젝트 시작일을 선택해주세요.");
+      const errorMessage = "프로젝트 시작일을 선택해주세요.";
+      showToast({
+        title: "필수 입력정보 ",
+        description: errorMessage,
+        duration: 2000,
+      });
       return;
     } else if (!formData.deadlineAt) {
-      alert("프로젝트 종료일을 선택해주세요.");
+      const errorMessage = "프로젝트 예정 마감일을 선택해주세요.";
+      showToast({
+        title: "필수 입력정보 ",
+        description: errorMessage,
+        duration: 2000,
+      });
       return;
     } else if (!formData.customerOrgId) {
-      alert("고객사를 지정해주세요.");
+      const errorMessage = "고객사를 지정해주세요.";
+      showToast({
+        title: "필수 입력정보 ",
+        description: errorMessage,
+        duration: 2000,
+      });
       return;
     } else if (!formData.developerOrgId) {
-      alert("개발사를 지정해주세요.");
+      const errorMessage = "개발사를 지정해주세요.";
+      showToast({
+        title: "필수 입력정보 ",
+        description: errorMessage,
+        duration: 2000,
+      });
       return;
     } else if (selectedCustomerMembers.length === 0) {
-      alert("고객사 담당자 회원을 배정해주세요.");
+      const errorMessage = "고객사 담당자 회원을 배정해주세요.";
+      showToast({
+        title: "필수 입력정보 ",
+        description: errorMessage,
+        duration: 2000,
+      });
       return;
     } else if (selectedDeveloperMembers.length === 0) {
-      alert("개발사 담당자 회원을 배정해주세요.");
+      const errorMessage = "개발사 담당자 회원을 배정해주세요.";
+      showToast({
+        title: "필수 입력정보 ",
+        description: errorMessage,
+        duration: 2000,
+      });
       return;
     } else if (!formData.customerOwnerId) {
-      alert("고객사 Owner 을 설정해주세요.");
+      const errorMessage = "고객사 Owner을 지정해주세요.";
+      showToast({
+        title: "필수 입력정보 ",
+        description: errorMessage,
+        duration: 2000,
+      });
       return;
     } else if (!formData.devOwnerId) {
-      alert("개발사 Owner 을 설정해주세요.");
+      const errorMessage = "개발사 Owner을 지정해주세요.";
+      showToast({
+        title: "필수 입력정보 ",
+        description: errorMessage,
+        duration: 2000,
+      });
       return;
     }
 
@@ -183,15 +230,6 @@ export default function ProjectForm({
     };
 
     if (isEditMode) {
-      console.log("수정 요청 - requestBody: ", requestBody);
-      console.log(
-        "수정 요청(시작일 타입) - requestBody: ",
-        typeof requestBody.startAt,
-      );
-      console.log(
-        "수정 요청(예상마감일 타입) - requestBody: ",
-        typeof requestBody.deadlineAt,
-      );
       const response = await updateProject(projectId, requestBody);
 
       if (response === null) return;

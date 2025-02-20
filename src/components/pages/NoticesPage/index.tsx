@@ -8,6 +8,7 @@ import {
   Flex,
   Heading,
   Table,
+  Text,
 } from "@chakra-ui/react";
 import CommonTable from "@/src/components/common/CommonTable";
 import SearchSection from "@/src/components/common/SearchSection";
@@ -95,6 +96,8 @@ function NoticesPageContent() {
     refetch,
   } = useNoticeList(keyword, category, isDeleted, currentPage, pageSize);
 
+  const colspan = userRole === "ADMIN" ? 7 : 4;
+
   const handlePageChange = (page: number) => {
     const params = new URLSearchParams(window.location.search);
     // 쿼리스트링 업데이트
@@ -162,6 +165,8 @@ function NoticesPageContent() {
         <ErrorAlert message="공지사항 목록을 불러오지 못했습니다. 다시 시도해주세요." />
       )}
       <CommonTable
+        colspan={colspan}
+        skeletonCount={13}
         columnsWidth={
           <>
             <Table.Column htmlWidth="10%" />
@@ -245,15 +250,21 @@ function NoticesPageContent() {
                 {notice.title}
               </Table.Cell>
               <Table.Cell {...(isEmergency ? EMERGENCY_STYLE : {})}>
-                {notice.regAt.split(" ")[0]}
+                {(notice.regAt ?? "-").split(" ")[0]}
               </Table.Cell>
               {userRole === "ADMIN" && (
                 <>
                   <Table.Cell {...(isEmergency ? EMERGENCY_STYLE : {})}>
-                    {notice.updatedAt.split(" ")[0]}
+                    {(notice.updatedAt ?? "-").split(" ")[0]}
                   </Table.Cell>
                   <Table.Cell {...(isEmergency ? EMERGENCY_STYLE : {})}>
-                    {NOTICE_STATUS_LABELS[notice.isDeleted]}
+                    {notice.isDeleted === "Y" ? (
+                      <Text color="red">
+                        {NOTICE_STATUS_LABELS[notice.isDeleted]}
+                      </Text>
+                    ) : (
+                      <>{NOTICE_STATUS_LABELS[notice.isDeleted]}</>
+                    )}
                   </Table.Cell>
                   <Table.Cell onClick={(event) => event.stopPropagation()}>
                     {notice.isDeleted !== "Y" ? (
