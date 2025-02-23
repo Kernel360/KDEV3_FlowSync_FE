@@ -44,7 +44,7 @@ https://github.com/user-attachments/assets/1ed828d2-b63b-46cf-a0e7-8599b7cdaf38
 | **개발사**        | dahye.jung@smartdesign.com | test123!    | 개발사 로그인 및 관련 기능 테스트용 계정                                                 |
 | **관리자**   | admin@flowsync.com        | 1111    | 관리자 로그인 및 관련 기능 테스트용 계정                                           |
 
-🔗 [플로우씽크 바로가기](https://www.flowssync.co.kr/)
+🔗 [플로우씽크 바로가기](https://www.flowssync.com/)
 <br/>
 <br/>
 <br/>
