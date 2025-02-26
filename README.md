@@ -49,6 +49,17 @@ https://github.com/user-attachments/assets/1ed828d2-b63b-46cf-a0e7-8599b7cdaf38
 <br/>
 <br/>
 
+# 🛠️ 개발 분량 (FE)
+| language | files | code | comment | blank | total |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| TypeScript JSX | 138 | 13,376 | 671 | 1,344 | 15,391 |
+| TypeScript | 33 | 2,753 | 477 | 369 | 3,599 |
+| CSS | 13 | 577 | 47 | 94 | 718 |
+
+<br/>
+<br/>
+<br/>
+
 # 🔧 기술 스택
 
 | 카테고리       | 기술 스택 |
