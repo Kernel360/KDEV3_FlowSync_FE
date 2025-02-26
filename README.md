@@ -52,33 +52,38 @@
 # 🚀 주요 기능
 
 ## 1. 관리자
-<br/>
+
 ### 1-a) 업체 및 회원을 등록하고 프로젝트를 생성합니다. (프로젝트별 담당자 배정)
+
 https://github.com/user-attachments/assets/a066175e-1420-407c-ba30-80b859f4396c
-<br/>
+
 ### 1-b) 백오피스 시스템을 통해 사용자 등록 및 권한 관리가 가능하고,
+
 https://github.com/user-attachments/assets/2aac7841-52c1-45d9-9d6a-e062088b4bc0
-<br/>
+
 ### 1-c) 프로젝트별 결재 히스토리 및 게시판, 업무 진행 단계를 관리합니다.
+
 <br/>
 
 ## 2. 개발사
-<br/>
+
 ### 2-a) 대시보드를 통해 프로젝트 진행 과정을 단계별로 관리하고,
-<br/>
+
 ### 2-b) 종합 게시판을 통해 결재 요청부터 파일 공유까지 한곳에서 효율적으로 처리합니다.
+
 https://github.com/user-attachments/assets/0e9a0a70-2518-4ff1-9afe-c313b98f883f
+
 <br/>
 
 ## 3. 고객사
-<br/>
+
 ### 3-a) 대시보드를 통해 프로젝트 진행 상황을 실시간으로 모니터링하고,
-<br/>
+
 ### 3-b) 종합 게시판에서 문서, 피드백, 요청사항을 한 곳에서 정리할 수 있습니다.
-<br/>
+
 ### 3-c) 간단한 절차를 통해 결재를 승인/반려하고 이력을 확인할 수 있어요.
 https://github.com/user-attachments/assets/1ed828d2-b63b-46cf-a0e7-8599b7cdaf38
-<br/>
+
 <br/>
 
 # 🧪 테스트 계정 안내
@@ -93,6 +98,7 @@ FlowSync 서비스 테스트를 위한 로그인 계정 정보를 안내 드립�
 
 <br/>
 🔗 [플로우씽크 바로가기](https://www.flowssync.com/)
+
 <br/>
 <br/>
 
@@ -109,12 +115,12 @@ FlowSync 서비스 테스트를 위한 로그인 계정 정보를 안내 드립�
 # 🛠️ 개발 분량 (프론트엔드/백엔드)
 
 | **language(FE)** | files | code |  | **language(BE)** | modules | code |
-| :--- | ---: | ---: | :--- | :--- | :--- | ---: |
+| :---: | ---: | ---: | :--- | :---: | :---: | ---: |
 | TypeScript JSX | 138 | 13,376 | | Java | module-api | 1,925 |
-| TypeScript | 33 | 2,753 | | Java | module-service | 7,310 |
-| CSS | 13 | 577 | | Java | module-common | 573 |
-|  |  |  | | Java | module-domain | 2,749 |
-|  |  |  | | Java | module-infra | 1,946 |
+| TypeScript | 33 | 2,753 | |  | module-service | 7,310 |
+| CSS | 13 | 577 | |  | module-common | 573 |
+|  |  |  | |  | module-domain | 2,749 |
+|  |  |  | |  | module-infra | 1,946 |
 <br/>
 <br/>
 
