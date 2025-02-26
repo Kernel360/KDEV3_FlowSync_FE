@@ -30,7 +30,6 @@
 
 <br/>
 <br/>
-<br/>
 
 # 📌 FlowSync 서비스 흐름
 1️⃣ 고객사 – 프로젝트를 생성하고, 진행 상황을 확인하며 피드백 제공
@@ -48,8 +47,6 @@
 > 고객사 → 프로젝트 생성 요청 → 관리자 승인 → 개발사 배정 → 작업 진행  
 > 개발사 → 파일 공유 및 피드백 → 고객사 검토 → 승인 및 결재 → 납품 완료  
 
-<br/>
-<br/>
 <br/>
 
 # 🚀 주요 기능
@@ -92,7 +89,6 @@ FlowSync 서비스 테스트를 위한 로그인 계정 정보를 안내 드립�
 🔗 [플로우씽크 바로가기](https://www.flowssync.com/)
 <br/>
 <br/>
-<br/>
 
 
 # :runner: 프로젝트 기간 (60 days)
@@ -101,7 +97,6 @@ FlowSync 서비스 테스트를 위한 로그인 계정 정보를 안내 드립�
 > > 설계 작업 기간: 2024.12.24 ~ 2025.01.02 (10 days) <br>
 > > 기능 구현 기간: 2025.01.03 ~ 2025.02.21 (50 days) <br>
 
-<br/>
 <br/>
 <br/>
 
@@ -114,7 +109,6 @@ FlowSync 서비스 테스트를 위한 로그인 계정 정보를 안내 드립�
 | CSS | 13 | 577 | | Java | module-common | 573 |
 |  |  |  | | Java | module-domain | 2,749 |
 |  |  |  | | Java | module-infra | 1,946 |
-<br/>
 <br/>
 <br/>
 
@@ -131,11 +125,9 @@ FlowSync 서비스 테스트를 위한 로그인 계정 정보를 안내 드립�
 
 <br/>
 <br/>
-<br/>
 
 # 🛠️ 프로젝트 아키텍쳐
 ![image](https://github.com/user-attachments/assets/a4fc2317-5e6d-480d-8f53-185336b9af4e)
-<br/>
 <br/>
 <br/>
 
@@ -146,7 +138,6 @@ FlowSync 서비스 테스트를 위한 로그인 계정 정보를 안내 드립�
 👉 와이어 프레임 : **[바로가기](https://www.figma.com/design/IpnN9PkKXCj3zEBxqHRSQK/flowSync---%EC%99%80%EC%9D%B4%EC%96%B4-%ED%94%84%EB%A0%88%EC%9E%84?node-id=0-1&t=1ZXTAXcXpAV6sku9-1)**
 
 👉 ERD : **[바로가기](https://drive.google.com/file/d/1SYKvX493GPJ2JG9TTfmIi7c-Gz7jPixH/view?usp=sharing)**
-<br/>
 <br/>
 <br/>
 
