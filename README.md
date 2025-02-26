@@ -4,20 +4,37 @@
 
 ### 플로우씽크는 웹에이전시 내에서 계약 단계부터 납품 및 하자 보수까지의 과정을<br/> 클라이언트와 효율적으로 공유 및 관리할 수 있는 업무시스템입니다.
 </div>
+<br/>
+<br/>
+
+# 🚀 서비스 개요
+
+<div align="left">
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/0336e684-1944-4028-bc28-519e6efd4c90" width="80" height="80" alt="서비스 소개(1)"/><br />
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/31c49412-0be9-4594-8c3f-dd9888d7e31f" width="80" height="80" alt="서비스 소개(2)"/><br />
+    </td>
+     <td align="center">
+      <img src="https://github.com/user-attachments/assets/a7674137-5613-4d08-8278-1ba8ed0ba9b6" width="80" height="80" alt="서비스 소개(3)"/><br />
+    </td>
+     <td align="center">
+      <img src="https://github.com/user-attachments/assets/091540df-293e-4e99-a8db-fe0b24b3c76a" width="80" height="80" alt="서비스 소개(4)"/><br />
+    </td>
+  </tr>
+</table>
+</div>
 
 <br />
-
-# :runner: 프로젝트 기간 (60 days)
-> **전체 개발 기간: 2024.12.24 ~ 2025.02.21 (9 Weeks)**
-> > 설계 작업 기간: 2024.12.24 ~ 2025.01.02 (10 days) <br>
-> > 기능 구현 기간: 2025.01.03 ~ 2025.02.21 (50 days) <br>
-
-<br />
+<br/>
 
 # 🚀 주요 기능
 
 ## 1. 관리자
-### 업체 및 회원을 등록하고 프로젝트를 생성해요.
+### 1-a) 업체 및 회원을 등록하고 프로젝트를 생성해요.
 https://github.com/user-attachments/assets/a066175e-1420-407c-ba30-80b859f4396c
 
 <br/>
@@ -49,13 +66,23 @@ https://github.com/user-attachments/assets/1ed828d2-b63b-46cf-a0e7-8599b7cdaf38
 <br/>
 <br/>
 
-# 🛠️ 개발 분량 (FE)
-| language | files | code | comment | blank | total |
-| :--- | ---: | ---: | ---: | ---: | ---: |
-| TypeScript JSX | 138 | 13,376 | 671 | 1,344 | 15,391 |
-| TypeScript | 33 | 2,753 | 477 | 369 | 3,599 |
-| CSS | 13 | 577 | 47 | 94 | 718 |
 
+# :runner: 프로젝트 기간 (60 days)
+> **전체 개발 기간: 2024.12.24 ~ 2025.02.21 (9 Weeks)**
+> > 설계 작업 기간: 2024.12.24 ~ 2025.01.02 (10 days) <br>
+> > 기능 구현 기간: 2025.01.03 ~ 2025.02.21 (50 days) <br>
+
+<br />
+
+# 🛠️ 개발 분량 (프론트엔드/백엔드)
+
+| language(FE) | files | code |  | language(BE) | modules | code |
+| :--- | ---: | ---: | :--- | :--- | :--- | ---: |
+| TypeScript JSX | 138 | 13,376 | | Java | module-api | 1,925 |
+| TypeScript | 33 | 2,753 | | Java | module-service | 7,310 |
+| CSS | 13 | 577 | | Java | module-common | 573 |
+|  |  |  | | Java | module-domain | 2,749 |
+|  |  |  | | Java | module-infra | 1,946 |
 <br/>
 <br/>
 <br/>
